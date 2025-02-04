@@ -1,0 +1,18 @@
+name: mechamiss-env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - numpy
+  - pandas
+  - scipy
+  - matplotlib
+  - seaborn
+  - pytest
+  - black
+  - flake8
+  - pre-commit
+  - pip
+  - pip:
+      - build
+      - twine
