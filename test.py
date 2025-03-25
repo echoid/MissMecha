@@ -1,6 +1,6 @@
 
 import missmecha.analysis.visual as mmv
-import missmecha.generate as mmg
+import missmecha.mechanism.simulation as mmg
 
 import pandas as pd
 import numpy as np
