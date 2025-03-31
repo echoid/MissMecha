@@ -11,6 +11,29 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 warnings.filterwarnings("ignore", message="Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.")
 
+
+def verify_missing_rate(rate, var_name="missing_rate"):
+    """
+    Verify that the missing rate is between 0 and 1 (inclusive).
+
+    Parameters
+    ----------
+    rate : float
+        The missing rate to check.
+    var_name : str, optional
+        Variable name to show in the error message.
+
+    Raises
+    ------
+    ValueError
+        If the rate is not in the range [0, 1].
+    """
+    if not isinstance(rate, (float, int)):
+        raise TypeError(f"{var_name} must be a float or int.")
+    if not (0 <= rate <= 1):
+        raise ValueError(f"{var_name} must be between 0 and 1 (got {rate}).")
+
+
 def type_convert(df):
 
     with warnings.catch_warnings():

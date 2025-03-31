@@ -1,9 +1,164 @@
+import pandas as pd 
+import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display
+import matplotlib.colors as mcolors
+from . import util
+
+
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import matplotlib.colors as mcolors
-from .. import util
 import seaborn as sns
+from IPython.display import display
+
+def compute_missing_rate(data, print_summary=True, plot=False):
+    """
+    Compute and present detailed missingness statistics for each column,
+    along with overall missing rate. Supports both DataFrame and ndarray.
+
+    Parameters
+    ----------
+    data : pd.DataFrame or np.ndarray
+        Input dataset.
+    print_summary : bool, default=True
+        Whether to print overall missingness summary.
+    plot : bool, default=False
+        Whether to show a barplot of missing rate per column.
+
+    Returns
+    -------
+    result : dict
+        {
+            "report": pd.DataFrame of column-wise missing info,
+            "overall_missing_rate": float (total % of missing cells)
+        }
+    """
+
+    if isinstance(data, np.ndarray):
+        data = pd.DataFrame(data, columns=[f"col{i}" for i in range(data.shape[1])])
+
+    total_rows = len(data)
+    total_cells = data.size
+    n_missing = data.isnull().sum()
+    missing_rate_pct = (n_missing / total_rows * 100).round(2)
+    total_missing = n_missing.sum()
+
+    n_unique = data.nunique(dropna=True)
+    dtype = data.dtypes
+
+    report = pd.DataFrame({
+        "n_missing": n_missing,
+        "missing_rate (%)": missing_rate_pct,
+        "n_unique": n_unique,
+        "dtype": dtype.astype(str),
+        "n_total": total_rows
+    }).sort_values("missing_rate (%)", ascending=False)
+
+    report.index.name = "column"
+    overall_rate = float(round((total_missing / total_cells) * 100, 2))
+
+    if print_summary:
+        print(f"Overall missing rate: {overall_rate:.2f}%")
+        print(f"{total_missing} / {total_cells} total values are missing.")
+        print("\nTop variables by missing rate:")
+        display(report.head(5))
+
+    if plot:
+        plt.figure(figsize=(7, 4))
+        sns.barplot(
+            x=report["missing_rate (%)"],
+            y=report.index,
+            palette="coolwarm"
+        )
+        plt.xlabel("Missing Rate (%)")
+        plt.title("Missing Rate by Column")
+        plt.tight_layout()
+        plt.show()
+
+    return {
+        "report": report,
+        "overall_missing_rate": overall_rate
+    }
+
+
+
+
+
+def evaluate_imputation(
+    ground_truth: pd.DataFrame,
+    filled_df: pd.DataFrame,
+    incomplete_df: pd.DataFrame,
+    method: str,  # required
+    status: dict = None  # optional
+):
+    """
+    Evaluate imputation performance by comparing filled values to ground truth at missing positions.
+
+    Parameters
+    ----------
+    ground_truth : pd.DataFrame
+        Fully observed reference dataset.
+    filled_df : pd.DataFrame
+        The dataset after imputation.
+    incomplete_df : pd.DataFrame
+        Dataset with original missing values (to locate evaluation positions).
+    method : str
+        'rmse', 'mae', or 'avgerr' — determines how numerical columns are evaluated.
+    status : dict, optional
+        A dictionary mapping column names to variable types:
+        'num' for numerical, 'cat' or 'disc' for categorical.
+        If not provided, all variables are treated as numerical.
+
+    Returns
+    -------
+    result : dict
+        {
+            "column_scores": {col_name: score, ...},
+            "overall_score": average_score
+        }
+    """
+    assert method in ["rmse", "mae"], "method must be one of: 'rmse', 'mae', 'avgerr'"
+
+    mask = incomplete_df.isnull()
+    column_scores = {}
+
+    for col in incomplete_df.columns:
+        col_type = status[col] if status and col in status else "num"
+        y_true = ground_truth.loc[mask[col], col]
+        y_pred = filled_df.loc[mask[col], col]
+
+        if y_true.empty:
+            column_scores[col] = np.nan
+            continue
+
+        if col_type == "num":
+            if method == "rmse":
+                score = mean_squared_error(y_true, y_pred) ** 0.5
+            elif method == "mse":
+                score = mean_absolute_error(y_true, y_pred)
+            elif method == "mae":
+                score = mean_absolute_error(y_true, y_pred)
+
+        elif col_type in ["cat", "disc"]:
+            score = accuracy_score(y_true.astype(str), y_pred.astype(str))
+        else:
+            raise ValueError(f"Unsupported variable type: '{col_type}'")
+
+        column_scores[col] = score
+    valid = [v for v in column_scores.values() if not np.isnan(v)]
+    overall_score = np.mean(valid) if valid else np.nan
+
+    return {
+        "column_scores": column_scores,
+        "overall_score": overall_score
+    }
+
+
+
+
 
 def get_auto_figsize(n_rows, n_cols, base_width=1.2, base_height=0.3, max_size=(20, 12)):
     """
@@ -18,7 +173,7 @@ def get_auto_figsize(n_rows, n_cols, base_width=1.2, base_height=0.3, max_size=(
     return (width, height)
 
 #def matrix(df, figsize=(20, 12), cmap="RdBu", color=True, fontsize=14, label_rotation=45, show_colorbar=False,ts = False):
-def matrix(df, figsize=None,cmap="RdBu", color=True, fontsize=14, label_rotation=45, show_colorbar=False,ts = False):
+def plot_missing_matrix(df, figsize=None,cmap="RdBu", color=True, fontsize=14, label_rotation=45, show_colorbar=False,ts = False):
     """
     Visualizes missing data in a DataFrame as a heatmap.
 
@@ -215,7 +370,7 @@ def matrix(df, figsize=None,cmap="RdBu", color=True, fontsize=14, label_rotation
 
 
 
-def heatmap(df, figsize=(20, 12), fontsize=14, label_rotation=45, cmap='RdBu', method = "pearson"):
+def plot_missing_heatmap(df, figsize=(20, 12), fontsize=14, label_rotation=45, cmap='RdBu', method = "pearson"):
     """
     Visualizes nullity correlation in the DataFrame using a heatmap.
     
@@ -265,4 +420,3 @@ def heatmap(df, figsize=(20, 12), fontsize=14, label_rotation=45, cmap='RdBu', m
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=fontsize)
 
     plt.show()
-

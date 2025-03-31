@@ -23,12 +23,64 @@
 |----------------|-------------|
 | `visual`       | Visualization of missing data patterns |
 | `generate`     | Simulation of missing data under various mechanisms |
-| `analysis`     | Statistical and structural inspection of missingness |
-| `evaluation`   | Imputation quality and model performance metrics |
+| `analysis`     | Statistical and structural inspection of missingness,Imputation quality and model performance metrics  |
 
 ---
 
-## Installation
 
-```bash
-pip install missmecha
+## `info` Dictionary Format for Column-wise Missing Generation
+
+The `info` dictionary allows you to define **column-specific missing data settings**, including:
+- Missing mechanism (`mcar`, `mar`, `mnar`)
+- Mechanism type ID
+- Missing rate
+- Dependency on other columns
+- Optional mechanism-specific parameters
+
+This supports **realistic and flexible missingness simulation** where each column can follow a different mechanism.
+
+---
+
+### ✅ Example Structure
+
+```python
+info = {
+    "income": {
+        "missing_type": "mnar",            # Mechanism: MCAR / MAR / MNAR
+        "type": 1,                          # Mechanism variant ID
+        "missing_rate": 0.3,               # Percentage of missing values
+        "dependent_columns": ["income"],   # For MNAR, can depend on itself
+        "missing_para": {"threshold": 40000}  # Optional parameters
+    },
+    "age": {
+        "missing_type": "mar",
+        "type": 2,
+        "missing_rate": 0.2,
+        "dependent_columns": ["gender"],
+        "missing_para": {"group_bias": "female"}
+    },
+    "gender": {
+        "missing_type": "mcar",
+        "type": 1,
+        "missing_rate": 0.1,
+        "dependent_columns": []
+    }
+}
+```
+
+### 🧩 Field Descriptions
+
+Each entry in the `info` dictionary defines the missing configuration for one column.
+
+| **Key**            | **Type**        | **Required** | **Example**                | **Description**                                                                 |
+|--------------------|-----------------|--------------|----------------------------|---------------------------------------------------------------------------------|
+| `missing_type`     | `str`           | ✅            | `"mar"`                    | The type of missingness mechanism: one of `"mcar"`, `"mar"`, or `"mnar"`       |
+| `type`             | `int`           | ✅            | `1`                        | Mechanism variant ID; refers to predefined mechanism function (e.g., `MCAR_TYPES[1]`) |
+| `missing_rate`     | `float`         | ✅            | `0.2`                      | The proportion of values to be made missing in this column                     |
+| `dependent_columns`| `list[str]`     | ✅ (can be empty) | `["age", "gender"]`    | List of variables this column's missingness depends on (useful for MAR/MNAR)  |
+| `missing_para`     | `dict`          | ❌            | `{"threshold": 40000}`     | Optional parameters passed to the mechanism function                           |
+
+> 🔧 Note: You can leave `dependent_columns` as an empty list `[]` if not applicable (e.g., for MCAR).
+
+
+
