@@ -131,7 +131,122 @@ def generate_missing(data, missing_type="mcar", type=1, missing_rate=0.1, info=N
         "mask_bool": mask_bool_result,
     }
 
+import numpy as np
+import pandas as pd
+MECHANISM_LOOKUP = {
+    "mcar": MCAR_TYPES,
+    "mar": MAR_TYPES,
+    "mnar": MNAR_TYPES,
+}
+class MissMechaGeneratorMultiple:
+    def __init__(self, mechanism="MAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None):
+        """
+        Multiple-mechanism generator. Uses 'info' dictionary for column-wise specification.
 
+        Parameters
+        ----------
+        mechanism : str
+            Default mechanism type (if info is not provided).
+        mechanism_type : int
+            Default mechanism subtype.
+        missing_rate : float
+            Default missing rate.
+        seed : int
+            Random seed.
+        info : dict
+            Column-specific missingness configuration.
+        """
+        self.mechanism = mechanism.lower()
+        self.mechanism_type = int(mechanism_type)
+        self.missing_rate = missing_rate
+        self.seed = seed
+        self.info = info
+        self._fitted = False
+        self.label = None
+        self.generator_map = {}
+        self.generator_class = None
+        self.col_names = None
+        self.is_df = None
+        self.index = None
+
+        if not info:
+            # fallback to default generator for entire dataset
+            self.generator_class = MECHANISM_LOOKUP[self.mechanism][self.mechanism_type]
+
+    def _resolve_columns(self, cols):
+        """Resolve column names or indices depending on input type."""
+        if self.is_df:
+            col_labels = list(cols)
+            col_idxs = [self.col_names.index(c) for c in cols]
+        else:
+            if all(isinstance(c, int) for c in cols):
+                col_labels = [f"col{c}" for c in cols]
+                col_idxs = list(cols)
+            elif all(isinstance(c, str) and c.startswith("col") for c in cols):
+                col_idxs = [int(c.replace("col", "")) for c in cols]
+                col_labels = list(cols)
+            else:
+                raise ValueError(f"Invalid column specification: {cols} for ndarray input")
+        return col_labels, col_idxs
+
+    def fit(self, X, y=None):
+        self.is_df = isinstance(X, pd.DataFrame)
+        self.col_names = X.columns.tolist() if self.is_df else [f"col{i}" for i in range(X.shape[1])]
+        self.index = X.index if self.is_df else np.arange(X.shape[0])
+        self.generator_map = {}
+
+        if self.info is None:
+            generator = self.generator_class(missing_rate=self.missing_rate, seed=self.seed)
+            X_np = X.to_numpy() if self.is_df else X
+            generator.fit(X_np, label=y)
+            self.generator_map["global"] = generator
+        else:
+            for key, settings in self.info.items():
+                cols = (key,) if isinstance(key, (str, int)) else key
+                col_labels, col_idxs = self._resolve_columns(cols)
+
+                mechanism = settings["mechanism"].lower()
+                mech_type = settings["type"]
+                rate = settings["rate"]
+                label = settings.get("label", y)
+
+                generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
+                generator = generator_cls(missing_rate=rate, seed=self.seed)
+
+                sub_X = X[list(col_labels)].to_numpy() if self.is_df else X[:, col_idxs]
+                generator.fit(sub_X, y=label)
+                self.generator_map[key] = generator
+
+        self._fitted = True
+        return self
+
+    def transform(self, X):
+        if not self._fitted:
+            raise RuntimeError("Call .fit() before transform().")
+
+        data = X.copy()
+        data_array = data.to_numpy().astype(float) if self.is_df else data.astype(float)
+
+        if self.info is None:
+            generator = self.generator_map["global"]
+            masked = generator.transform(data_array)
+            return pd.DataFrame(masked, columns=self.col_names, index=self.index) if self.is_df else masked
+        else:
+            for key, generator in self.generator_map.items():
+                cols = (key,) if isinstance(key, (str, int)) else key
+                col_labels, col_idxs = self._resolve_columns(cols)
+
+                sub_X = data[list(col_labels)].to_numpy() if self.is_df else data_array[:, col_idxs]
+                masked = generator.transform(sub_X)
+
+                if self.is_df:
+                    for col in col_labels:
+                        data[col] = masked[:, list(col_labels).index(col)].astype(float)
+
+                else:
+                    data_array[:, col_idxs] = masked
+
+            return data if self.is_df else data_array
 
 
 
@@ -199,11 +314,6 @@ class MissMechaGenerator:
         self.mask_int = output["mask_int"]
 
         return output["data"]
-
-
-
-
-
 
     def get_mask(self, format="bool"):
         if format == "bool":

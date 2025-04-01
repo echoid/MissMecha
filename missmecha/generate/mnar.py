@@ -4,6 +4,34 @@ import numpy as np
 import numpy as np
 from scipy.special import expit  # sigmoid
 from scipy.optimize import bisect
+def pick_coeffs_numpy(X, idxs_obs=None, idxs_nas=None, self_mask=False):
+    n, d = X.shape
+    if self_mask:
+        coeffs = np.random.randn(d)
+        Wx = X * coeffs
+        coeffs /= np.std(Wx, axis=0)
+    else:
+        d_obs = len(idxs_obs)
+        d_na = len(idxs_nas)
+        coeffs = np.random.randn(d_obs, d_na)
+        Wx = X[:, idxs_obs] @ coeffs
+        coeffs /= np.std(Wx, axis=0, keepdims=True)
+    return coeffs
+
+def fit_intercepts_numpy(X, coeffs, p, self_mask=False):
+    if self_mask:
+        d = len(coeffs)
+        intercepts = np.zeros(d)
+        for j in range(d):
+            f = lambda x: np.mean(expit(X * coeffs[j] + x)) - p
+            intercepts[j] = bisect(f, -50, 50)
+    else:
+        d_obs, d_na = coeffs.shape
+        intercepts = np.zeros(d_na)
+        for j in range(d_na):
+            f = lambda x: np.mean(expit(X @ coeffs[:, j] + x)) - p
+            intercepts[j] = bisect(f, -50, 50)
+    return intercepts
 
 class MNARType1:
     def __init__(self, missing_rate=0.1, seed=1, up_percentile=0.5, obs_percentile=0.5):
