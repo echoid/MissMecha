@@ -18,13 +18,14 @@ info = {
     "type": 1     # Use type_two generator
 }
 
-type_list = [1,2,3]
+type_list = [5,6]
 missing_rate_list = [0,0.1,0.5,0.9]
 
 for type_val in type_list:
     for rate in missing_rate_list:
         print("======================")
         print("Missing type", type_val,"Missing Rate", rate)
-        result = generate_missing(data_num, missing_type="mar", type=type_val, missing_rate=rate)
+        result = generate_missing(data_num, missing_type="mnar", type=type_val, missing_rate=rate)
         compute_missing_rate(result["data"])
+        print(result["mask_int"])
         print("======================")

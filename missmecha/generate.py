@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from .gen_util.mcar import MCAR_TYPES
 from .gen_util.mar import MAR_TYPES
-# from .gen_util.mnar import MNAR_TYPES
+from .gen_util.mnar import MNAR_TYPES
 import numpy as np
 import pandas as pd
 
