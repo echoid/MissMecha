@@ -368,6 +368,120 @@ def plot_missing_matrix(df, figsize=None,cmap="RdBu", color=True, fontsize=14, l
 
 #     return ax
 
+# missmecha/analysis/mcar_test.py
+
+import numpy as np
+import pandas as pd
+from scipy.stats import chi2, ttest_ind
+from math import pow
+from typing import Union
+
+from typing import Union
+import numpy as np
+import pandas as pd
+from scipy.stats import chi2, ttest_ind
+
+class MCARTest:
+    def __init__(self, method: str = "little"):
+        self.method = method
+
+    def __call__(self, data: Union[np.ndarray, pd.DataFrame]) -> Union[float, pd.DataFrame]:
+        if isinstance(data, np.ndarray):
+            data = pd.DataFrame(data, columns=[f"col{i}" for i in range(data.shape[1])])
+        elif not isinstance(data, pd.DataFrame):
+            raise TypeError("Input must be a pandas DataFrame or a NumPy array.")
+
+        if self.method == "little":
+            return self.little_mcar_test(data)
+        elif self.method == "ttest":
+            return self.mcar_t_tests(data)
+        else:
+            raise ValueError(f"Unsupported method: {self.method}")
+
+    @staticmethod
+    def little_mcar_test(X: pd.DataFrame) -> float:
+        dataset = X.copy()
+        vars = dataset.columns
+        n_var = dataset.shape[1]
+
+        gmean = dataset.mean()
+        gcov = dataset.cov()
+
+        r = 1 * dataset.isnull()
+        mdp = np.dot(r, list(map(lambda x: pow(2, x), range(n_var))))
+        sorted_mdp = sorted(np.unique(mdp))
+        n_pat = len(sorted_mdp)
+        correct_mdp = list(map(lambda x: sorted_mdp.index(x), mdp))
+        dataset["mdp"] = pd.Series(correct_mdp, index=dataset.index)
+
+        pj = 0
+        d2 = 0
+        for i in range(n_pat):
+            dataset_temp = dataset.loc[dataset["mdp"] == i, vars]
+            select_vars = ~dataset_temp.isnull().any()
+            pj += np.sum(select_vars)
+            select_vars = vars[select_vars]
+            means = dataset_temp[select_vars].mean() - gmean[select_vars]
+            select_cov = gcov.loc[select_vars, select_vars]
+            mj = len(dataset_temp)
+            parta = np.dot(
+                means.T, np.linalg.solve(select_cov, np.identity(select_cov.shape[0]))
+            )
+            d2 += mj * (np.dot(parta, means))
+
+        df = pj - n_var
+        pvalue = 1 - chi2.cdf(d2, df)
+
+        report_mcar_test(pvalue)
+        return pvalue
+
+    @staticmethod
+    def mcar_t_tests(X: pd.DataFrame) -> pd.DataFrame:
+        dataset = X.copy()
+        vars = dataset.columns
+        mcar_matrix = pd.DataFrame(
+            data=np.zeros((len(vars), len(vars))), columns=vars, index=vars
+        )
+
+        for var in vars:
+            for tvar in vars:
+                part_one = dataset.loc[dataset[var].isnull(), tvar].dropna()
+                part_two = dataset.loc[~dataset[var].isnull(), tvar].dropna()
+                if len(part_one) > 0 and len(part_two) > 0:
+                    mcar_matrix.loc[var, tvar] = ttest_ind(part_one, part_two, equal_var=False).pvalue
+                else:
+                    mcar_matrix.loc[var, tvar] = np.nan
+
+        return mcar_matrix
+def report_mcar_test(pvalue, alpha=0.05, method="Little's MCAR Test"):
+    """
+    Generate a formal report of the MCAR hypothesis test results.
+
+    Parameters
+    ----------
+    pvalue : float
+        The p-value obtained from the MCAR test.
+
+    alpha : float, default=0.05
+        Significance level for hypothesis testing.
+
+    method : str, default="Little's MCAR Test"
+        The name of the test used to assess MCAR.
+
+    Returns
+    -------
+    None
+    """
+    print(f"Method: {method}")
+    print(f"Test Statistic p-value: {pvalue:.6f}")
+
+    if pvalue < alpha:
+        print(f"Decision: Reject the null hypothesis at significance level α = {alpha}")
+        print("The data is unlikely to be Missing Completely At Random (MCAR).")
+    else:
+        print(f"Decision: Fail to reject the null hypothesis at significance level α = {alpha}")
+        print("Interpretation: There is insufficient evidence to suggest the data deviates from MCAR.")
+
 
 
 def plot_missing_heatmap(df, figsize=(20, 12), fontsize=14, label_rotation=45, cmap='RdBu', method = "pearson"):
