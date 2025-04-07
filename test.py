@@ -1,144 +1,84 @@
+import numpy as np
 import pandas as pd
-import numpy as np
-# from missmecha.generator import generate_missing
-from missmecha.analysis import compute_missing_rate
-df_cate = pd.DataFrame({
-    "age": [25, 30, np.nan, 40],
-    "income": [3000, np.nan, 2800, 5200],
-    "gender": ["M", "F", np.nan, "F"]
-})
-
-
-import pandas as pd
-import numpy as np
-
-# Set random seed for reproducibility
-np.random.seed(42)
-
-# Parameters
-n_samples = 1000
-
-# Generate synthetic data
-ages = np.random.choice([25, 30, 35, 40, 45], size=n_samples, p=[0.2, 0.3, 0.2, 0.2, 0.1])
-incomes = np.random.normal(loc=4000, scale=1000, size=n_samples).astype(int)
-incomes = np.clip(incomes, 2000, 8000)  # Clamp to a realistic range
-genders = np.random.choice([0, 1], size=n_samples)
-
-# Create DataFrame
-df_cate = pd.DataFrame({
-    "age": ages,
-    "income": incomes,
-    "gender": genders
-})
-
-
-
-
-# data_num = np.random.default_rng(1).normal(loc=0.0, scale=1.0, size=(1000, 10))
-
-
-
-
-
-
-import numpy as np
 from sklearn.model_selection import train_test_split
-from missmecha import MissMechaGenerator
-from missmecha.analysis import compute_missing_rate,MCARTest
+from missmecha.analysis import compute_missing_rate, MCARTest
+from missmecha.generator import MissMechaGenerator
 
-# 生成完整数值型数据
+# Generate synthetic complete data
 data_num = np.random.default_rng(1).normal(loc=0.0, scale=1.0, size=(1000, 10))
-
-
-# 拆分训练集和测试集
 X_train, X_test = train_test_split(data_num, test_size=0.3, random_state=42)
 
+# Define test cases across mechanisms and types
+test_cases = [
+    # {"name": "MCAR Type 1", "info": {range(10): {"mechanism": "mcar", "type": 1, "rate": 0.2}}},
+    # {"name": "MCAR Type 2", "info": {range(10): {"mechanism": "mcar", "type": 2, "rate": 0.2}}},
+    # {"name": "MCAR Type 3", "info": {range(10): {"mechanism": "mcar", "type": 3, "rate": 0.2}}},
 
+    #{"name": "MAR Type 1", "info": {range(10): {"mechanism": "mar", "type": 1, "rate": 0.2, "para": 0.3, "depend_on":(1,2,3)}}},
+    {"name": "MAR Type 2", "info": {range(10): {"mechanism": "mar", "type": 2, "rate": 0.2, "para": 0.3, "depend_on":(1,2,3)}}},
+    {"name": "MAR Type 3", "info": {range(10): {"mechanism": "mar", "type": 3, "rate": 0.2, "para": 0.3, "depend_on":(1,2,3)}}},
+    # {"name": "MAR Type 3", "info": {range(10): {"mechanism": "mar", "type": 3, "rate": 0.2}}},
+    # {"name": "MAR Type 4", "info": {range(10): {"mechanism": "mar", "type": 4, "rate": 0.2}}},
+    # {"name": "MAR Type 5", "info": {range(10): {"mechanism": "mar", "type": 5, "rate": 0.2}}},
+    # {"name": "MAR Type 6", "info": {range(10): {"mechanism": "mar", "type": 6, "rate": 0.2}}},
+    # {"name": "MAR Type 7", "info": {range(10): {"mechanism": "mar", "type": 7, "rate": 0.2}}},
+    # {"name": "MAR Type 8", "info": {range(10): {"mechanism": "mar", "type": 8, "rate": 0.2}}},
 
+    # {"name": "MNAR Type 1", "info": {range(10): {"mechanism": "mnar", "type": 1, "rate": 0.2}}},
+    # {"name": "MNAR Type 2", "info": {range(10): {"mechanism": "mnar", "type": 2, "rate": 0.2}}},
+    # {"name": "MNAR Type 3", "info": {range(10): {"mechanism": "mnar", "type": 3, "rate": 0.2}}},
+    # {"name": "MNAR Type 4", "info": {range(10): {"mechanism": "mnar", "type": 4, "rate": 0.2}}},
+    # {"name": "MNAR Type 5", "info": {range(10): {"mechanism": "mnar", "type": 5, "rate": 0.2}}},
+    # {"name": "MNAR Type 6", "info": {range(10): {"mechanism": "mnar", "type": 6, "rate": 0.2}}},
 
-from missmecha.generator import MissMechaGeneratorMultiple
+]
 
+import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from missmecha.generator import MissMechaGenerator
 
-info = {
-    ("age", "income"): {"mechanism": "mcar", "type": 1, "rate": 0.5},
-    "gender": {"mechanism": "mnar", "type": 5, "rate": 0.1}
-}
+# Step 1: Generate synthetic data
+X, y = make_classification(n_samples=1000, n_features=10, n_informative=5, random_state=42)
+X = X.astype(float)
+# X_train = pd.DataFrame(X, columns=[f"col{i}" for i in range(X.shape[1])])
+# y_train = pd.Series(y, name="label")
 
-generator = MissMechaGeneratorMultiple(info=info)
-generator.fit(df_cate)
-df_missing = generator.transform(df_cate)
+# Step 2: Define test cases
+test_cases = [
+    {
+        "name": "MAR",
+        "info": {
+            range(10): {
+                "mechanism": "MAR",
+                "type": 5,
+                "rate": 0.3,
+                "depend_on": [0, 1, 2],
+            }
+        }
+    }
+]
 
-compute_missing_rate(df_missing)
-MCARTest(method="little")(df_missing)
+# Step 3: Run tests
+results = []
 
+for case in test_cases:
+    print(f"\n=== Testing {case['name']} ===")
 
+    generator = MissMechaGenerator(info=case["info"], seed=42)
+    generator.fit(X, y=y)  # always pass y, fallback handled inside
+    #generator.fit(X)  # always pass y, fallback handled inside
+    X_train_missing = generator.transform(X_train)
 
+    print("\n[Missing Rate Summary]")
+    print(compute_missing_rate(X_train_missing))
 
+    p_value = MCARTest(method="little")(pd.DataFrame(X_train_missing))
+    print(f"[Little's MCAR Test] p-value: {p_value:.6f}")
 
+    results.append((case["name"], p_value))
 
-
-
-
-
-
-
-
-
-# missing_type_list = ["mcar","mar","mnar"]
-# missing_rate_list = [0.1,0.3,0.5]
-# mechanism_type_list = [1,2,3,4,5,6,7,8]
-
-# missing_type_list = ["mcar"]
-# mechanism_type_list = [1,2,3]
-
-# # missing_type_list = ["mnar"]
-# # mechanism_type_list = [1,2,3,4,5,6]
-
-# # missing_type_list = ["mar"]
-# # mechanism_type_list = [1,2,3,4,5,6,7,8]
-
-
-
-# for missing_type in missing_type_list:
-#     for missing_rate in missing_rate_list:
-#         for mechanism_type in mechanism_type_list:
-#             print(" | mechanism_type: ",mechanism_type, " | missing_type: ",missing_type," | missing_rate: ",missing_rate,)
-#             mecha = MissMechaGenerator(
-#                 mechanism=missing_type,            # or "mnar", "mcar"
-#                 mechanism_type=mechanism_type,           # type id
-#                 missing_rate=missing_rate,           # 缺失比例
-#             )
-
-#             X_train_missing = mecha.fit_transform(data_num)
-#             # 输出缺失比例
-#             print("=========================>Train Fit_transform=========================>")
-#             compute_missing_rate(X_train_missing)
-            
-#             # Little's test
-#             pval = MCARTest(method="little")(X_train_missing)
-#             print(f"Little’s MCAR test p-value: {pval}")
-#             print("=========================END=========================>")
-#             # # T-test matrix
-#             # ttest_df = MCARTest(method="ttest")(X_train_missing)
-#             # print(ttest_df)
-#             # print("=========================>")
-#             # print("=========================>")
-#             # print("=========================>")
-#             # print("=========================>")
-#             # print("=========================>")
-
-#             # print("=========================>Train Missing Rate=========================>")
-#             # X_train_missing = mecha.fit(X_train)
-#             # X_train_missing = mecha.transform(X_train)
-#             # print(mecha.get_mask())
-#             # compute_missing_rate(X_train_missing)
-
-
-#             # print("=========================>Test Missing Rate=========================>")
-#             # X_test_missing = mecha.transform(X_test)
-#             # print(mecha.get_mask())
-#             # compute_missing_rate(X_test_missing)
-
-
-
-
+# Step 4: Summary table
+print("\n=== Summary of Little's MCAR Test Results ===")
+summary_df = pd.DataFrame(results, columns=["Mechanism", "MCAR Test p-value"])
+summary_df

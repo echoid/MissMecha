@@ -6,19 +6,28 @@ from sklearn.feature_selection import mutual_info_classif
 from scipy.stats import pointbiserialr
 
 class MARType1:
-    def __init__(self, missing_rate=0.1, seed=1, p_obs=0.3):
+    def __init__(self, missing_rate=0.1, seed=1, para=0.3, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
-        self.p_obs = p_obs
+        self.p_obs = para  # ✅ 确保不是 None
+        self.depend_on = depend_on
         self.fitted = False
 
-    def fit(self, X, y=None):
+    def fit(self, X, y=None, xs = None):
         rng = np.random.default_rng(self.seed)
         n, d = X.shape
         self.X_shape = (n, d)
+        self.xs = xs  # 当前要加缺失的列（可为 None）
 
-        self.idxs_obs = rng.choice(d, max(int(self.p_obs * d), 1), replace=False)
-        self.idxs_nas = np.array([i for i in range(d) if i not in self.idxs_obs])
+        if self.depend_on is not None:
+            self.idxs_obs = np.array([i for i in self.depend_on if i != xs])
+        else:
+            self.idxs_obs = rng.choice(d, max(int(self.p_obs * d), 1), replace=False)
+
+        if xs is not None:
+            self.idxs_nas = np.array([xs])
+        else:
+            self.idxs_nas = np.array([i for i in range(d) if i not in self.idxs_obs])
 
         X_obs = X[:, self.idxs_obs].copy()
         X_obs_mean = np.nanmean(X_obs, axis=0)
@@ -66,27 +75,93 @@ import numpy as np
 from sklearn.feature_selection import mutual_info_classif
 
 class MARType2:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self,
+                 missing_rate = 0.1,
+                 seed = 1,
+                 depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+
+    def fit(self, X, y=None, xs=None):
+        rng = np.random.default_rng(self.seed)
+        X = X.astype(float)
+        n, p = X.shape
+        self.xs = xs if xs is not None else p - 1  # 默认最后一列为缺失列
+
+        # Select dependency columns
+        if self.depend_on is not None:
+            self.depend_cols = self.depend_on
+        else:
+            self.depend_cols = [i for i in range(p) if i != self.xs]
+
+        # Generate fake label for MI estimation
+        fake_label = (X @ rng.normal(size=(p,)) > 0).astype(int)
+
+        # MI between xs and each dependency column
+        mi = mutual_info_classif(X[:, self.depend_cols], fake_label, discrete_features='auto', random_state=self.seed)
+        self.mi_score = max(mi.mean(), 1e-6)  # just to avoid 0
+
+        self.fitted = True
+        return self
+
+    def transform(self, X):
+        if not self.fitted:
+            raise RuntimeError("Call .fit(..., xs=col) before .transform().")
+
+        rng = np.random.default_rng(self.seed)
+        X = X.astype(float)
+        n, _ = X.shape
+
+        X_missing = X.copy()
+
+        k = int(round(n * self.missing_rate))
+        rows = rng.choice(n, size=min(k, n), replace=False)
+        X_missing[rows, self.xs] = np.nan
+        return X_missing
+
+
+
+import numpy as np
+from scipy.stats import pointbiserialr
+
+
+class MARType3:
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
+        self.missing_rate = missing_rate
+        self.seed = seed
+        self.depend_on = depend_on
+        self.fitted = False
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
 
-        # Create a pseudo-label based on random linear combination
-        self.fake_label = (X @ rng.normal(size=(p,)) > 0).astype(int)
+        if self.depend_on is not None:
+            self.depend_cols = self.depend_on
+        else:
+            self.depend_cols = list(range(p))  # 默认全列
 
-        # Compute mutual information
-        self.mi = mutual_info_classif(X, self.fake_label, discrete_features='auto', random_state=self.seed)
-        self.mi = np.clip(self.mi, a_min=1e-6, a_max=None)
+        if y is not None:
+            Y = y
+        else:
+            self._verbose("No label provided. Using synthetic labels instead.")
+            Y = (X @ rng.normal(size=(p,)) > 0).astype(int)
 
-        self.total_missing = int(round(n * p * self.missing_rate))
-        self.probs = self.mi / self.mi.sum()
-        self.missing_per_col = (self.probs * self.total_missing).astype(int)
+        corrs = []
+        for j in self.depend_cols:
+            try:
+                r, _ = pointbiserialr(Y, X[:, j])
+                corrs.append(abs(r))
+            except Exception:
+                corrs.append(0.0)
 
+        self.corr_score = max(np.mean(corrs), 1e-6)
         self.fitted = True
         return self
 
@@ -97,69 +172,48 @@ class MARType2:
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
-
         X_missing = X.copy()
-        for j in range(p):
-            k = min(self.missing_per_col[j], n)
-            rows = rng.choice(n, size=k, replace=False)
-            X_missing[rows, j] = np.nan
 
+        total = int(round(n * p * self.missing_rate))
+        idx = rng.choice(n * p, size=total, replace=False)
+        rows, cols = np.unravel_index(idx, (n, p))
+        X_missing[rows, cols] = np.nan
         return X_missing
 
 
-class MARType3:
-    def __init__(self, missing_rate=0.1, seed=1):
-        self.missing_rate = missing_rate
-        self.seed = seed
-
-    def fit(self, X, y=None):
-        self.fitted = True
-        return self
-
-    def transform(self, X):
-        rng = np.random.default_rng(self.seed)
-        n, p = X.shape
-        Y = (X @ rng.normal(size=(p,)) > 0).astype(int)
-
-        corrs = []
-        for j in range(p):
-            try:
-                r, _ = pointbiserialr(Y, X[:, j])
-                corrs.append(abs(r))
-            except Exception:
-                corrs.append(0.0)
-        corrs = np.array(corrs)
-        corrs = np.clip(corrs, 1e-6, None)
-
-        total_missing = int(round(n * p * self.missing_rate))
-        probs = corrs / corrs.sum()
-        missing_per_col = (probs * total_missing).astype(int)
-
-        X_missing = X.copy().astype(float)
-        for j in range(p):
-            k = min(missing_per_col[j], n)
-            rows = rng.choice(n, size=k, replace=False)
-            X_missing[rows, j] = np.nan
-        return X_missing
-from typing import Optional
 import numpy as np
 from scipy.stats import pointbiserialr
 
 class MARType4:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+        print("My Depend on",self.depend_on)
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
 
-        # Generate pseudo-label
-        Y = (X @ rng.normal(size=(p,)) > 0).astype(int)
+        # 决定依赖列：用于生成伪标签（或真实标签）来计算 correlation
+        if self.depend_on is not None:
+            depend_cols = self.depend_on
+        else:
+            depend_cols = list(range(p))
 
-        # Select xs features most correlated with Y
+        # 获取标签
+        if y is not None:
+            Y = y
+        else:
+            self._verbose("No label provided. Using synthetic labels instead.")
+            Y = (X[:, depend_cols] @ rng.normal(size=(len(depend_cols),)) > 0).astype(int)
+
+        # 用 Y 计算和每一列的相关性，排序出 xs（要加缺失的列）
         corrs = []
         for j in range(p):
             try:
@@ -167,21 +221,24 @@ class MARType4:
                 corrs.append(abs(r))
             except Exception:
                 corrs.append(0)
-        self.xs_indices = np.argsort(corrs)
+        self.xs_indices = np.argsort(corrs)  # 从相关性小到大
         self.fitted = True
         return self
 
     def transform(self, X):
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
+
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
-        data_with_missing = X.copy()
+        X_missing = X.copy()
+
         total_missing = int(round(n * p * self.missing_rate))
         missing_each = max(total_missing // len(self.xs_indices), 1)
 
         for xs in self.xs_indices:
+            # 找出与当前列最相关的列 xd
             corrs = []
             for j in range(p):
                 if j == xs:
@@ -193,22 +250,40 @@ class MARType4:
                     except Exception:
                         corrs.append(0)
             xd = int(np.argmax(corrs))
+
+            # 在 xd 上排序 → 取最小的值对应的行 → 对 xs 加缺失
             order = np.argsort(X[:, xd])
             selected_rows = order[:min(missing_each, n)]
-            data_with_missing[selected_rows, xs] = np.nan
+            X_missing[selected_rows, xs] = np.nan
 
-        return data_with_missing
+        return X_missing
 
+
+import numpy as np
 
 class MARType5:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
-        self.xd = rng.integers(0, X.shape[1])
+        X = X.astype(float)
+        n, p = X.shape
+
+        # 如果用户有指定依赖列，则从中选择一个；否则从所有列中选
+        if self.depend_on is not None:
+            candidates = self.depend_on
+        else:
+            candidates = list(range(p))
+
+        self.xd = rng.choice(candidates)
+        self._verbose(f"Selected column {self.xd} as dependency (xd).")
         self.fitted = True
         return self
 
@@ -218,8 +293,9 @@ class MARType5:
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
-        total_missing = int(round(n * p * self.missing_rate))
+
         xs_indices = [i for i in range(p) if i != self.xd]
+        total_missing = int(round(n * len(xs_indices) * self.missing_rate))
         missing_per_col = max(total_missing // len(xs_indices), 1)
 
         xd_col = X[:, self.xd]
@@ -228,11 +304,13 @@ class MARType5:
         rank[order] = np.arange(1, n + 1)
         prob_vector = rank / rank.sum()
 
-        data_with_missing = X.copy()
+        X_missing = X.copy()
         for xs in xs_indices:
             selected_rows = rng.choice(n, size=min(missing_per_col, n), replace=False, p=prob_vector)
-            data_with_missing[selected_rows, xs] = np.nan
-        return data_with_missing
+            X_missing[selected_rows, xs] = np.nan
+
+        return X_missing
+
 
 
 class MARType6:

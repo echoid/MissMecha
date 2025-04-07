@@ -6,6 +6,7 @@ from .generate.mnar import MNAR_TYPES
 import numpy as np
 import pandas as pd
 
+
 def format_output(data_with_nan, original_data):
     """
     Format output to ensure mask and DataFrame structure are preserved.
@@ -138,8 +139,8 @@ MECHANISM_LOOKUP = {
     "mar": MAR_TYPES,
     "mnar": MNAR_TYPES,
 }
-class MissMechaGeneratorMultiple:
-    def __init__(self, mechanism="MAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None):
+class MissMechaGenerator:
+    def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None):
         """
         Multiple-mechanism generator. Uses 'info' dictionary for column-wise specification.
 
@@ -168,6 +169,8 @@ class MissMechaGeneratorMultiple:
         self.col_names = None
         self.is_df = None
         self.index = None
+        self.mask = None          # Binary mask: 1 = observed, 0 = missing
+        self.bool_mask = None     # Boolean mask: True = observed, False = missing
 
         if not info:
             # fallback to default generator for entire dataset
@@ -190,6 +193,7 @@ class MissMechaGeneratorMultiple:
         return col_labels, col_idxs
 
     def fit(self, X, y=None):
+        self.label = y
         self.is_df = isinstance(X, pd.DataFrame)
         self.col_names = X.columns.tolist() if self.is_df else [f"col{i}" for i in range(X.shape[1])]
         self.index = X.index if self.is_df else np.arange(X.shape[0])
@@ -198,7 +202,7 @@ class MissMechaGeneratorMultiple:
         if self.info is None:
             generator = self.generator_class(missing_rate=self.missing_rate, seed=self.seed)
             X_np = X.to_numpy() if self.is_df else X
-            generator.fit(X_np, label=y)
+            generator.fit(X_np, y = self.label)
             self.generator_map["global"] = generator
         else:
             for key, settings in self.info.items():
@@ -208,11 +212,22 @@ class MissMechaGeneratorMultiple:
                 mechanism = settings["mechanism"].lower()
                 mech_type = settings["type"]
                 rate = settings["rate"]
+                depend_on = settings.get("depend_on", None)
+                para = settings.get("parameter", None)
                 label = settings.get("label", y)
 
-                generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
-                generator = generator_cls(missing_rate=rate, seed=self.seed)
 
+                init_kwargs = {k: v for k, v in {
+                        "missing_rate": rate,
+                        "seed": self.seed,
+                        "para": para,
+                        "depend_on": depend_on
+                    }.items() if v is not None}
+
+
+                generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
+                #generator = generator_cls(missing_rate=rate, seed=self.seed, para = para, depend_on = depend_on)
+                generator = generator_cls(**init_kwargs)
                 sub_X = X[list(col_labels)].to_numpy() if self.is_df else X[:, col_idxs]
                 generator.fit(sub_X, y=label)
                 self.generator_map[key] = generator
@@ -230,6 +245,12 @@ class MissMechaGeneratorMultiple:
         if self.info is None:
             generator = self.generator_map["global"]
             masked = generator.transform(data_array)
+
+            # 保存 mask（直接从 transformed 的数据中反推）
+            mask_array = ~np.isnan(masked)
+            self.mask = mask_array.astype(int)
+            self.bool_mask = mask_array
+
             return pd.DataFrame(masked, columns=self.col_names, index=self.index) if self.is_df else masked
         else:
             for key, generator in self.generator_map.items():
@@ -246,84 +267,99 @@ class MissMechaGeneratorMultiple:
                 else:
                     data_array[:, col_idxs] = masked
 
+            mask_array = ~np.isnan(data_array)
+            self.mask = mask_array.astype(int)
+            self.bool_mask = mask_array
+
+
             return data if self.is_df else data_array
-
-
-
-class MissMechaGenerator:
-    def __init__(self, mechanism="MAR", mechanism_type=1, missing_rate=0.2, seed=1, additional_params=None):
-        self.mechanism = mechanism.lower()
-        self.mechanism_type = int(mechanism_type)
-        self.missing_rate = missing_rate
-        self.seed = seed
-        self.additional_params = additional_params or {}
-        self._fitted = False
-        self.label = None
-        self.generator_fn = None
-
-        # Assign mechanism class/function
-        if self.mechanism == "mcar":
-            self.generator_class = MCAR_TYPES[self.mechanism_type]
-        elif self.mechanism == "mar":
-            self.generator_class = MAR_TYPES[self.mechanism_type]
-        elif self.mechanism == "mnar":
-            self.generator_class = MNAR_TYPES[self.mechanism_type]
-        else:
-            raise ValueError("Invalid mechanism type.")
         
 
+    def get_mask(self):
+        if self.mask is None:
+            raise RuntimeError("Mask not available. Please call `transform()` first.")
+        return self.mask
 
-    def fit(self, X, y=None):
-        self.label = y
-        self._fitted = True
+    def get_bool_mask(self):
+        if self.bool_mask is None:
+            raise RuntimeError("Boolean mask not available. Please call `transform()` first.")
+        return self.bool_mask
 
-        if self.mechanism == "mcar":
-            cls = MCAR_TYPES[self.mechanism_type]
-            self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-            self.generator_model.fit(X, y)
+
+
+# class MissMechaGenerator:
+#     def __init__(self, mechanism="MAR", mechanism_type=1, missing_rate=0.2, seed=1, additional_params=None):
+#         self.mechanism = mechanism.lower()
+#         self.mechanism_type = int(mechanism_type)
+#         self.missing_rate = missing_rate
+#         self.seed = seed
+#         self.additional_params = additional_params or {}
+#         self._fitted = False
+#         self.label = None
+#         self.generator_fn = None
+
+#         # Assign mechanism class/function
+#         if self.mechanism == "mcar":
+#             self.generator_class = MCAR_TYPES[self.mechanism_type]
+#         elif self.mechanism == "mar":
+#             self.generator_class = MAR_TYPES[self.mechanism_type]
+#         elif self.mechanism == "mnar":
+#             self.generator_class = MNAR_TYPES[self.mechanism_type]
+#         else:
+#             raise ValueError("Invalid mechanism type.")
+        
+
+#     def fit(self, X, y=None):
+#         self.label = y
+#         self._fitted = True
+
+#         if self.mechanism == "mcar":
+#             cls = MCAR_TYPES[self.mechanism_type]
+#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
+#             self.generator_model.fit(X, y)
             
-        elif self.mechanism == "mar":
-            cls = MAR_TYPES[self.mechanism_type]
-            self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-            self.generator_model.fit(X, y)
+#         elif self.mechanism == "mar":
+#             cls = MAR_TYPES[self.mechanism_type]
+#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
+#             self.generator_model.fit(X, y)
 
-        elif self.mechanism == "mnar":
-            cls = MNAR_TYPES[self.mechanism_type]
-            self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-            self.generator_model.fit(X, y)
+#         elif self.mechanism == "mnar":
+#             cls = MNAR_TYPES[self.mechanism_type]
+#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
+#             self.generator_model.fit(X, y)
 
-        else:
-            raise ValueError("Unsupported mechanism type")
-        return self
-
-
-    def transform(self, X):
-        if not self._fitted or self.generator_model is None:
-            raise RuntimeError("You must call .fit(X, y) before .transform(X)")
-
-        # 调用机制模型生成缺失数据
-
-        data_with_nan = self.generator_model.transform(X)
-
-        # 统一格式化输出
-        output = format_output(data_with_nan, X)
-
-        # 存储用于 get_mask()
-        self.data_with_nan = output["data"]
-        self.mask_bool = output["mask_bool"]
-        self.mask_int = output["mask_int"]
-
-        return output["data"]
-
-    def get_mask(self, format="bool"):
-        if format == "bool":
-            return self.mask_bool
-        elif format == "int":
-            return self.mask_int
-        else:
-            raise ValueError("format must be 'bool' or 'int'")
+#         else:
+#             raise ValueError("Unsupported mechanism type")
+#         return self
 
 
-    def fit_transform(self, X, y=None):
-        self.fit(X, y)
-        return self.transform(X)
+#     def transform(self, X):
+#         if not self._fitted or self.generator_model is None:
+#             raise RuntimeError("You must call .fit(X, y) before .transform(X)")
+
+#         # 调用机制模型生成缺失数据
+
+#         data_with_nan = self.generator_model.transform(X)
+
+#         # 统一格式化输出
+#         output = format_output(data_with_nan, X)
+
+#         # 存储用于 get_mask()
+#         self.data_with_nan = output["data"]
+#         self.mask_bool = output["mask_bool"]
+#         self.mask_int = output["mask_int"]
+
+#         return output["data"]
+
+#     def get_mask(self, format="bool"):
+#         if format == "bool":
+#             return self.mask_bool
+#         elif format == "int":
+#             return self.mask_int
+#         else:
+#             raise ValueError("format must be 'bool' or 'int'")
+
+
+#     def fit_transform(self, X, y=None):
+#         self.fit(X, y)
+#         return self.transform(X)
