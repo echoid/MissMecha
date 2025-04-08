@@ -5,6 +5,8 @@ from scipy.optimize import bisect
 from sklearn.feature_selection import mutual_info_classif
 from scipy.stats import pointbiserialr
 
+
+
 class MARType1:
     def __init__(self, missing_rate=0.1, seed=1, para=0.3, depend_on=None):
         self.missing_rate = missing_rate
@@ -12,6 +14,7 @@ class MARType1:
         self.p_obs = para  # ✅ 确保不是 None
         self.depend_on = depend_on
         self.fitted = False
+        
 
     def fit(self, X, y=None, xs = None):
         rng = np.random.default_rng(self.seed)
@@ -43,7 +46,6 @@ class MARType1:
             def f(x):
                 return np.mean(expit(self.logits[:, j] + x)) - self.missing_rate
             self.intercepts[j] = bisect(f, -1000, 1000)
-
         self.fitted = True
         return self
 
@@ -71,55 +73,59 @@ class MARType1:
         X_missing[mask] = np.nan
         return X_missing
 
-import numpy as np
+
+
 from sklearn.feature_selection import mutual_info_classif
+import numpy as np
 
 class MARType2:
-    def __init__(self,
-                 missing_rate = 0.1,
-                 seed = 1,
-                 depend_on = None):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.depend_on = depend_on
         self.fitted = False
 
-    def fit(self, X, y=None, xs=None):
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
+
+    def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
-        self.xs = xs if xs is not None else p - 1  # 默认最后一列为缺失列
 
-        # Select dependency columns
         if self.depend_on is not None:
-            self.depend_cols = self.depend_on
+            cols = self.depend_on
         else:
-            self.depend_cols = [i for i in range(p) if i != self.xs]
+            cols = list(range(p))
 
-        # Generate fake label for MI estimation
+        # Create fake label to estimate MI
         fake_label = (X @ rng.normal(size=(p,)) > 0).astype(int)
 
-        # MI between xs and each dependency column
-        mi = mutual_info_classif(X[:, self.depend_cols], fake_label, discrete_features='auto', random_state=self.seed)
-        self.mi_score = max(mi.mean(), 1e-6)  # just to avoid 0
+        self.mi = mutual_info_classif(X[:, cols], fake_label, discrete_features='auto', random_state=self.seed)
+        self.mi = np.clip(self.mi, a_min=1e-6, a_max=None)
 
         self.fitted = True
         return self
 
     def transform(self, X):
         if not self.fitted:
-            raise RuntimeError("Call .fit(..., xs=col) before .transform().")
+            raise RuntimeError("Call .fit() before .transform().")
 
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
-        n, _ = X.shape
-
+        n, p = X.shape
         X_missing = X.copy()
 
-        k = int(round(n * self.missing_rate))
-        rows = rng.choice(n, size=min(k, n), replace=False)
-        X_missing[rows, self.xs] = np.nan
+        total_missing = int(round(n * p * self.missing_rate))
+        missing_per_col = max(total_missing // p, 1)
+
+        for j in range(p):
+            k = min(missing_per_col, n)
+            rows = rng.choice(n, size=k, replace=False)
+            X_missing[rows, j] = np.nan
+
         return X_missing
+
 
 
 
@@ -313,111 +319,213 @@ class MARType5:
 
 
 
+import numpy as np
+
 class MARType6:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
-        self.xd = rng.integers(0, X.shape[1])
-        
+        X = X.astype(float)
+        n, p = X.shape
+
+        # 依赖列选择逻辑
+        if self.depend_on is not None:
+            candidates = self.depend_on
+        else:
+            candidates = list(range(p))
+
+        self.xd = rng.choice(candidates)
+        self._verbose(f"Selected column {self.xd} as dependency (xd).")
         self.fitted = True
         return self
 
     def transform(self, X):
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
+
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
+        X_missing = X.copy()
+
         xs_indices = [i for i in range(p) if i != self.xd]
-        total_missing = int(round(n * p * self.missing_rate))
+        total_missing = int(round(n * len(xs_indices) * self.missing_rate))
         missing_per_col = max(total_missing // len(xs_indices), 1)
 
-        self.xd_col = X[:, self.xd]
-        median_val = np.median(self.xd_col)
-        group_high = self.xd_col >= median_val
-        group_low = self.xd_col < median_val
-        pb = np.zeros(n)
-        pb[group_high] = 0.9 / group_high.sum()
-        pb[group_low] = 0.1 / group_low.sum()
+        xd_col = X[:, self.xd]
+        median_val = np.median(xd_col)
+        group_high = xd_col >= median_val
+        group_low = xd_col < median_val
 
-        data_with_missing = X.copy()
+        pb = np.zeros(n)
+        if group_high.sum() > 0:
+            pb[group_high] = 0.9 / group_high.sum()
+        if group_low.sum() > 0:
+            pb[group_low] = 0.1 / group_low.sum()
+
         for xs in xs_indices:
             selected_rows = rng.choice(n, size=min(missing_per_col, n), replace=False, p=pb)
-            data_with_missing[selected_rows, xs] = np.nan
-        return data_with_missing
+            X_missing[selected_rows, xs] = np.nan
 
+        return X_missing
+
+
+
+import numpy as np
 
 class MARType7:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
-        self.xd = rng.integers(0, X.shape[1])
+        X = X.astype(float)
+        n, p = X.shape
+
+        if self.depend_on is not None:
+            candidates = self.depend_on
+        else:
+            candidates = list(range(p))
+
+        self.xd = rng.choice(candidates)
+        self._verbose(f"Selected column {self.xd} as dependency (xd).")
         self.fitted = True
         return self
 
     def transform(self, X):
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
+
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
+        X_missing = X.copy()
+
         xs_indices = [i for i in range(p) if i != self.xd]
-        total_missing = int(round(n * p * self.missing_rate))
+        total_missing = int(round(n * len(xs_indices) * self.missing_rate))
         missing_per_col = max(total_missing // len(xs_indices), 1)
 
         xd_col = X[:, self.xd]
         top_indices = np.argsort(xd_col)[-missing_per_col:]
 
-        data_with_missing = X.copy()
         for xs in xs_indices:
-            data_with_missing[top_indices, xs] = np.nan
-        return data_with_missing
+            X_missing[top_indices, xs] = np.nan
 
+        return X_missing
+
+
+
+# class MARType8:
+#     def __init__(self, missing_rate=0.1, seed=1):
+#         self.missing_rate = missing_rate
+#         self.seed = seed
+#         self.fitted = False
+
+#     def fit(self, X, y=None):
+#         rng = np.random.default_rng(self.seed)
+#         self.xd = rng.integers(0, X.shape[1])
+#         self._verbose(f"Selected column {self.xd} as dependency (xd).")
+#         self.fitted = True
+#         return self
+
+#     def transform(self, X):
+#         if not self.fitted:
+#             raise RuntimeError("Call .fit() before .transform().")
+#         rng = np.random.default_rng(self.seed)
+#         X = X.astype(float)
+#         n, p = X.shape
+#         xs_indices = [i for i in range(p) if i != self.xd]
+#         total_missing = int(round(n * p * self.missing_rate))
+#         missing_per_col = max(total_missing // len(xs_indices), 1)
+
+#         xd_col = X[:, self.xd]
+#         sorted_indices = np.argsort(xd_col)
+#         if missing_per_col % 2 == 0:
+#             low_indices = sorted_indices[:missing_per_col // 2]
+#             high_indices = sorted_indices[-missing_per_col // 2:]
+#         else:
+#             low_indices = sorted_indices[:missing_per_col // 2 + 1]
+#             high_indices = sorted_indices[-missing_per_col // 2:]
+#         selected_indices = np.concatenate([low_indices, high_indices])
+
+#         data_with_missing = X.copy()
+#         for xs in xs_indices:
+#             data_with_missing[selected_indices, xs] = np.nan
+#         return data_with_missing
+    
+
+#     def _verbose(self, msg):
+#         print(f"[{self.__class__.__name__}] {msg}")
+import numpy as np
 
 class MARType8:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
+        self.depend_on = depend_on
         self.fitted = False
+
+    def _verbose(self, msg):
+        print(f"[{self.__class__.__name__}] {msg}")
 
     def fit(self, X, y=None):
         rng = np.random.default_rng(self.seed)
-        self.xd = rng.integers(0, X.shape[1])
+        X = X.astype(float)
+        n, p = X.shape
+
+        if self.depend_on is not None:
+            candidates = self.depend_on
+        else:
+            candidates = list(range(p))
+
+        self.xd = rng.choice(candidates)
+        self._verbose(f"Selected column {self.xd} as dependency (xd).")
         self.fitted = True
         return self
 
     def transform(self, X):
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
+
         rng = np.random.default_rng(self.seed)
         X = X.astype(float)
         n, p = X.shape
+        X_missing = X.copy()
+
         xs_indices = [i for i in range(p) if i != self.xd]
-        total_missing = int(round(n * p * self.missing_rate))
+        total_missing = int(round(n * len(xs_indices) * self.missing_rate))
         missing_per_col = max(total_missing // len(xs_indices), 1)
 
         xd_col = X[:, self.xd]
         sorted_indices = np.argsort(xd_col)
+
         if missing_per_col % 2 == 0:
             low_indices = sorted_indices[:missing_per_col // 2]
             high_indices = sorted_indices[-missing_per_col // 2:]
         else:
             low_indices = sorted_indices[:missing_per_col // 2 + 1]
             high_indices = sorted_indices[-missing_per_col // 2:]
+
         selected_indices = np.concatenate([low_indices, high_indices])
 
-        data_with_missing = X.copy()
         for xs in xs_indices:
-            data_with_missing[selected_indices, xs] = np.nan
-        return data_with_missing
+            X_missing[selected_indices, xs] = np.nan
+
+        return X_missing
 
 MAR_TYPES = {
     1: MARType1,
@@ -428,5 +536,4 @@ MAR_TYPES = {
     6: MARType6,
     7: MARType7,
     8: MARType8
-
 }

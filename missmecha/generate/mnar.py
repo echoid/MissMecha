@@ -34,12 +34,14 @@ def fit_intercepts_numpy(X, coeffs, p, self_mask=False):
     return intercepts
 
 class MNARType1:
-    def __init__(self, missing_rate=0.1, seed=1, up_percentile=0.5, obs_percentile=0.5):
+    def __init__(self, missing_rate=0.1, seed=1, up_percentile=0.5, obs_percentile=0.5, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.up_percentile = up_percentile
         self.obs_percentile = obs_percentile
         self.fitted = False
+
+        print("self.up_percentile",self.up_percentile)
 
     def fit(self, X, y=None):
         self.fitted = True
@@ -54,8 +56,8 @@ class MNARType1:
 
         data = scale_data(X)
         n_rows, n_cols = data.shape
-        n_miss_cols = int(n_cols * self.missing_rate)
-        self.miss_cols = rng.choice(n_cols, size=n_miss_cols, replace=False)
+        #n_miss_cols = int(n_cols * self.missing_rate)
+        self.miss_cols = rng.choice(n_cols, size=n_cols, replace=False)
 
         # Store thresholds for each missing column
         self.thresholds_miss = {}
@@ -106,9 +108,9 @@ from scipy.special import expit
 from scipy.optimize import bisect
 
 class MNARType2:
-    def __init__(self, missing_rate=0.1, p_params=0.3, exclude_inputs=True, seed=1):
+    def __init__(self, missing_rate=0.1, para=0.3, exclude_inputs=True, seed=1, depend_on = None):
         self.missing_rate = missing_rate
-        self.p_params = p_params
+        self.p_params = para
         self.exclude_inputs = exclude_inputs
         self.seed = seed
         self.fitted = False
@@ -148,7 +150,7 @@ class MNARType2:
         X_missing[mask] = np.nan
         return X_missing
 class MNARType3:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.fitted = False
@@ -169,10 +171,10 @@ class MNARType3:
         return X_missing
     
 class MNARType4:
-    def __init__(self, missing_rate=0.1, q=0.25, p_params=0.5, cut="both", seed=1):
+    def __init__(self, missing_rate=0.1, q=0.25, p=0.5, cut="both", seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.q = q
-        self.p_params = p_params
+        self.p_params = p
         self.cut = cut
         self.seed = seed
         self.fitted = False
@@ -226,7 +228,7 @@ from scipy.special import expit as sigmoid
 from scipy import optimize
 
 class MNARType5:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.fitted = False
@@ -278,7 +280,7 @@ class MNARType5:
 
 
 class MNARType6:
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.fitted = False

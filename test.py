@@ -50,10 +50,11 @@ test_cases = [
         "name": "MAR",
         "info": {
             range(10): {
-                "mechanism": "MAR",
-                "type": 5,
+                "mechanism": "MNAR",
+                "type": 3,
                 "rate": 0.3,
-                "depend_on": [0, 1, 2],
+                "depend_on": [2],
+                "para":{"para":0.9}
             }
         }
     }
@@ -66,9 +67,12 @@ for case in test_cases:
     print(f"\n=== Testing {case['name']} ===")
 
     generator = MissMechaGenerator(info=case["info"], seed=42)
+    #generator = MissMechaGenerator(mechanism = "mar", mechanism_type=2, missing_rate=0.2, seed=42)
     generator.fit(X, y=y)  # always pass y, fallback handled inside
     #generator.fit(X)  # always pass y, fallback handled inside
     X_train_missing = generator.transform(X_train)
+
+    print(generator.get_mask())
 
     print("\n[Missing Rate Summary]")
     print(compute_missing_rate(X_train_missing))

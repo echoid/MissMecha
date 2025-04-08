@@ -11,6 +11,52 @@ import warnings
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 warnings.filterwarnings("ignore", message="Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.")
 
+INIT_ARG_HINTS = {
+    "MNARType1": "Expected parameter fields: 'up_percentile', 'obs_percentile'.",
+    "MNARType2": "Expected parameter fields: 'para', 'exclude_inputs'.",
+    "MNARType4": "Expected parameter fields: 'q', 'p', 'cut'.",
+    "MARType1": "Expected parameter fields: 'para'.",
+    "MARType2": "No additional parameters required.",
+    "MARType3": "No additional parameters required.",
+    "MARType4": "No additional parameters required.",
+    "MARType5": "No additional parameters required.",
+    "MARType6": "No additional parameters required.",
+    "MARType7": "No additional parameters required.",
+    "MARType8": "No additional parameters required.",
+
+    "MNARType3": "No additional parameters required.",
+    "MNARType5": "No additional parameters required.",
+    "MNARType6": "No additional parameters required.",
+
+}
+import inspect
+import warnings
+
+def safe_init(cls, kwargs):
+    # 获取 __init__ 支持的参数名
+    sig = inspect.signature(cls.__init__)
+    accepted_args = set(sig.parameters.keys()) - {"self"}
+
+    # 检查多余的参数
+    extra_keys = [k for k in kwargs if k not in accepted_args]
+    if extra_keys:
+        warnings.warn(
+            f"[{cls.__name__}] received unrecognized parameter(s): {extra_keys}. "
+            f"They will be ignored.",
+            UserWarning
+        )
+
+    # 正常初始化（多余的 key 会在下一步抛错）
+    try:
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k in accepted_args}
+        return cls(**filtered_kwargs)
+    except TypeError as e:
+        raise TypeError(
+            f"[{cls.__name__}] failed to initialize with parameters: {list(kwargs.keys())}\n"
+            f"Original error: {e}\n"
+            f"Hint: Please check the 'parameter' field and match expected init arguments."
+        )
+
 
 def verify_missing_rate(rate, var_name="missing_rate"):
     """

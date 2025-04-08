@@ -5,7 +5,7 @@ from .generate.mar import MAR_TYPES
 from .generate.mnar import MNAR_TYPES
 import numpy as np
 import pandas as pd
-
+from .util import safe_init
 
 def format_output(data_with_nan, original_data):
     """
@@ -132,6 +132,8 @@ def generate_missing(data, missing_type="mcar", type=1, missing_rate=0.1, info=N
         "mask_bool": mask_bool_result,
     }
 
+
+
 import numpy as np
 import pandas as pd
 MECHANISM_LOOKUP = {
@@ -162,6 +164,7 @@ class MissMechaGenerator:
         self.missing_rate = missing_rate
         self.seed = seed
         self.info = info
+        #self.info = self._expand_info(info) if info is not None else None
         self._fitted = False
         self.label = None
         self.generator_map = {}
@@ -200,11 +203,13 @@ class MissMechaGenerator:
         self.generator_map = {}
 
         if self.info is None:
+            print("Global Missing")
             generator = self.generator_class(missing_rate=self.missing_rate, seed=self.seed)
             X_np = X.to_numpy() if self.is_df else X
             generator.fit(X_np, y = self.label)
             self.generator_map["global"] = generator
         else:
+            print("Column Missing")
             for key, settings in self.info.items():
                 cols = (key,) if isinstance(key, (str, int)) else key
                 col_labels, col_idxs = self._resolve_columns(cols)
@@ -213,21 +218,30 @@ class MissMechaGenerator:
                 mech_type = settings["type"]
                 rate = settings["rate"]
                 depend_on = settings.get("depend_on", None)
-                para = settings.get("parameter", None)
+                #para = settings.get("parameter", None)
+                para = settings.get("para", {})
+                if not isinstance(para, dict):
+                    para = {"value": para}
+
+                col_seed = self.seed + hash(str(key)) % 10000 if self.seed is not None else None
+
+                init_kwargs = {
+                    "missing_rate": rate,
+                    "seed": col_seed,
+                    "depend_on": depend_on,
+                    **para  # ✅ 展开所有机制特定参数
+                }
+
                 label = settings.get("label", y)
 
 
-                init_kwargs = {k: v for k, v in {
-                        "missing_rate": rate,
-                        "seed": self.seed,
-                        "para": para,
-                        "depend_on": depend_on
-                    }.items() if v is not None}
+                init_kwargs = {k: v for k, v in init_kwargs.items() if v is not None}
+
 
 
                 generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
                 #generator = generator_cls(missing_rate=rate, seed=self.seed, para = para, depend_on = depend_on)
-                generator = generator_cls(**init_kwargs)
+                generator = safe_init(generator_cls, init_kwargs)
                 sub_X = X[list(col_labels)].to_numpy() if self.is_df else X[:, col_idxs]
                 generator.fit(sub_X, y=label)
                 self.generator_map[key] = generator
@@ -274,6 +288,16 @@ class MissMechaGenerator:
 
             return data if self.is_df else data_array
         
+    def _expand_info(self, info):
+        new_info = {}
+        for key, settings in info.items():
+            if isinstance(key, (list, tuple, range)):
+                for col in key:
+                    new_info[col] = settings.copy()  # 每列一个 copy，避免共享引用
+            else:
+                new_info[key] = settings
+        return new_info
+        
 
     def get_mask(self):
         if self.mask is None:
@@ -284,6 +308,7 @@ class MissMechaGenerator:
         if self.bool_mask is None:
             raise RuntimeError("Boolean mask not available. Please call `transform()` first.")
         return self.bool_mask
+
 
 
 
