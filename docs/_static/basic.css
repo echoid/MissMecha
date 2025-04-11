@@ -237,9 +237,9 @@ a.headerlink {
     visibility: hidden;
 }
 
-a:visited {
+/* a:visited {
     color: #551A8B;
-}
+} */
 
 h1:hover > a.headerlink,
 h2:hover > a.headerlink,
