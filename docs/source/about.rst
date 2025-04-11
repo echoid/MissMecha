@@ -1,36 +1,23 @@
-About us
+About Us
 ========
 
-Python package ``pyampute`` is developed by Rianne Schouten, Davina Zamanzadeh and Prabhant Singh.
+``MissMecha`` is developed by Youran Zhou as part of her PhD research at Deakin University, Australia.
 
-Rianne Schouten
----------------
+Youran Zhou 
+------------------
 
-Rianne is a PhD student in the Data Mining Group at Eindhoven University of Technology, the Netherlands. Her research focuses on local pattern mining (Exceptional Model Mining), under supervision of `dr. Wouter Duivesteijn`_ and `prof. Mykola Pechenizkiy`_. 
+Youran is a PhD candidate in the School of Information Technology at **Deakin University**, with a research focus on **generative models**, **incomplete data**, and **machine learning**.
 
-She developed a `multivariate amputation procedure`_ while working at the Department of Methodology and Statistics at Utrecht University, the Netherlands, under supervision of `dr. Gerko Vink`_ and `prof. Stef van Buuren`_. Rianne is the developer of R-function `ampute`_ in the famous multiple imputation package `mice`_.
+She holds a BSc and MSc in **Data Science** from the **University of Melbourne**, where her studies combined **Statistics** and **Computer Science**. Her academic background allows her to bridge **statistical rigor** and **computational efficiency** in practical algorithm design.
 
-Plans for the future include the further development of the two amputation packages, extension of the amputation procedure to time-dependent data (such as longitudinal data) and research on proper evaluation methods for missing data methods in prediction models. 
+MissMecha was born out of her frustration with the lack of flexible tools for simulating and evaluating structured missing data. The package now supports:
+- MCAR, MAR, MNAR mechanism simulation
+- Multiple subtypes per mechanism
+- Column-wise & global configuration
+- Imputation evaluation modules
 
-Rianne's contact details can be found `on her website`_. Questions and comments about ``pyampute`` may also be directed to `r.m.schouten@tue.nl`_.
+Echo is passionate about **open-source tools**, **education**, and **supporting diversity in STEM**. She has 6+ years of experience in data science and AI and has worked as a tutor for over 5 years.
 
-.. _`dr. Wouter Duivesteijn`: http://wwwis.win.tue.nl/~wouter/
-.. _`prof. Mykola Pechenizkiy`: https://www.win.tue.nl/~mpechen/
-.. _`multivariate amputation procedure`: https://www.tandfonline.com/doi/full/10.1080/00949655.2018.1491577
-.. _`dr. Gerko Vink`: https://www.gerkovink.com/
-.. _`prof. Stef van Buuren`: https://scholar.google.nl/citations?user=_3y5C0UAAAAJ&hl=nl
-.. _`ampute`: https://rianneschouten.github.io/mice_ampute/vignette/ampute.html
-.. _`mice`: https://github.com/amices/mice
-.. _`on her website`: https://rianneschouten.github.io/
-.. _`r.m.schouten@tue.nl`: r.m.schouten@tue.nl
+💌 Feel free to connect with her on GitHub: https://github.com/echoid  
+📄 Publications, demo video, and more about MissMecha will be linked soon.
 
-Davina Zamanzadeh
------------------
-
-Davina is a PhD student in the Computer Science Department at UCLA (University of California, Los Angeles).
-She conducts research in machine learning with clinical applications under Dr. Alex Bui (`MII Lab <https://mii.ucla.edu/>`_) and Dr. Majid Sarrafzadeh (`eR Lab <https://er.cs.ucla.edu/>`_). Read more about her `on her personal website <https://davinaz.me/>`_.
-
-Prabhant Singh
---------------
-
-Prabhant is an AI engineer at Eindhoven University of Technology, the Netherlands. He contributes to the OpenML project. His research is in the area of AutoML and meta-learning.

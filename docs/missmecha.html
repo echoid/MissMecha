@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>missmecha package &#8212; MissMecha</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=8beceb6a" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script src="_static/documentation_options.js?v=f539c95a"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">MissMecha</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="usage.html">
+  Usage
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="modules.html">
+  Modules
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="about.html">
+  About Us
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="contribution.html">
+  Contribution Guidelines
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/echoid/MissMecha" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/missmecha-py/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#subpackages">
+   Subpackages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#submodules">
+   Submodules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha.analysis">
+   missmecha.analysis module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MCARTest
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.little_mcar_test">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MCARTest.little_mcar_test()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.mcar_t_tests">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MCARTest.mcar_t_tests()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.analysis.compute_missing_rate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       compute_missing_rate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.analysis.evaluate_imputation">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       evaluate_imputation()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.analysis.report_mcar_test">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       report_mcar_test()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha.generator">
+   missmecha.generator module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MissMechaGenerator
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_bool_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_bool_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha.impute">
+   missmecha.impute module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       SimpleSmartImputer
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         SimpleSmartImputer.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit_transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         SimpleSmartImputer.fit_transform()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         SimpleSmartImputer.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha.util">
+   missmecha.util module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.util.apply_missing_rate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       apply_missing_rate()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.util.safe_init">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       safe_init()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.util.type_convert">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       type_convert()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.util.verify_missing_rate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       verify_missing_rate()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha.visual">
+   missmecha.visual module
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_heatmap">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       plot_missing_heatmap()
+      </span>
+     </code>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_matrix">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       plot_missing_matrix()
+      </span>
+     </code>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-missmecha">
+   Module contents
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.MissMechaGenerator">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MissMechaGenerator
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.MissMechaGenerator.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.MissMechaGenerator.get_bool_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_bool_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.MissMechaGenerator.get_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.MissMechaGenerator.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="missmecha-package">
+<h1>missmecha package<a class="headerlink" href="#missmecha-package" title="Link to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="missmecha.generate.html">missmecha.generate package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#module-missmecha.generate.mar">missmecha.generate.mar module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType1"><code class="docutils literal notranslate"><span class="pre">MARType1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType1.fit"><code class="docutils literal notranslate"><span class="pre">MARType1.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType1.transform"><code class="docutils literal notranslate"><span class="pre">MARType1.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType2"><code class="docutils literal notranslate"><span class="pre">MARType2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType2.fit"><code class="docutils literal notranslate"><span class="pre">MARType2.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType2.transform"><code class="docutils literal notranslate"><span class="pre">MARType2.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType3"><code class="docutils literal notranslate"><span class="pre">MARType3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType3.fit"><code class="docutils literal notranslate"><span class="pre">MARType3.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType3.transform"><code class="docutils literal notranslate"><span class="pre">MARType3.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType4"><code class="docutils literal notranslate"><span class="pre">MARType4</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType4.fit"><code class="docutils literal notranslate"><span class="pre">MARType4.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType4.transform"><code class="docutils literal notranslate"><span class="pre">MARType4.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType5"><code class="docutils literal notranslate"><span class="pre">MARType5</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType5.fit"><code class="docutils literal notranslate"><span class="pre">MARType5.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType5.transform"><code class="docutils literal notranslate"><span class="pre">MARType5.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType6"><code class="docutils literal notranslate"><span class="pre">MARType6</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType6.fit"><code class="docutils literal notranslate"><span class="pre">MARType6.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType6.transform"><code class="docutils literal notranslate"><span class="pre">MARType6.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType7"><code class="docutils literal notranslate"><span class="pre">MARType7</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType7.fit"><code class="docutils literal notranslate"><span class="pre">MARType7.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType7.transform"><code class="docutils literal notranslate"><span class="pre">MARType7.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType8"><code class="docutils literal notranslate"><span class="pre">MARType8</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType8.fit"><code class="docutils literal notranslate"><span class="pre">MARType8.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mar.MARType8.transform"><code class="docutils literal notranslate"><span class="pre">MARType8.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#module-missmecha.generate.marcat">missmecha.generate.marcat module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.marcat.MARCatType1"><code class="docutils literal notranslate"><span class="pre">MARCatType1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.marcat.MARCatType1.fit"><code class="docutils literal notranslate"><span class="pre">MARCatType1.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.marcat.MARCatType1.transform"><code class="docutils literal notranslate"><span class="pre">MARCatType1.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#module-missmecha.generate.mcar">missmecha.generate.mcar module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType1"><code class="docutils literal notranslate"><span class="pre">MCARType1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType1.fit"><code class="docutils literal notranslate"><span class="pre">MCARType1.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType1.transform"><code class="docutils literal notranslate"><span class="pre">MCARType1.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType2"><code class="docutils literal notranslate"><span class="pre">MCARType2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType2.fit"><code class="docutils literal notranslate"><span class="pre">MCARType2.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType2.transform"><code class="docutils literal notranslate"><span class="pre">MCARType2.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType3"><code class="docutils literal notranslate"><span class="pre">MCARType3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType3.fit"><code class="docutils literal notranslate"><span class="pre">MCARType3.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mcar.MCARType3.transform"><code class="docutils literal notranslate"><span class="pre">MCARType3.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#module-missmecha.generate.mnar">missmecha.generate.mnar module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType1"><code class="docutils literal notranslate"><span class="pre">MNARType1</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType1.fit"><code class="docutils literal notranslate"><span class="pre">MNARType1.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType1.transform"><code class="docutils literal notranslate"><span class="pre">MNARType1.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType2"><code class="docutils literal notranslate"><span class="pre">MNARType2</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType2.fit"><code class="docutils literal notranslate"><span class="pre">MNARType2.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType2.transform"><code class="docutils literal notranslate"><span class="pre">MNARType2.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType3"><code class="docutils literal notranslate"><span class="pre">MNARType3</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType3.fit"><code class="docutils literal notranslate"><span class="pre">MNARType3.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType3.transform"><code class="docutils literal notranslate"><span class="pre">MNARType3.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType4"><code class="docutils literal notranslate"><span class="pre">MNARType4</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType4.fit"><code class="docutils literal notranslate"><span class="pre">MNARType4.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType4.transform"><code class="docutils literal notranslate"><span class="pre">MNARType4.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType5"><code class="docutils literal notranslate"><span class="pre">MNARType5</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType5.fit"><code class="docutils literal notranslate"><span class="pre">MNARType5.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType5.transform"><code class="docutils literal notranslate"><span class="pre">MNARType5.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType6"><code class="docutils literal notranslate"><span class="pre">MNARType6</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType6.fit"><code class="docutils literal notranslate"><span class="pre">MNARType6.fit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="missmecha.generate.html#missmecha.generate.mnar.MNARType6.transform"><code class="docutils literal notranslate"><span class="pre">MNARType6.transform()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="missmecha.generate.html#module-missmecha.generate">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-missmecha.analysis">
+<span id="missmecha-analysis-module"></span><h2>missmecha.analysis module<a class="headerlink" href="#module-missmecha.analysis" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.analysis.MCARTest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">MCARTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'little'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/analysis.html#MCARTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.analysis.MCARTest.little_mcar_test">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">little_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/missmecha/analysis.html#MCARTest.little_mcar_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest.little_mcar_test" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.analysis.MCARTest.mcar_t_tests">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mcar_t_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/missmecha/analysis.html#MCARTest.mcar_t_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest.mcar_t_tests" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.analysis.compute_missing_rate">
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">compute_missing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_summary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/analysis.html#compute_missing_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.compute_missing_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Compute and present detailed missingness statistics for each column,
+along with overall missing rate. Supports both DataFrame and ndarray.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – Input dataset.</p></li>
+<li><p><strong>print_summary</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to print overall missingness summary.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to show a barplot of missing rate per column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>result</strong> –</p>
+<dl class="simple">
+<dt>{</dt><dd><p>“report”: pd.DataFrame of column-wise missing info,
+“overall_missing_rate”: float (total % of missing cells)</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.analysis.evaluate_imputation">
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">evaluate_imputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/analysis.html#evaluate_imputation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.evaluate_imputation" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate imputation performance by comparing filled values to ground truth at missing positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ground_truth</strong> (<em>pd.DataFrame</em>) – Fully observed reference dataset.</p></li>
+<li><p><strong>filled_df</strong> (<em>pd.DataFrame</em>) – The dataset after imputation.</p></li>
+<li><p><strong>incomplete_df</strong> (<em>pd.DataFrame</em>) – Dataset with original missing values (to locate evaluation positions).</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – ‘rmse’, ‘mae’, or ‘avgerr’ — determines how numerical columns are evaluated.</p></li>
+<li><p><strong>status</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary mapping column names to variable types:
+‘num’ for numerical, ‘cat’ or ‘disc’ for categorical.
+If not provided, all variables are treated as numerical.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>result</strong> –</p>
+<dl class="simple">
+<dt>{</dt><dd><p>“column_scores”: {col_name: score, …},
+“overall_score”: average_score</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.analysis.report_mcar_test">
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">report_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&quot;Little's</span> <span class="pre">MCAR</span> <span class="pre">Test&quot;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/analysis.html#report_mcar_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.report_mcar_test" title="Link to this definition">¶</a></dt>
+<dd><p>Generate a formal report of the MCAR hypothesis test results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pvalue</strong> (<em>float</em>) – The p-value obtained from the MCAR test.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>default=0.05</em>) – Significance level for hypothesis testing.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>default=&quot;Little's MCAR Test&quot;</em>) – The name of the test used to assess MCAR.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-missmecha.generator">
+<span id="missmecha-generator-module"></span><h2>missmecha.generator module<a class="headerlink" href="#module-missmecha.generator" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.fit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.get_bool_mask">
+<span class="sig-name descname"><span class="pre">get_bool_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.get_bool_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.get_bool_mask" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.get_mask">
+<span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.get_mask" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.transform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-missmecha.impute">
+<span id="missmecha-impute-module"></span><h2>missmecha.impute module<a class="headerlink" href="#module-missmecha.impute" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.impute.</span></span><span class="sig-name descname"><span class="pre">SimpleSmartImputer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categorical_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/impute.html#SimpleSmartImputer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/impute.html#SimpleSmartImputer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.fit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/impute.html#SimpleSmartImputer.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.fit_transform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/impute.html#SimpleSmartImputer.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.transform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-missmecha.util">
+<span id="missmecha-util-module"></span><h2>missmecha.util module<a class="headerlink" href="#module-missmecha.util" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.util.apply_missing_rate">
+<span class="sig-prename descclassname"><span class="pre">missmecha.util.</span></span><span class="sig-name descname"><span class="pre">apply_missing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/util.html#apply_missing_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.util.apply_missing_rate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.util.safe_init">
+<span class="sig-prename descclassname"><span class="pre">missmecha.util.</span></span><span class="sig-name descname"><span class="pre">safe_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/util.html#safe_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.util.safe_init" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.util.type_convert">
+<span class="sig-prename descclassname"><span class="pre">missmecha.util.</span></span><span class="sig-name descname"><span class="pre">type_convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/util.html#type_convert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.util.type_convert" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.util.verify_missing_rate">
+<span class="sig-prename descclassname"><span class="pre">missmecha.util.</span></span><span class="sig-name descname"><span class="pre">verify_missing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'missing_rate'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/util.html#verify_missing_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.util.verify_missing_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Verify that the missing rate is between 0 and 1 (inclusive).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rate</strong> (<em>float</em>) – The missing rate to check.</p></li>
+<li><p><strong>var_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Variable name to show in the error message.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the rate is not in the range [0, 1].</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-missmecha.visual">
+<span id="missmecha-visual-module"></span><h2>missmecha.visual module<a class="headerlink" href="#module-missmecha.visual" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.visual.plot_missing_heatmap">
+<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(20,</span> <span class="pre">12)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pearson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/visual.html#plot_missing_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_heatmap" title="Link to this definition">¶</a></dt>
+<dd><p>Visualizes nullity correlation in the DataFrame using a heatmap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – Input data to analyze missing patterns.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em>) – Figure size.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em>) – Font size for axis labels and annotations.</p></li>
+<li><p><strong>label_rotation</strong> (<em>int</em>) – Rotation angle for x-axis labels.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) – Colormap used for the heatmap.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ax</strong> – The Axes object for the heatmap.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes.Axes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.visual.plot_missing_matrix">
+<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/visual.html#plot_missing_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Visualizes missing data in a DataFrame as a heatmap.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>df<span class="classifier">pd.DataFrame</span></dt><dd><p>Input DataFrame to visualize.</p>
+</dd>
+<dt>figsize<span class="classifier">tuple</span></dt><dd><p>Size of the output figure.</p>
+</dd>
+<dt>cmap<span class="classifier">str</span></dt><dd><p>Colormap to use when <cite>color=True</cite>.</p>
+</dd>
+<dt>color<span class="classifier">bool</span></dt><dd><p>Whether to use colormap or a fixed color for present values.</p>
+</dd>
+<dt>fontsize<span class="classifier">int</span></dt><dd><p>Font size for labels.</p>
+</dd>
+<dt>label_rotation<span class="classifier">int</span></dt><dd><p>Rotation angle for x-axis labels.</p>
+</dd>
+<dt>show_colorbar<span class="classifier">bool</span></dt><dd><p>Whether to display a colorbar for colormap mode.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h3>
+<dl class="simple">
+<dt>ax<span class="classifier">matplotlib.axes.Axes</span></dt><dd><p>Main plot axis object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+<section id="module-missmecha">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-missmecha" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.MissMechaGenerator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.MissMechaGenerator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.MissMechaGenerator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.MissMechaGenerator.fit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.MissMechaGenerator.get_bool_mask">
+<span class="sig-name descname"><span class="pre">get_bool_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.get_bool_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.MissMechaGenerator.get_bool_mask" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.MissMechaGenerator.get_mask">
+<span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.MissMechaGenerator.get_mask" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.MissMechaGenerator.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/missmecha/generator.html#MissMechaGenerator.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.MissMechaGenerator.transform" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2025, Youran Zhou.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

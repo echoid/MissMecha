@@ -1,42 +1,97 @@
-.. pyampute documentation master file, created by
-   sphinx-quickstart on Mon Nov 29 12:02:58 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to ``MissMecha``’s Documentation
+====================================
 
-Welcome to ``MissMecha``'s documentation!
-========================================
+``MissMecha`` is a Python package for simulating and evaluating missing data mechanisms.  
+It provides structured tools for generating missingness, visualizing patterns, and evaluating imputation methods.  
+The package is designed for researchers, educators, and developers working with incomplete data.
 
-With ``pyampute``, we provide :class:`~pyampute.ampute.MultivariateAmputation`: a transformer for generating missing values in complete datasets. This is useful for evaluating the effect of missing values on the outcome of your model Additionally, we provide functionality for inspecting incomplete datasets: :class:`~pyampute.exploration.md_patterns.mdPatterns` and :class:`~pyampute.exploration.mcar_statistical_tests.MCARTest`. 
+
 
 .. toctree::
    :maxdepth: 1
+   :caption: Getting Started
 
    installation
-   pyampute
+   usage
+
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Core Content
+
+   modules
    examples
-   blogposts
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Theory
+
+   missingness
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Project Information
+
    about
    contribution
 
 
 
-MissMecha
-=========
 
-A Python package for simulating and evaluating missing data mechanisms.
+.. raw:: html
 
-Contents
---------
-
-.. toctree::
-   :maxdepth: 2
-
-   modules
+   <hr style="border-top: 1px solid #ddd; margin: 2em 0 2em 0;">
 
 
-Indices and tables
-==================
+**Project Resources**
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
+.. grid:: 1 2 2 2
+   :gutter: 4
+   :padding: 2 2 0 0
+   :class-container: sd-text-center
+
+   .. grid-item-card:: GitHub Repository
+      :img-top: _static/index_getting_started.svg
+      :class-card: intro-card
+      :shadow: md
+
+      .. raw:: html
+
+         <i class="fab fa-github fa-2x" style="color:#333;"></i>
+
+      View the source code of ``MissMecha``.
+
+      +++
+
+      .. button-link:: https://github.com/echoid/MissMecha
+         :color: secondary
+         :outline:
+         :expand:
+
+         Visit GitHub
+
+   .. grid-item-card:: PyPI Package
+      :img-top: _static/index_user_guide.svg
+      :class-card: intro-card
+      :shadow: md
+
+      .. raw:: html
+
+         <i class="fas fa-box fa-2x" style="color:#6c757d;"></i>
+
+      Install ``MissMecha`` from PyPI with pip.
+
+      +++
+
+      .. button-link:: https://pypi.org/project/missmecha-py/
+         :color: secondary
+         :outline:
+         :expand:
+
+         Visit PyPI
+
+
+
+
+

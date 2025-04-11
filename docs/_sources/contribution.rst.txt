@@ -1,60 +1,63 @@
-Contribution guidelines
+Contribution Guidelines
 =======================
 
-Here we describe the workflow for contributing to the ``pyampute`` package.
+We warmly welcome contributions to the ``MissMecha`` project!  
+Whether it's a bug fix, a new feature, improved documentation, or even a thoughtful suggestion — every contribution helps improve the package.
 
+This guide describes the recommended workflow when contributing to MissMecha.
 
-Reporting bugs
+Reporting Bugs
 ##############
 
-We use `GitHub issues`_ to track all bugs and feature requests; feel free to open an issue if you have found a bug or wish to see a feature implemented.
+We use `GitHub issues`_ to track bugs, feature requests, and discussion threads.
 
-It is recommended to check that your issue complies with the following rules before submitting:
+If you'd like to report a bug or propose an enhancement, please:
 
-1. Verify that your issue is currently not being addressed by other issues or pull requests.
+1. Check if a similar issue or pull request already exists.
+2. Include clear steps to reproduce the issue (if applicable).
+3. Format code snippets using double colons (``::``) and indentation.
+4. Share your environment details (e.g., OS, Python version, MissMecha version, numpy, scikit-learn).
 
-2. Please ensure all code snippets and error messages are formatted in appropriate code blocks.
+.. _GitHub issues: https://github.com/echoid/MissMecha/issues
 
-3. Please include your operating system type and version number, as well as your Python, pyampute, scikit-learn and numpy versions.
 
-.. _`GitHub issues`: https://github.com/RianneSchouten/pyampute/issues
+Improving Code or Documentation
+###############################
 
-Contributions
+All contributions to MissMecha should be linked to a `GitHub issue`_.  
+If you notice something you'd like to improve but no issue exists yet, feel free to open one. That gives others the opportunity to discuss, offer context, or join forces.
+
+Once your idea is discussed, you can:
+
+- Leave a comment to "claim" the issue if you’re working on it.
+- Create a pull request (PR) when your change is ready.
+
+Pull Requests
 #############
 
-All contributions to ``pyampute`` should be linked to `GitHub issues`_. If you encountered a particular part of the documentation or code that you want to improve, but there is no related open issue yet, please feel free to open one first. That is important it allows experienced contributors to give you feedback or pointers. Furthermore, to let everyone know that you are working on an issue, please leave a comment. 
+All contributions should be submitted as pull requests (PRs). The process is as follows:
 
-.. _`GitHub issues`: https://github.com/RianneSchouten/pyampute/issues
+1. **Fork** the MissMecha repository.
+2. **Create a new branch** for your changes.
+3. Implement your changes and **commit regularly**.
+4. Push to your fork and **open a pull request** to the main repo.
 
-Pull requests
-#############
+See GitHub’s documentation on `creating a pull request from a fork`_ if needed.
 
-All contributions to ``pyampute`` should be done through `pull requests`_. To make a PR to ``pyampute``, you can do the following:
+.. _creating a pull request from a fork: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork
 
-1. Fork the ``pyampute`` repository.
+Pull Request Checklist
+######################
 
-2. Create a feature branch to hold your development changes.
+We recommend the following best practices for submitting PRs:
 
-3. Develop your feature on the feature branch and add and commit changes.
+- ✅ Follow the `PEP8`_ style guide (max line length can be 100 characters).
+- ✅ Include the issue number in your PR description to link discussions.
+- ✅ Mark your PR as **"Draft"** if it’s still work-in-progress.
+- ✅ Add tests for new functionality or bug fixes.
+- ✅ Update or add documentation when appropriate.
+- ✅ Include a short example if your feature affects user-facing behavior.
 
-4. Finally, follow `these instructions`_ to make a PR to the ``pyampute`` repository. That will send an e-mail to the owners. 
+High-coverage tests and clear docs are essential for new features to be accepted.
 
-.. _`these instructions`: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork
-.. _`pull requests`: https://github.com/RianneSchouten/pyampute/pulls
-
-Pull requests checklist
-#######################
-
-We recommend that your contribution complies with the following:
-
-* Follow the `pep8`_ style guide, with the following exceptions; the max line length is 100 characters instead of 80, and when creating a multi-line expression with binary operators, break before the operator.
-
-* Use the pull request title to describe the issue and mention the issue number in the pull request description. This will make sure a link back to the original issue is created.
-
-* An incomplete contribution -- where you expect to do more work before receiving a full review -- should be submitted as a draft. These may be useful too; indicate you are working on something to avoid duplicated work, request broad review of functionality and/or seek collaborators. Drafts often benefit from the inclusion of a task list in the PR description.
-
-* Add unittests and possibly an example for any new functionality being introduced.
-
-* Documentation and high-coverage tests are necessary for enhancements to be accepted. Bug-fixes or new features should be provided with non-regression tests. These tests verify the correct behavior of the fix or feature. In this manner, further modifications are granted to be consistent with the desired behavior.
-
-.. _`pep8`: https://www.python.org/dev/peps/pep-0008/
+.. _PEP8: https://www.python.org/dev/peps/pep-0008/
