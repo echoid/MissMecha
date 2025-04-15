@@ -1,47 +1,49 @@
-# 🧩 MissMecha
+# MissMecha
 
-**MissMecha** is a Python package dedicated to the systematic simulation, visualization, and evaluation of missing data mechanisms. Our goal is to provide a unified interface for generating, inspecting, and analyzing missingness — supporting research, benchmarking, and education.
+**MissMecha** is a Python package for the **systematic simulation, visualization, and evaluation** of missing data mechanisms.  
+It provides a **unified and principled interface** to generate, inspect, and analyze missingness — supporting research, benchmarking, and education.
+
+Documentation: [https://echoid.github.io/MissMecha/](https://echoid.github.io/MissMecha/)
 
 ---
 
-https://echoid.github.io/MissMecha/
-
-
 ## Highlights
 
-- 🔍 **All About Missing Mechanisms**
-  - Simulate **MCAR**, **MAR**, and **MNAR** in flexible formats
-  - Currently supports:
-    - **3× MCAR** strategies
-    - **8× MAR** strategies
-    - **6× MNAR** strategies
+- **All About Missing Mechanisms**
+  - Simulate **MCAR**, **MAR**, and **MNAR** with flexible configuration
+  - Currently includes:
+    - `3×` MCAR strategies
+    - `8×` MAR strategies
+    - `6×` MNAR strategies
     - Experimental support for **categorical** and **time series** missingness
 
 - **Missingness Pattern Visualization**
   - Visual tools to **observe missing patterns**
-  - Helps identify potential mechanism types (MCAR vs MAR vs MNAR)
+  - Helps diagnose potential mechanism types (e.g., MCAR vs. MAR)
 
 - **Flexible Generator Interface**
-  - Column-wise or global missingness simulation
-  - Sklearn-style `fit` / `transform` methods
-  - Supports custom rates, dependencies, labels, and logic
+  - Column-wise or global simulation
+  - `fit` / `transform` scikit-learn style API
+  - Supports custom rates, dependencies, and label-based logic
 
 - **Evaluation Toolkit**
-  - Quantitative metrics including **MSE**, **MAE**, **RMSE**, and **AvgERR**
+  - Metrics including **MSE**, **MAE**, **RMSE**, and our custom **AvgERR**
   - Built-in support for **Little’s MCAR test**
 
 - **SimpleSmartImputer**
-  - Lightweight imputer that automatically detects **numerical** and **categorical** columns
-  - Applies **mean** or **mode** imputation with verbose diagnostics
+  - Lightweight imputer that detects **numerical** vs. **categorical** columns
+  - Applies mean/mode imputation with transparent diagnostics
 
 ---
 
 ## Motivation
 
-Working with missing data often involves disparate implementations and inconsistent assumptions across studies.  
-**MissMecha** brings together widely used missing data mechanisms into a single, structured, and reproducible Python framework.
+Working with missing data often involves **disjointed code and inconsistent assumptions**.
 
-> Whether you're designing benchmark experiments or exploring real-world data — MissMecha lets you simulate and analyze missingness with clarity and control.
+**MissMecha** solves this by consolidating diverse missingness simulation strategies — across MCAR, MAR, and MNAR — into one consistent, structured Python framework.
+
+> Whether you're exploring datasets, designing simulations, or teaching statistics —  
+> MissMecha helps you simulate and analyze missingness with clarity and control.
 
 ---
 
@@ -49,43 +51,56 @@ Working with missing data often involves disparate implementations and inconsist
 
 ```python
 from missmecha import MissMechaGenerator
+import numpy as np
+
+X = np.random.rand(100, 5)
 
 generator = MissMechaGenerator(
+    mechanism="mar", mechanism_type=1, missing_rate=0.3
+)
+X_missing = generator.fit_transform(X)
+```
+
+Or configure per-column:
+
+```python
+generator = MissMechaGenerator(
     info={
-        0: {"mechanism": "mar", "type": 1, "rate": 0.3}
+        0: {"mechanism": "mcar", "type": 1, "rate": 0.3},
+        1: {"mechanism": "mnar", "type": 2, "rate": 0.4}
     }
 )
-generator.fit(X)
-X_missing = generator.transform(X)
+X_missing = generator.fit_transform(X)
 ```
 
 ---
 
-## Documentation & Notebooks
+## Documentation & Demos
 
-- Full documentation: [Link coming soon]
-- Demo notebooks:
-  - `demo_generate.ipynb`
-  - `demo_analysis.ipynb`
-  - `demo_visual.ipynb`
+- Full documentation: [https://echoid.github.io/MissMecha/](https://echoid.github.io/MissMecha/)
+
 
 ---
 
 ## Installation
 
 ```bash
-pip install missmecha-py  # Coming soon on PyPI
+pip install missmecha-py
 ```
+
+> Available on [PyPI](https://pypi.org/project/missmecha-py/) under the name `missmecha-py`.
 
 ---
 
 ## Author
 
 Developed by **Youran Zhou**, PhD Candidate @ Deakin University  
-With support from the open-source research community ❤️
 
 ---
 
-## 📄 License
+## License
 
 MIT License
+```
+
+---

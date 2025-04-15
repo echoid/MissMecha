@@ -105,6 +105,8 @@ The table below (from ~\cite{Missing_Mechanisms}) illustrates how different mech
 References
 ----------
 
-- Little, R. J. A., & Rubin, D. B. (2002). *Statistical Analysis with Missing Data.*
-- Enders, C. K. (2010). *Applied Missing Data Analysis.*
-- Gomer B, Yuan KH. Subtypes of the missing not at random missing data mechanism. Psychol Methods. 2021 Oct;26(5):559-598. doi: 10.1037/met0000377. Epub 2021 Jun 28. PMID: 34180695.
+- Little, R. J. A., & Rubin, D. B. (2002). *Statistical Analysis with Missing Data* (2nd ed.). Wiley-Interscience.
+
+- Enders, C. K. (2010). *Applied Missing Data Analysis.* The Guilford Press.
+
+- Gomer, B., & Yuan, K. H. (2021). Subtypes of the Missing Not At Random Missing Data Mechanism. *Psychological Methods, 26*(5), 559–598. https://doi.org/10.1037/met0000377
