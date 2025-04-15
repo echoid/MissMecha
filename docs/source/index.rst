@@ -10,7 +10,7 @@ The package is designed for researchers, educators, and developers working with 
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started
-   
+
    usage
    installation
 
@@ -54,7 +54,6 @@ The package is designed for researchers, educators, and developers working with 
    :class-container: sd-text-center
 
    .. grid-item-card:: GitHub Repository
-      :img-top: _static/index_getting_started.svg
       :class-card: intro-card
       :shadow: md
 
@@ -74,7 +73,6 @@ The package is designed for researchers, educators, and developers working with 
          Visit GitHub
 
    .. grid-item-card:: PyPI Package
-      :img-top: _static/index_user_guide.svg
       :class-card: intro-card
       :shadow: md
 
