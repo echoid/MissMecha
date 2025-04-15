@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -213,8 +219,29 @@
     <span class="k">return</span> <span class="n">intercepts</span>
 
 <div class="viewcode-block" id="MNARType1">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType1">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType1">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType1</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 1 (Quantile-Based Threshold Masking)</span>
+
+<span class="sd">    Introduces missingness based on whether values exceed a column-specific threshold,</span>
+<span class="sd">    defined by a quantile (e.g., top 20%). This is applied to both the target columns</span>
+<span class="sd">    and optionally conditioned on extreme observed values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Approximate proportion of values to be masked.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    up_percentile : float, default=0.5</span>
+<span class="sd">        Quantile threshold above which values in the masking column are considered extreme.</span>
+<span class="sd">    obs_percentile : float, default=0.5</span>
+<span class="sd">        Threshold for additional conditioning on observed values (used when available).</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Present for API compatibility; not used in this type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">up_percentile</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">obs_percentile</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -225,8 +252,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;self.up_percentile&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">up_percentile</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MNARType1.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType1.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType1.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Precompute masking thresholds for each target column using quantile cutoffs.</span>
+
+<span class="sd">        The data is scaled column-wise to [0, 1] before calculating quantiles.</span>
+<span class="sd">        One threshold per column is stored for use in the transformation step.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input numerical data.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for interface compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType1</span>
+<span class="sd">            Fitted object with threshold values stored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
@@ -251,8 +297,26 @@
 
 
 <div class="viewcode-block" id="MNARType1.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType1.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType1.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply quantile-based missingness to the dataset.</span>
+
+<span class="sd">        For each selected column, values greater than the quantile threshold</span>
+<span class="sd">        are masked. Optionally, further filtering can be applied based on observed</span>
+<span class="sd">        values in the remaining columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Data with NaNs inserted based on precomputed thresholds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -296,8 +360,31 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect</span>
 
 <div class="viewcode-block" id="MNARType2">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType2">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType2">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType2</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 2 (Logistic Missingness Using Observed Features)</span>
+
+<span class="sd">    Simulates missingness by fitting a logistic model over a subset of the input features,</span>
+<span class="sd">    and then masking values in the remaining columns based on predicted probabilities.</span>
+
+<span class="sd">    If `exclude_inputs=True`, input features are excluded from missingness and used only</span>
+<span class="sd">    as predictors. Otherwise, all features can be masked.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target overall proportion of missing values.</span>
+<span class="sd">    para : float, default=0.3</span>
+<span class="sd">        Proportion of columns used as logistic predictors.</span>
+<span class="sd">    exclude_inputs : bool, default=True</span>
+<span class="sd">        Whether to exclude input (predictor) features from being masked.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Present for compatibility; not used in this mechanism.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">para</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">exclude_inputs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">p_params</span> <span class="o">=</span> <span class="n">para</span>
@@ -306,8 +393,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="MNARType2.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType2.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType2.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit a logistic model to predict missingness probabilities.</span>
+
+<span class="sd">        Randomly selects a subset of columns as predictors (based on `para`) and learns</span>
+<span class="sd">        logistic coefficients and intercepts for the remaining columns. These will be</span>
+<span class="sd">        used to determine masking during `transform()`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for API compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType2</span>
+<span class="sd">            Fitted object with learned parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -326,8 +433,26 @@
 
 
 <div class="viewcode-block" id="MNARType2.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType2.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType2.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply logistic missingness using learned probabilities.</span>
+
+<span class="sd">        Probabilities are computed using the fitted logistic model, and missingness is</span>
+<span class="sd">        introduced accordingly. If `exclude_inputs=True`, masking is restricted to the</span>
+<span class="sd">        non-predictor columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Data matrix with missing values injected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -347,16 +472,52 @@
 </div>
 
 <div class="viewcode-block" id="MNARType3">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType3">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType3">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType3</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 3 (Self-Masking with Logistic Probabilities)</span>
+
+<span class="sd">    A self-masking mechanism where each feature determines its own missingness</span>
+<span class="sd">    probability via a feature-wise logistic function. Coefficients and intercepts</span>
+<span class="sd">    are learned for each column independently.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target proportion of missing values.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Present for compatibility; not used in this mechanism.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="MNARType3.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType3.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType3.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit a logistic model for each feature using its own values as input.</span>
+
+<span class="sd">        For every column, a separate set of logistic coefficients and intercepts</span>
+<span class="sd">        are computed to match the specified `missing_rate`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for interface compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType3</span>
+<span class="sd">            Fitted object with per-feature logistic models.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">=</span> <span class="n">_pick_coeffs_numpy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">self_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span> <span class="o">=</span> <span class="n">_fit_intercepts_numpy</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span><span class="p">,</span> <span class="n">self_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
@@ -364,8 +525,25 @@
 
 
 <div class="viewcode-block" id="MNARType3.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType3.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType3.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply self-masking based on feature-wise logistic models.</span>
+
+<span class="sd">        Each column masks its own values independently according to the logistic</span>
+<span class="sd">        probability computed from the feature&#39;s value and learned intercept.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed matrix with missing entries introduced column-wise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
         <span class="n">ps</span> <span class="o">=</span> <span class="n">expit</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span><span class="p">)</span>
@@ -377,8 +555,30 @@
 
     
 <div class="viewcode-block" id="MNARType4">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType4">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType4">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType4</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 4 (Quantile Cutoff Masking with Optional Upper/Lower/Both)</span>
+
+<span class="sd">    Introduces missingness based on whether feature values lie above, below, or at both</span>
+<span class="sd">    extremes of a specified quantile cutoff. Offers flexible selection for cutoff direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Proportion of values to be masked.</span>
+<span class="sd">    q : float, default=0.25</span>
+<span class="sd">        Quantile value used to define cutoff thresholds (e.g., q=0.25 for 25% tails).</span>
+<span class="sd">    p : float, default=0.5</span>
+<span class="sd">        Proportion of columns to be affected.</span>
+<span class="sd">    cut : {&quot;upper&quot;, &quot;lower&quot;, &quot;both&quot;}, default=&quot;both&quot;</span>
+<span class="sd">        Defines which side(s) of the distribution will be masked.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Present for compatibility; not used in this mechanism.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cut</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">q</span>
@@ -388,8 +588,27 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="MNARType4.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType4.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType4.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Precompute cutoff thresholds for each column.</span>
+
+<span class="sd">        Depending on the `cut` parameter, stores upper, lower, or both quantile</span>
+<span class="sd">        thresholds for selected columns. Columns are chosen randomly based on `p`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for API compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType4</span>
+<span class="sd">            Fitted object with quantile thresholds stored.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="c1">#self.X_shape = (n, d)</span>
@@ -410,8 +629,26 @@
 
 
 <div class="viewcode-block" id="MNARType4.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType4.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType4.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply missingness to values beyond the selected quantile cutoffs.</span>
+
+<span class="sd">        Missing values are introduced into the selected columns where entries fall</span>
+<span class="sd">        beyond the precomputed upper, lower, or both quantiles. A Bernoulli sampling</span>
+<span class="sd">        is used to approximate the target `missing_rate`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to transform.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with missing entries injected.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
         
@@ -443,8 +680,27 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">optimize</span>
 
 <div class="viewcode-block" id="MNARType5">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType5">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType5">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType5</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 5 (Single-Column Self-Masking with Fitted Intercepts)</span>
+
+<span class="sd">    Introduces missingness for each column independently by fitting a logistic function</span>
+<span class="sd">    to its own values. A coefficient and intercept are learned per feature.</span>
+
+<span class="sd">    This mechanism is suitable for per-column missingness and assumes that the missingness</span>
+<span class="sd">    probability depends only on the value of the feature itself.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Desired proportion of missing values per column.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Included for API compatibility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -475,8 +731,27 @@
         <span class="k">return</span> <span class="n">intercepts</span>
 
 <div class="viewcode-block" id="MNARType5.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType5.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType5.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit feature-wise logistic coefficients and intercepts.</span>
+
+<span class="sd">        For each column, learns a logistic intercept such that the expected</span>
+<span class="sd">        proportion of missing values matches the `missing_rate`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input numerical data (n_samples, n_features).</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Present for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType5</span>
+<span class="sd">            Fitted object with per-column logistic parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pick_coeffs</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">intercepts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_intercepts</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coeffs</span><span class="p">)</span>
@@ -485,8 +760,25 @@
 
 
 <div class="viewcode-block" id="MNARType5.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType5.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType5.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply self-masking to each column based on learned probabilities.</span>
+
+<span class="sd">        For each feature, a logistic model is used to compute the probability</span>
+<span class="sd">        of masking, and missing values are introduced accordingly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with per-feature missing entries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -504,19 +796,52 @@
 
 
 <div class="viewcode-block" id="MNARType6">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType6">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType6">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MNARType6</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MNAR Mechanism - Type 6 (Percentile-Based Per-Column Thresholding)</span>
+
+<span class="sd">    Introduces missingness separately for each column, based on whether values fall</span>
+<span class="sd">    below a specified percentile threshold. This allows for fine-grained, column-wise</span>
+<span class="sd">    control of missingness and supports both NumPy arrays and pandas DataFrames.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Threshold percentile for masking (e.g., 0.1 = bottom 10% values become missing).</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : Ignored</span>
+<span class="sd">        Present for compatibility.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="MNARType6.fit">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType6.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType6.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Store the threshold (percentile cutoff) for each column based on training data.</span>
+<span class="sd">        Compute per-column thresholds based on the given percentile.</span>
+
+<span class="sd">        For each feature, a percentile cutoff is calculated and stored. During transform,</span>
+<span class="sd">        values below this cutoff will be masked.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray or pd.DataFrame</span>
+<span class="sd">            Input data used to calculate percentile thresholds.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Present for API compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MNARType6</span>
+<span class="sd">            Fitted object with threshold values stored.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
@@ -533,11 +858,25 @@
 
 
 <div class="viewcode-block" id="MNARType6.transform">
-<a class="viewcode-back" href="../../../modules/generate/mnar.html#missmecha.generate.mnar.MNARType6.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mnar_numerical.html#missmecha.generate.mnar.MNARType6.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Apply the learned cutoffs to determine missing values per column.</span>
+<span class="sd">        Apply per-column masking to values below the learned percentile thresholds.</span>
+
+<span class="sd">        Automatically handles both NumPy arrays and pandas DataFrames. If input is a</span>
+<span class="sd">        DataFrame, missing values will be inserted by column name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray or pd.DataFrame</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray or pd.DataFrame</span>
+<span class="sd">            Transformed data with missing entries inserted.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 

@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -181,8 +187,29 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <div class="viewcode-block" id="MARCatType1">
-<a class="viewcode-back" href="../../../modules/generate/mar_categorical.html#missmecha.generate.marcat.MARCatType1">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_categorical.html#missmecha.generate.marcat.MARCatType1">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARCatType1</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Categorical Type 1 (Category-Conditioned Row-Wise Masking)</span>
+
+<span class="sd">    Simulates Missing At Random (MAR) by introducing missingness **across rows**, conditioned</span>
+<span class="sd">    on the value of a categorical feature. Each category is assigned a random masking</span>
+<span class="sd">    probability such that the total missingness rate approximately matches `missing_rate`.</span>
+
+<span class="sd">    This mechanism is particularly suitable for simulating structured row-wise missingness</span>
+<span class="sd">    in tabular data with labeled groups or strata.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target total missing rate across the dataset.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    cat_column : str or None</span>
+<span class="sd">        Name of the categorical column used to drive missingness. If None, a column</span>
+<span class="sd">        is randomly selected from the input DataFrame during `fit()`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cat_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -193,8 +220,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARCatType1.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_categorical.html#missmecha.generate.marcat.MARCatType1.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_categorical.html#missmecha.generate.marcat.MARCatType1.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the masking distribution conditioned on a categorical column.</span>
+
+<span class="sd">        Assigns each category a masking probability proportional to a random draw,</span>
+<span class="sd">        normalized to ensure that the total missing rate matches `missing_rate`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Input DataFrame containing the categorical column.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for interface compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARCatType1</span>
+<span class="sd">            Fitted object with learned class-based probabilities.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -219,8 +265,25 @@
 
 
 <div class="viewcode-block" id="MARCatType1.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_categorical.html#missmecha.generate.marcat.MARCatType1.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_categorical.html#missmecha.generate.marcat.MARCatType1.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply row-wise missingness based on category-conditioned probabilities.</span>
+
+<span class="sd">        For each category in the chosen column, a subset of rows is randomly selected</span>
+<span class="sd">        and all columns in those rows are masked (i.e., set to NaN).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Input DataFrame to transform.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : pd.DataFrame</span>
+<span class="sd">            DataFrame with row-level missing values introduced.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before transform().&quot;</span><span class="p">)</span>
 

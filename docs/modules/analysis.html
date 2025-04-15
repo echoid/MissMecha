@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -39,7 +39,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Impute Module" href="impute.html" />
-    <link rel="prev" title="MNAR Functions" href="generate/mnar.html" />
+    <link rel="prev" title="Categorical MNAR Types" href="generate_fun/mnar_categorical.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -83,14 +83,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,12 +179,12 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="generate/mcar.html">
+    <a class="reference internal" href="generate_fun/mcar.html">
      MCAR Functions
     </a>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="generate/mar.html">
+    <a class="reference internal" href="generate_fun/mar.html">
      MAR Functions
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -188,21 +194,38 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_numerical.html">
+      <a class="reference internal" href="generate_fun/mar_numerical.html">
        Numerical MAR Types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_categorical.html">
+      <a class="reference internal" href="generate_fun/mar_categorical.html">
        Categorical MAR Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generate/mnar.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="generate_fun/mnar.html">
      MNAR Functions
     </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -240,61 +263,113 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     MCARTest
-    </span>
-   </code>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Analysis Module
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.little_mcar_test">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MCARTest.little_mcar_test()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.mcar_t_tests">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MCARTest.mcar_t_tests()
-      </span>
-     </code>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-overview">
+     Function Overview
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.analysis.compute_missing_rate">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     compute_missing_rate()
-    </span>
-   </code>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-reference">
+   Module Reference
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.analysis.evaluate_imputation">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     evaluate_imputation()
-    </span>
-   </code>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.analysis.report_mcar_test">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     report_mcar_test()
-    </span>
-   </code>
-  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#compute-missing-rate">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       compute_missing_rate
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.analysis.compute_missing_rate">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         compute_missing_rate()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#evaluate-imputation">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       evaluate_imputation
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.analysis.evaluate_imputation">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         evaluate_imputation()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#mcartest">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MCARTest
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MCARTest
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.little_mcar_test">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           MCARTest.little_mcar_test()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.mcar_t_tests">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           MCARTest.mcar_t_tests()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.analysis.MCARTest.report">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           MCARTest.report()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -315,103 +390,179 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="module-missmecha.analysis">
-<span id="analysis-module"></span><h1>Analysis Module<a class="headerlink" href="#module-missmecha.analysis" title="Link to this heading">¶</a></h1>
+  <section id="analysis-module">
+<h1>Analysis Module<a class="headerlink" href="#analysis-module" title="Link to this heading">¶</a></h1>
+<p>This module provides utilities to analyze the structure and quality of missing data and its imputations.</p>
+<section id="function-overview">
+<h2>Function Overview<a class="headerlink" href="#function-overview" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#missmecha.analysis.compute_missing_rate" title="missmecha.analysis.compute_missing_rate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_missing_rate</span></code></a></p></td>
+<td><p>Compute and summarize missingness statistics for each column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#missmecha.analysis.evaluate_imputation" title="missmecha.analysis.evaluate_imputation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">evaluate_imputation</span></code></a></p></td>
+<td><p>Evaluate imputation quality by comparing imputed values to ground truth.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#missmecha.analysis.MCARTest" title="missmecha.analysis.MCARTest"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MCARTest</span></code></a></p></td>
+<td><p>A class to perform MCAR (Missing Completely At Random) tests.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-reference">
+<h1>Module Reference<a class="headerlink" href="#module-reference" title="Link to this heading">¶</a></h1>
+<section id="compute-missing-rate">
+<h2><code class="docutils literal notranslate"><span class="pre">compute_missing_rate</span></code><a class="headerlink" href="#compute-missing-rate" title="Link to this heading">¶</a></h2>
+<p>Summarize the extent and structure of missing data in a DataFrame or NumPy array.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.analysis.compute_missing_rate">
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">compute_missing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_summary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#compute_missing_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.compute_missing_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Compute and summarize missingness statistics for each column.</p>
+<p>This function calculates the number and percentage of missing values
+for each column in a dataset, and optionally provides a summary table and barplot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pandas.DataFrame</em><em> or </em><em>numpy.ndarray</em>) – The dataset to analyze for missingness. If ndarray, it will be converted to DataFrame.</p></li>
+<li><p><strong>print_summary</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, prints the overall missing rate and top variables by missing rate.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If True, displays a barplot of missing rates per column.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>result</strong> – A dictionary with:
+- ‘report’ : pandas.DataFrame with per-column missing statistics.
+- ‘overall_missing_rate’ : float, overall percentage of missing entries.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_missing_rate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">compute_missing_rate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">print_summary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="evaluate-imputation">
+<h2><code class="docutils literal notranslate"><span class="pre">evaluate_imputation</span></code><a class="headerlink" href="#evaluate-imputation" title="Link to this heading">¶</a></h2>
+<p>Evaluate imputation quality by comparing filled values to the ground truth at missing positions.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="missmecha.analysis.evaluate_imputation">
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">evaluate_imputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#evaluate_imputation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.evaluate_imputation" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate imputation quality by comparing imputed values to ground truth.</p>
+<p>This function calculates per-column and overall performance scores
+by evaluating the imputed values at originally missing positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ground_truth</strong> (<em>pandas.DataFrame</em>) – Fully observed reference dataset (i.e., the original complete data).</p></li>
+<li><p><strong>filled_df</strong> (<em>pandas.DataFrame</em>) – The dataset after imputation has been applied.</p></li>
+<li><p><strong>incomplete_df</strong> (<em>pandas.DataFrame</em>) – The incomplete dataset used to identify where values were originally missing.</p></li>
+<li><p><strong>method</strong> (<em>str</em>) – Evaluation method: one of {‘rmse’, ‘mae’, ‘accuracy’}.
+- ‘rmse’: Root Mean Squared Error for numeric columns.
+- ‘mae’: Mean Absolute Error for numeric columns.
+- ‘accuracy’: Classification accuracy for categorical columns.</p></li>
+<li><p><strong>status</strong> (<em>dict</em><em>, </em><em>optional</em>) – Optional dictionary mapping column names to types:
+- ‘num’ for numerical, ‘cat’ or ‘disc’ for categorical.
+If not provided, all columns are assumed to be numeric.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>result</strong> –</p>
+<dl class="simple">
+<dt>{</dt><dd><p>‘column_scores’ : dict mapping column names to scores,
+‘overall_score’ : float, average of all column scores</p>
+</dd>
+</dl>
+<p>}</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unknown evaluation method or column type is encountered.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_imputation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span><span class="n">X_true</span><span class="p">,</span> <span class="n">X_filled</span><span class="p">,</span> <span class="n">X_miss</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;num&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;cat&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;overall_score&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="mcartest">
+<h2><code class="docutils literal notranslate"><span class="pre">MCARTest</span></code><a class="headerlink" href="#mcartest" title="Link to this heading">¶</a></h2>
+<p>This class supports two approaches to test the MCAR assumption:</p>
+<ul class="simple">
+<li><p><strong>Little’s MCAR Test</strong>: a global test for whether the missingness is completely at random.</p></li>
+<li><p><strong>Pairwise T-Tests</strong>: individual tests that compare observed vs. missing groups.</p></li>
+</ul>
 <dl class="py class">
 <dt class="sig sig-object py" id="missmecha.analysis.MCARTest">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">MCARTest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'little'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#MCARTest"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to perform MCAR (Missing Completely At Random) tests.</p>
+<p>Supports Little’s MCAR test (global test for all variables)
+and pairwise MCAR t-tests (for individual variables).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.analysis.MCARTest.little_mcar_test">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">little_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/missmecha/analysis.html#MCARTest.little_mcar_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest.little_mcar_test" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Perform Little’s MCAR test on a DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>pd.DataFrame</em>) – Input dataset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>pvalue</strong> – P-value of the test.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.analysis.MCARTest.mcar_t_tests">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mcar_t_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/missmecha/analysis.html#MCARTest.mcar_t_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest.mcar_t_tests" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="missmecha.analysis.compute_missing_rate">
-<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">compute_missing_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">print_summary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#compute_missing_rate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.compute_missing_rate" title="Link to this definition">¶</a></dt>
-<dd><p>Compute and present detailed missingness statistics for each column,
-along with overall missing rate. Supports both DataFrame and ndarray.</p>
+<dd><p>Perform pairwise MCAR t-tests between missing and observed groups.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – Input dataset.</p></li>
-<li><p><strong>print_summary</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to print overall missingness summary.</p></li>
-<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>default=False</em>) – Whether to show a barplot of missing rate per column.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>X</strong> (<em>pd.DataFrame</em>) – Input dataset.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>result</strong> –</p>
-<dl class="simple">
-<dt>{</dt><dd><p>“report”: pd.DataFrame of column-wise missing info,
-“overall_missing_rate”: float (total % of missing cells)</p>
-</dd>
-</dl>
-<p>}</p>
-</p>
+<dd class="field-even"><p><strong>p_matrix</strong> – Matrix of p-values (var vs var).</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="missmecha.analysis.evaluate_imputation">
-<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">evaluate_imputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#evaluate_imputation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.evaluate_imputation" title="Link to this definition">¶</a></dt>
-<dd><p>Evaluate imputation performance by comparing filled values to ground truth at missing positions.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.analysis.MCARTest.report">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvalue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&quot;Little's</span> <span class="pre">MCAR</span> <span class="pre">Test&quot;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/missmecha/analysis.html#MCARTest.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.MCARTest.report" title="Link to this definition">¶</a></dt>
+<dd><p>Print a summary report of the MCAR test.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ground_truth</strong> (<em>pd.DataFrame</em>) – Fully observed reference dataset.</p></li>
-<li><p><strong>filled_df</strong> (<em>pd.DataFrame</em>) – The dataset after imputation.</p></li>
-<li><p><strong>incomplete_df</strong> (<em>pd.DataFrame</em>) – Dataset with original missing values (to locate evaluation positions).</p></li>
-<li><p><strong>method</strong> (<em>str</em>) – ‘rmse’, ‘mae’, or ‘avgerr’ — determines how numerical columns are evaluated.</p></li>
-<li><p><strong>status</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary mapping column names to variable types:
-‘num’ for numerical, ‘cat’ or ‘disc’ for categorical.
-If not provided, all variables are treated as numerical.</p></li>
+<li><p><strong>pvalue</strong> (<em>float</em>) – The p-value from the MCAR test.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>default=0.05</em>) – Significance level.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>default=&quot;Little's MCAR Test&quot;</em>) – Method name shown in report.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>result</strong> –</p>
-<dl class="simple">
-<dt>{</dt><dd><p>“column_scores”: {col_name: score, …},
-“overall_score”: average_score</p>
-</dd>
-</dl>
-<p>}</p>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="missmecha.analysis.report_mcar_test">
-<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">report_mcar_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pvalue</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&quot;Little's</span> <span class="pre">MCAR</span> <span class="pre">Test&quot;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#report_mcar_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.report_mcar_test" title="Link to this definition">¶</a></dt>
-<dd><p>Generate a formal report of the MCAR hypothesis test results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pvalue</strong> (<em>float</em>) – The p-value obtained from the MCAR test.</p></li>
-<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>default=0.05</em>) – Significance level for hypothesis testing.</p></li>
-<li><p><strong>method</strong> (<em>str</em><em>, </em><em>default=&quot;Little's MCAR Test&quot;</em>) – The name of the test used to assess MCAR.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
 </dd></dl>
 
+</section>
 </section>
 
 
@@ -422,11 +573,11 @@ If not provided, all variables are treated as numerical.</p></li>
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="generate/mnar.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="generate_fun/mnar_categorical.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">MNAR Functions</p>
+          <p class="prev-next-title">Categorical MNAR Types</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="impute.html" title="next page">

@@ -10,15 +10,17 @@ The package is designed for researchers, educators, and developers working with 
 .. toctree::
    :maxdepth: 1
    :caption: Getting Started
-
-   installation
+   
    usage
+   installation
+
 
 
 .. toctree::
    :maxdepth: 1
    :caption: Core Content
 
+   theory
    modules
    examples
 

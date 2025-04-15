@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -183,6 +189,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.generate.mar</span><span class="w"> </span><span class="kn">import</span> <span class="n">MAR_TYPES</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.generate.mnar</span><span class="w"> </span><span class="kn">import</span> <span class="n">MNAR_TYPES</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.generate.marcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">MARCAT_TYPES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.generate.mnarcat</span><span class="w"> </span><span class="kn">import</span> <span class="n">MNARCAT_TYPES</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">safe_init</span>
@@ -193,140 +200,48 @@
     <span class="s2">&quot;mar&quot;</span><span class="p">:</span> <span class="n">MAR_TYPES</span><span class="p">,</span>
     <span class="s2">&quot;mnar&quot;</span><span class="p">:</span> <span class="n">MNAR_TYPES</span><span class="p">,</span>
     <span class="s2">&quot;marcat&quot;</span><span class="p">:</span> <span class="n">MARCAT_TYPES</span><span class="p">,</span>
+    <span class="s2">&quot;mnarcat&quot;</span><span class="p">:</span><span class="n">MNARCAT_TYPES</span>
 <span class="p">}</span>
-
-
-<span class="c1"># def format_output(data_with_nan, original_data):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Format output to ensure mask and DataFrame structure are preserved.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     data_with_nan : np.ndarray</span>
-<span class="c1">#         Data with NaNs inserted</span>
-<span class="c1">#     original_data : np.ndarray or pd.DataFrame</span>
-<span class="c1">#         Original input data before masking</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     output : dict</span>
-<span class="c1">#         {</span>
-<span class="c1">#             &quot;data&quot;: np.ndarray or pd.DataFrame,</span>
-<span class="c1">#             &quot;mask_bool&quot;: np.ndarray or pd.DataFrame,</span>
-<span class="c1">#             &quot;mask_int&quot;: np.ndarray or pd.DataFrame</span>
-<span class="c1">#         }</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-
-<span class="c1">#     is_input_df = isinstance(original_data, pd.DataFrame)</span>
-
-<span class="c1">#     if is_input_df:</span>
-<span class="c1">#         col_names = original_data.columns</span>
-<span class="c1">#         index = original_data.index</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         col_names = [f&quot;col{i}&quot; for i in range(data_with_nan.shape[1])]</span>
-<span class="c1">#         index = np.arange(data_with_nan.shape[0])</span>
-
-<span class="c1">#     mask_bool = ~np.isnan(data_with_nan)</span>
-<span class="c1">#     mask_int = mask_bool.astype(int)</span>
-
-<span class="c1">#     if is_input_df:</span>
-<span class="c1">#         return {</span>
-<span class="c1">#             &quot;data&quot;: pd.DataFrame(data_with_nan, columns=col_names, index=index),</span>
-<span class="c1">#             &quot;mask_bool&quot;: pd.DataFrame(mask_bool, columns=col_names, index=index),</span>
-<span class="c1">#             &quot;mask_int&quot;: pd.DataFrame(mask_int, columns=col_names, index=index)</span>
-<span class="c1">#         }</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         return {</span>
-<span class="c1">#             &quot;data&quot;: data_with_nan,</span>
-<span class="c1">#             &quot;mask_bool&quot;: mask_bool,</span>
-<span class="c1">#             &quot;mask_int&quot;: mask_int</span>
-<span class="c1">#         }</span>
-
-<span class="c1"># def generate_missing(data, missing_type=&quot;mcar&quot;, type=1, missing_rate=0.1, info=None, seed=1):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Generate missing values in a dataset using a specified missing mechanism.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     data : pd.DataFrame or np.ndarray</span>
-<span class="c1">#         Input dataset.</span>
-<span class="c1">#     missing_type : str, optional</span>
-<span class="c1">#         One of &#39;mcar&#39;, &#39;mar&#39;, &#39;mnar&#39;. Only used if `info` is None.</span>
-<span class="c1">#     type : int, optional</span>
-<span class="c1">#         Mechanism variant ID. Only used if `info` is None.</span>
-<span class="c1">#     missing_rate : float, optional</span>
-<span class="c1">#         Overall missing rate. Only used if `info` is None.</span>
-<span class="c1">#     info : dict, optional</span>
-<span class="c1">#         Column-wise control dictionary. If provided, will override other mechanism settings.</span>
-<span class="c1">#     seed : int</span>
-<span class="c1">#         Random seed for reproducibility.</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     result : dict</span>
-<span class="c1">#         {</span>
-<span class="c1">#             &quot;data&quot;: np.ndarray or pd.DataFrame with NaNs,</span>
-<span class="c1">#             &quot;mask_int&quot;: same type as input (0 = missing, 1 = present),</span>
-<span class="c1">#             &quot;mask_bool&quot;: same type as input (False = missing, True = present)</span>
-<span class="c1">#         }</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-
-<span class="c1">#     is_input_df = isinstance(data, pd.DataFrame)</span>
-
-<span class="c1">#     if is_input_df:</span>
-<span class="c1">#         col_names = data.columns</span>
-<span class="c1">#         index = data.index</span>
-<span class="c1">#         data_np = data.to_numpy().astype(float)</span>
-<span class="c1">#     elif isinstance(data, np.ndarray):</span>
-<span class="c1">#         data_np = data.astype(float)</span>
-<span class="c1">#         col_names = [f&quot;col{i}&quot; for i in range(data.shape[1])]</span>
-<span class="c1">#         index = np.arange(data.shape[0])</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         raise TypeError(&quot;Input must be a pandas DataFrame or a NumPy array.&quot;)</span>
-
-<span class="c1">#     # --- Unified mechanism mode ---</span>
-<span class="c1">#     if info is None:</span>
-<span class="c1">#         assert missing_type in [&quot;mcar&quot;, &quot;mar&quot;, &quot;mnar&quot;], &quot;Invalid missing_type.&quot;</span>
-<span class="c1">#         if missing_type == &quot;mcar&quot;:</span>
-<span class="c1">#             assert type in MCAR_TYPES, f&quot;MCAR type {type} not registered.&quot;</span>
-<span class="c1">#             generator_fn = MCAR_TYPES[type]</span>
-<span class="c1">#         elif missing_type == &quot;mar&quot;:</span>
-<span class="c1">#             assert type in MAR_TYPES, f&quot;MAR type {type} not registered.&quot;</span>
-<span class="c1">#             generator_fn = MAR_TYPES[type]</span>
-<span class="c1">#         elif missing_type == &quot;mnar&quot;:</span>
-<span class="c1">#             assert type in MNAR_TYPES, f&quot;MNAR type {type} not registered.&quot;</span>
-<span class="c1">#             generator_fn = MNAR_TYPES[type]</span>
-
-<span class="c1">#         data_with_nan = generator_fn(</span>
-<span class="c1">#             data_np, missing_rate=missing_rate, seed=seed)</span>
-
-<span class="c1">#     else:</span>
-<span class="c1">#         raise NotImplementedError(&quot;Column-wise missing generation (info-based) not yet implemented.&quot;)</span>
-
-<span class="c1">#     mask_bool = ~np.isnan(data_with_nan)</span>
-<span class="c1">#     mask_int = mask_bool.astype(int)</span>
-
-<span class="c1">#     if is_input_df:</span>
-<span class="c1">#         data_result = pd.DataFrame(data_with_nan, columns=col_names, index=index)</span>
-<span class="c1">#         mask_int_result = pd.DataFrame(mask_int, columns=col_names, index=index)</span>
-<span class="c1">#         mask_bool_result = pd.DataFrame(mask_bool, columns=col_names, index=index)</span>
-<span class="c1">#     else:</span>
-<span class="c1">#         data_result = data_with_nan</span>
-<span class="c1">#         mask_int_result = mask_int</span>
-<span class="c1">#         mask_bool_result = mask_bool</span>
-
-<span class="c1">#     return {</span>
-<span class="c1">#         &quot;data&quot;: data_result,</span>
-<span class="c1">#         &quot;mask_int&quot;: mask_int_result,</span>
-<span class="c1">#         &quot;mask_bool&quot;: mask_bool_result,</span>
-<span class="c1">#     }</span>
-
 
 
 
 <div class="viewcode-block" id="MissMechaGenerator">
 <a class="viewcode-back" href="../../modules/generate.html#missmecha.generator.MissMechaGenerator">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MissMechaGenerator</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MissMechaGenerator</span><span class="p">:</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Flexible simulator for generating missing data under various mechanisms.</span>
+
+<span class="sd">    This class serves as the central interface for simulating missing values using various predefined mechanisms.</span>
+<span class="sd">    It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mechanism : str, default=&quot;MCAR&quot;</span>
+<span class="sd">        The default missingness mechanism to use (if `info` is not specified).</span>
+<span class="sd">    mechanism_type : int, default=1</span>
+<span class="sd">        The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).</span>
+<span class="sd">    missing_rate : float, default=0.2</span>
+<span class="sd">        Proportion of values to mask as missing (only if `info` is not provided).</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed to ensure reproducibility.</span>
+<span class="sd">    info : dict, optional</span>
+<span class="sd">        Dictionary defining per-column missingness settings. Each key is a column</span>
+<span class="sd">        or tuple of columns, and each value is a dict with fields like:</span>
+<span class="sd">        - &#39;mechanism&#39;: str</span>
+<span class="sd">        - &#39;type&#39;: int</span>
+<span class="sd">        - &#39;rate&#39;: float</span>
+<span class="sd">        - &#39;depend_on&#39;: list or str</span>
+<span class="sd">        - &#39;para&#39;: dict of additional parameters</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from missmecha.generator import MissMechaGenerator</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; X = np.random.rand(100, 5)</span>
+<span class="sd">    &gt;&gt;&gt; generator = MissMechaGenerator(mechanism=&quot;mcar&quot;, mechanism_type=1, missing_rate=0.2)</span>
+<span class="sd">    &gt;&gt;&gt; X_missing = generator.fit_transform(X)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;MCAR&quot;</span><span class="p">,</span> <span class="n">mechanism_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Multiple-mechanism generator. Uses &#39;info&#39; dictionary for column-wise specification.</span>
@@ -365,7 +280,21 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span> <span class="o">=</span> <span class="n">MECHANISM_LOOKUP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resolve column names or indices depending on input type.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolve column names and indices based on input type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cols : list, tuple, or range</span>
+<span class="sd">            Column specification in either str or int format.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        col_labels : list of str</span>
+<span class="sd">            Column names.</span>
+<span class="sd">        col_idxs : list of int</span>
+<span class="sd">            Corresponding index positions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_df</span><span class="p">:</span>
             <span class="n">col_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
             <span class="n">col_idxs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">col_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
@@ -383,6 +312,24 @@
 <div class="viewcode-block" id="MissMechaGenerator.fit">
 <a class="viewcode-back" href="../../modules/generate.html#missmecha.generator.MissMechaGenerator.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the internal generators to the input dataset.</span>
+
+<span class="sd">        This step prepares the missingness generators based on either global</span>
+<span class="sd">        or column-specific configurations.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame or np.ndarray</span>
+<span class="sd">            The complete input dataset.</span>
+<span class="sd">        y : array-like, optional</span>
+<span class="sd">            Label or target data (used for some MNAR or MAR configurations).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MissMechaGenerator</span>
+<span class="sd">            Returns the fitted generator instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">is_df</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">col_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_df</span> <span class="k">else</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;col</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
@@ -440,6 +387,19 @@
 <div class="viewcode-block" id="MissMechaGenerator.transform">
 <a class="viewcode-back" href="../../modules/generate.html#missmecha.generator.MissMechaGenerator.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the fitted generators to introduce missing values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame or np.ndarray</span>
+<span class="sd">            The dataset to apply missingness to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_masked : same type as X</span>
+<span class="sd">            Dataset with simulated missing values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before transform().&quot;</span><span class="p">)</span>
 
@@ -480,6 +440,19 @@
 
         
     <span class="k">def</span><span class="w"> </span><span class="nf">_expand_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expand group-style `info` dict into one-entry-per-column format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        info : dict</span>
+<span class="sd">            Original `info` mapping, possibly with multiple-column keys.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        new_info : dict</span>
+<span class="sd">            Expanded column-specific `info` dictionary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_info</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">settings</span> <span class="ow">in</span> <span class="n">info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">range</span><span class="p">)):</span>
@@ -493,6 +466,14 @@
 <div class="viewcode-block" id="MissMechaGenerator.get_mask">
 <a class="viewcode-back" href="../../modules/generate.html#missmecha.generator.MissMechaGenerator.get_mask">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latest binary mask generated by `transform()`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mask : np.ndarray</span>
+<span class="sd">            Binary array where 1 = observed, 0 = missing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Mask not available. Please call `transform()` first.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mask</span></div>
@@ -501,6 +482,14 @@
 <div class="viewcode-block" id="MissMechaGenerator.get_bool_mask">
 <a class="viewcode-back" href="../../modules/generate.html#missmecha.generator.MissMechaGenerator.get_bool_mask">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_bool_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the latest boolean mask generated by `transform()`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool_mask : np.ndarray</span>
+<span class="sd">            Boolean array where True = observed, False = missing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bool_mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Boolean mask not available. Please call `transform()` first.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bool_mask</span></div>
@@ -508,84 +497,6 @@
 
 
 
-
-
-<span class="c1"># class MissMechaGenerator:</span>
-<span class="c1">#     def __init__(self, mechanism=&quot;MAR&quot;, mechanism_type=1, missing_rate=0.2, seed=1, additional_params=None):</span>
-<span class="c1">#         self.mechanism = mechanism.lower()</span>
-<span class="c1">#         self.mechanism_type = int(mechanism_type)</span>
-<span class="c1">#         self.missing_rate = missing_rate</span>
-<span class="c1">#         self.seed = seed</span>
-<span class="c1">#         self.additional_params = additional_params or {}</span>
-<span class="c1">#         self._fitted = False</span>
-<span class="c1">#         self.label = None</span>
-<span class="c1">#         self.generator_fn = None</span>
-
-<span class="c1">#         # Assign mechanism class/function</span>
-<span class="c1">#         if self.mechanism == &quot;mcar&quot;:</span>
-<span class="c1">#             self.generator_class = MCAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#         elif self.mechanism == &quot;mar&quot;:</span>
-<span class="c1">#             self.generator_class = MAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#         elif self.mechanism == &quot;mnar&quot;:</span>
-<span class="c1">#             self.generator_class = MNAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             raise ValueError(&quot;Invalid mechanism type.&quot;)</span>
-        
-
-<span class="c1">#     def fit(self, X, y=None):</span>
-<span class="c1">#         self.label = y</span>
-<span class="c1">#         self._fitted = True</span>
-
-<span class="c1">#         if self.mechanism == &quot;mcar&quot;:</span>
-<span class="c1">#             cls = MCAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)</span>
-<span class="c1">#             self.generator_model.fit(X, y)</span>
-            
-<span class="c1">#         elif self.mechanism == &quot;mar&quot;:</span>
-<span class="c1">#             cls = MAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)</span>
-<span class="c1">#             self.generator_model.fit(X, y)</span>
-
-<span class="c1">#         elif self.mechanism == &quot;mnar&quot;:</span>
-<span class="c1">#             cls = MNAR_TYPES[self.mechanism_type]</span>
-<span class="c1">#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)</span>
-<span class="c1">#             self.generator_model.fit(X, y)</span>
-
-<span class="c1">#         else:</span>
-<span class="c1">#             raise ValueError(&quot;Unsupported mechanism type&quot;)</span>
-<span class="c1">#         return self</span>
-
-
-<span class="c1">#     def transform(self, X):</span>
-<span class="c1">#         if not self._fitted or self.generator_model is None:</span>
-<span class="c1">#             raise RuntimeError(&quot;You must call .fit(X, y) before .transform(X)&quot;)</span>
-
-<span class="c1">#         # 调用机制模型生成缺失数据</span>
-
-<span class="c1">#         data_with_nan = self.generator_model.transform(X)</span>
-
-<span class="c1">#         # 统一格式化输出</span>
-<span class="c1">#         output = format_output(data_with_nan, X)</span>
-
-<span class="c1">#         # 存储用于 get_mask()</span>
-<span class="c1">#         self.data_with_nan = output[&quot;data&quot;]</span>
-<span class="c1">#         self.mask_bool = output[&quot;mask_bool&quot;]</span>
-<span class="c1">#         self.mask_int = output[&quot;mask_int&quot;]</span>
-
-<span class="c1">#         return output[&quot;data&quot;]</span>
-
-<span class="c1">#     def get_mask(self, format=&quot;bool&quot;):</span>
-<span class="c1">#         if format == &quot;bool&quot;:</span>
-<span class="c1">#             return self.mask_bool</span>
-<span class="c1">#         elif format == &quot;int&quot;:</span>
-<span class="c1">#             return self.mask_int</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             raise ValueError(&quot;format must be &#39;bool&#39; or &#39;int&#39;&quot;)</span>
-
-
-<span class="c1">#     def fit_transform(self, X, y=None):</span>
-<span class="c1">#         self.fit(X, y)</span>
-<span class="c1">#         return self.transform(X)</span>
 </pre></div>
 
               </article>

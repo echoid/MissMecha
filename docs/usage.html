@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Usage &#8212; MissMecha</title>
+    <title>Project Overview &#8212; MissMecha</title>
 <script>
   document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
   document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -38,8 +38,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Modules" href="modules.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Welcome to MissMecha’s Documentation" href="index.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -82,15 +82,21 @@
       
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 nav-item">
+    <li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="installation.html">
   Installation
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
- <a class="current reference internal nav-link" href="#">
-  Usage
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,9 +179,29 @@
     
     <div class="toc-item">
       
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
 
 <nav id="bd-toc-nav">
-    
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#motivation">
+   Motivation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#supported-modules">
+   Supported Modules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#where-to-start">
+   Where to Start
+  </a>
+ </li>
+</ul>
+
 </nav>
     </div>
     
@@ -193,17 +219,40 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h1>
-<p>This section provides guidance on how to use MissMecha.</p>
-<p>Typical workflow:</p>
-<ol class="arabic simple">
-<li><p>Import <cite>MissMechaGenerator</cite></p></li>
-<li><p>Choose the missingness mechanism (MCAR, MAR, MNAR)</p></li>
-<li><p>Simulate missing values</p></li>
-<li><p>Evaluate imputation quality with <cite>imp_eval()</cite></p></li>
-</ol>
-<p>More examples will be provided in the Examples section.</p>
+  <section id="project-overview">
+<h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h1>
+<p>MissMecha is a Python package for simulating missing data mechanisms in a principled, unified, and reproducible way.</p>
+<p>Born out of frustration with the fragmented landscape of missing data simulation tools, MissMecha is the first Python package to systematically support structured missingness across <strong>numerical</strong>, <strong>categorical</strong>, and <strong>time series</strong> data types.</p>
+<p>It offers:
+- Support for <strong>MCAR</strong>, <strong>MAR</strong>, and <strong>MNAR</strong> mechanisms
+- A rich set of <strong>subtypes</strong> per mechanism, with interpretable logic
+- <strong>Column-wise</strong> and <strong>global</strong> missingness simulation
+- <strong>Evaluation modules</strong> to benchmark imputation methods</p>
+<section id="motivation">
+<h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
+<p>In real-world data science tasks, missingness is rarely random or uniform. However, most existing libraries simulate only idealized patterns—if at all—often limited to numerical data.</p>
+<p>MissMecha addresses this gap by offering a consistent, extensible API for:
+- Designing realistic missing data scenarios
+- Testing imputation under controlled conditions
+- Bridging statistical theory with practical ML workflows</p>
+</section>
+<section id="supported-modules">
+<h2>Supported Modules<a class="headerlink" href="#supported-modules" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><cite>missmecha.generator</cite> – missingness simulation engine</p></li>
+<li><p><cite>missmecha.analysis</cite> – MCAR testing, imputation evaluation</p></li>
+<li><p><cite>missmecha.visual</cite> – visualization tools for missing patterns</p></li>
+<li><p><cite>missmecha.impute</cite> – simple baselines for imputation</p></li>
+</ul>
+</section>
+<section id="where-to-start">
+<h2>Where to Start<a class="headerlink" href="#where-to-start" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>New to missing data? Learn the basics in <a class="reference internal" href="theory.html"><span class="doc">Theory</span></a></p></li>
+<li><p>Want to simulate? Start with <a class="reference internal" href="modules/generate.html"><span class="doc">Generate Module</span></a></p></li>
+<li><p>Explore the rest of the API in <a class="reference internal" href="modules.html"><span class="doc">Modules</span></a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -214,17 +263,17 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="installation.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="index.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Installation</p>
+          <p class="prev-next-title">Welcome to <code class="docutils literal notranslate"><span class="pre">MissMecha</span></code>’s Documentation</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="modules.html" title="next page">
+  <a class='right-next' id="next-link" href="installation.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Modules</p>
+      <p class="prev-next-title">Installation</p>
   </div>
   <i class="fas fa-angle-right"></i>
   </a>

@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -83,14 +83,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,12 +179,12 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="generate/mcar.html">
+    <a class="reference internal" href="generate_fun/mcar.html">
      MCAR Functions
     </a>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="generate/mar.html">
+    <a class="reference internal" href="generate_fun/mar.html">
      MAR Functions
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -188,21 +194,38 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_numerical.html">
+      <a class="reference internal" href="generate_fun/mar_numerical.html">
        Numerical MAR Types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_categorical.html">
+      <a class="reference internal" href="generate_fun/mar_categorical.html">
        Categorical MAR Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generate/mnar.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="generate_fun/mnar.html">
      MNAR Functions
     </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -240,41 +263,71 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     SimpleSmartImputer
-    </span>
-   </code>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Impute Module
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       SimpleSmartImputer.fit()
-      </span>
-     </code>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-overview">
+     Function Overview
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit_transform">
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-reference">
+   Module Reference
+  </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simplesmartimputer">
      <code class="docutils literal notranslate">
       <span class="pre">
-       SimpleSmartImputer.fit_transform()
+       SimpleSmartImputer
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.transform">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       SimpleSmartImputer.transform()
-      </span>
-     </code>
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         SimpleSmartImputer
+        </span>
+       </code>
+      </a>
+      <ul class="nav section-nav flex-column">
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           SimpleSmartImputer.fit()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.fit_transform">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           SimpleSmartImputer.fit_transform()
+          </span>
+         </code>
+        </a>
+       </li>
+       <li class="toc-h4 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#missmecha.impute.SimpleSmartImputer.transform">
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           SimpleSmartImputer.transform()
+          </span>
+         </code>
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -297,29 +350,110 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="module-missmecha.impute">
-<span id="impute-module"></span><h1>Impute Module<a class="headerlink" href="#module-missmecha.impute" title="Link to this heading">¶</a></h1>
+  <section id="impute-module">
+<h1>Impute Module<a class="headerlink" href="#impute-module" title="Link to this heading">¶</a></h1>
+<p>This module provides baseline imputers to support quick experimentation or evaluation of imputation strategies.
+The main tool is <code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code>, which detects column types and fills missing values accordingly.</p>
+<section id="function-overview">
+<h2>Function Overview<a class="headerlink" href="#function-overview" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#missmecha.impute.SimpleSmartImputer" title="missmecha.impute.SimpleSmartImputer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code></a></p></td>
+<td><p>A simple imputer for both numerical and categorical variables.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-reference">
+<h1>Module Reference<a class="headerlink" href="#module-reference" title="Link to this heading">¶</a></h1>
+<section id="simplesmartimputer">
+<h2><code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code><a class="headerlink" href="#simplesmartimputer" title="Link to this heading">¶</a></h2>
+<p>This simple yet adaptive imputer chooses different strategies based on column types:
+- Numerical columns are imputed using the <strong>mean</strong>
+- Categorical columns are imputed using the <strong>mode</strong></p>
+<p>It supports optional control over column type detection and verbosity.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.impute.</span></span><span class="sig-name descname"><span class="pre">SimpleSmartImputer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categorical_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A simple imputer for both numerical and categorical variables.</p>
+<p>This class automatically detects or accepts user-specified column types and fills
+missing values using mean (for numerical) or mode (for categorical) strategies.</p>
+<p>The interface supports scikit-learn-style methods: <cite>fit</cite>, <cite>transform</cite>, and <cite>fit_transform</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>categorical_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – A list of column names to be treated as categorical. If None, types are inferred automatically.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to print out the imputation summary during <cite>fit</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.impute</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleSmartImputer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imputer</span> <span class="o">=</span> <span class="n">SimpleSmartImputer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_imputed</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fit the imputer on the provided DataFrame.</p>
+<p>This method determines the fill values for each column based on the strategy:
+- Numerical columns: mean
+- Categorical columns: mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Input data to analyze and compute fill values from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – The fitted instance with <cite>fill_values</cite> set.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.impute.SimpleSmartImputer" title="missmecha.impute.SimpleSmartImputer">SimpleSmartImputer</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.fit_transform">
 <span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.fit_transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fit the imputer and transform the dataset in one step.</p>
+<p>Equivalent to calling <cite>fit()</cite> followed by <cite>transform()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Dataset to be imputed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A copy of the input DataFrame with missing values filled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply the learned fill values to transform the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Dataset to be imputed using values from <cite>fit()</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A copy of the input DataFrame with missing values filled.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
+</section>
 </section>
 
 

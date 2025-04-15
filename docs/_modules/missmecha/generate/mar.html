@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -187,8 +193,25 @@
 
 
 <div class="viewcode-block" id="MARType1">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType1">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MARType1</span><span class="p">:</span>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType1">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MARType1</span><span class="p">:</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 1 (Logistic Missingness Based on Observed Features)</span>
+
+<span class="sd">    Introduces missingness based on a logistic model, where the missingness probability</span>
+<span class="sd">    depends on a subset of observed features.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target proportion of missing entries.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    para : float, default=0.3</span>
+<span class="sd">        Proportion of observed features to use when no `depend_on` is specified.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Indices of features to use as observed covariates. If None, sampled randomly.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">para</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -198,8 +221,25 @@
         
 
 <div class="viewcode-block" id="MARType1.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType1.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType1.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the logistic model to determine missingness probabilities.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for compatibility.</span>
+<span class="sd">        xs : int or None</span>
+<span class="sd">            Index of the feature to mask. If None, all non-observed features will be masked.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType1</span>
+<span class="sd">            Fitted object with learned parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">X_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
@@ -234,8 +274,21 @@
 
 
 <div class="viewcode-block" id="MARType1.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType1.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType1.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the learned MARType1 mechanism to the input data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data to apply missingness to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Array with NaN entries introduced based on the fitted logistic model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -267,8 +320,23 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="MARType2">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType2">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType2">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType2</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 2 (Mutual Information-Based Feature Ranking)</span>
+
+<span class="sd">    Selects features with high mutual information scores relative to a synthetic label,</span>
+<span class="sd">    and introduces missingness proportionally across features.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Overall proportion of missing entries.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        List of features to compute mutual information against. If None, all features are used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -279,8 +347,23 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType2.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType2.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType2.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute mutual information scores from observed features and fit internal parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType2</span>
+<span class="sd">            Fitted object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -301,8 +384,21 @@
 
 
 <div class="viewcode-block" id="MARType2.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType2.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType2.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply missingness proportionally across all features.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data to apply missingness to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed array with missing entries.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -331,8 +427,24 @@
 
 
 <div class="viewcode-block" id="MARType3">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType3">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType3">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType3</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 3 (Point-Biserial Correlation with Observed or Synthetic Label)</span>
+
+<span class="sd">    Estimates the importance of each feature by computing point-biserial correlation</span>
+<span class="sd">    between each column and a binary target (real or synthetic). The overall correlation</span>
+<span class="sd">    score determines the intensity of random missingness.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Overall proportion of missing values to introduce.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Columns used to construct synthetic labels if `y` is not provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -343,8 +455,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType3.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType3.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType3.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute feature correlations with a binary label and determine average correlation.</span>
+
+<span class="sd">        If a label `y` is not provided, a synthetic label is generated by projecting the data</span>
+<span class="sd">        onto a random direction. Point-biserial correlation is then calculated between each feature</span>
+<span class="sd">        and the binary label to estimate dependency strength.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix (will be converted to float).</span>
+<span class="sd">        y : np.ndarray or None</span>
+<span class="sd">            Optional binary label. If not provided, a synthetic label will be generated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType3</span>
+<span class="sd">            Fitted object containing average correlation score.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -374,8 +505,24 @@
 
 
 <div class="viewcode-block" id="MARType3.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType3.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType3.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply uniform missingness with intensity guided by average point-biserial correlation.</span>
+
+<span class="sd">        Missing entries are randomly introduced into the data matrix based on the</span>
+<span class="sd">        fitted correlation score and the desired missing rate.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with missing values inserted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -397,8 +544,24 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pointbiserialr</span>
 
 <div class="viewcode-block" id="MARType4">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType4">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType4">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType4</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 4 (Correlation-Driven Column Ranking with Pairwise Masking)</span>
+
+<span class="sd">    Selects features with weakest correlation to a binary label (real or synthetic),</span>
+<span class="sd">    then introduces missing values into those features based on their relationship</span>
+<span class="sd">    with the most correlated partner column.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target proportion of missing entries.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Columns to use when generating synthetic label. If None, all columns are used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -410,8 +573,28 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType4.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType4.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType4.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute feature correlations to a binary label and rank features by relevance.</span>
+
+<span class="sd">        A synthetic label is generated from selected columns if `y` is not provided.</span>
+<span class="sd">        Features with weakest correlation are selected as targets for masking. Their</span>
+<span class="sd">        most correlated counterpart feature is later used to determine which rows to mask.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix (will be converted to float).</span>
+<span class="sd">        y : np.ndarray or None</span>
+<span class="sd">            Optional binary label. If not provided, a synthetic label is generated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType4</span>
+<span class="sd">            Fitted object storing ranked feature indices.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -443,8 +626,24 @@
 
 
 <div class="viewcode-block" id="MARType4.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType4.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType4.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply column-wise masking based on correlations with paired columns.</span>
+
+<span class="sd">        For each target column, the most correlated other column is identified.</span>
+<span class="sd">        Rows with the smallest values in the correlated column are masked in the target column.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with missing values applied.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -483,8 +682,25 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="MARType5">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType5">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType5">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType5</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 5 (Rank-Based Missingness from a Dependent Feature)</span>
+
+<span class="sd">    Selects a single column as the dependency feature (xd), and generates missingness</span>
+<span class="sd">    in all other columns based on ranks in xd. Rows with higher values in xd are more</span>
+<span class="sd">    likely to be selected for missingness.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target proportion of missing entries.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Candidate columns to select as the dependency column. If None, all columns are considered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -495,8 +711,26 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType5.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType5.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType5.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select a dependency feature to control missingness.</span>
+
+<span class="sd">        A single column is randomly selected from the specified candidates (or all columns if `depend_on` is None)</span>
+<span class="sd">        and stored as the controlling feature for masking.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix (converted to float).</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType5</span>
+<span class="sd">            Fitted object storing the selected dependency feature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -514,8 +748,24 @@
 
 
 <div class="viewcode-block" id="MARType5.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType5.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType5.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Introduce missing values based on rank probabilities from the selected feature.</span>
+
+<span class="sd">        The higher the rank (value) of a row in the selected dependency feature,</span>
+<span class="sd">        the more likely it is to be chosen for masking across other columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with NaNs introduced based on ranked dependency.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
@@ -546,8 +796,25 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="MARType6">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType6">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType6">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType6</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 6 (Skewed Binary Grouping Based on Dependency Column)</span>
+
+<span class="sd">    Partitions the dataset into two groups (high vs. low) based on the median of a selected</span>
+<span class="sd">    dependency column. Then introduces missingness with skewed probabilities between the groups</span>
+<span class="sd">    (e.g., 90% from the high group, 10% from the low group).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Proportion of total values to mask.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Candidate columns to select the controlling feature (xd). If None, all columns are considered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -558,8 +825,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType6.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType6.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType6.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select a dependency feature to define group-based masking.</span>
+
+<span class="sd">        Randomly selects one feature (xd) from the candidate list or all columns.</span>
+<span class="sd">        This feature is later used to partition rows into high/low groups.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType6</span>
+<span class="sd">            Fitted object storing the selected dependency column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -577,8 +863,26 @@
 
 
 <div class="viewcode-block" id="MARType6.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType6.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType6.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply missingness by sampling more frequently from one group.</span>
+
+<span class="sd">        The selected feature xd is used to split the rows into two groups</span>
+<span class="sd">        based on median value. Rows from the higher-value group are sampled</span>
+<span class="sd">        with greater probability to introduce missing values across other columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed array with missing values introduced.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -615,8 +919,24 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="MARType7">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType7">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType7">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType7</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 7 (Top Value Masking Based on Dependency Column)</span>
+
+<span class="sd">    Selects a controlling feature (xd), ranks its values, and applies missingness</span>
+<span class="sd">    to the top-ranked rows (those with the highest values) across the remaining columns.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Target proportion of values to mask.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed to ensure reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        List of candidate features for controlling missingness. If None, selects from all columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -627,8 +947,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType7.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType7.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType7.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Randomly select a column to use for top-value-based masking.</span>
+
+<span class="sd">        The selected feature (xd) will determine which rows receive missingness,</span>
+<span class="sd">        by identifying the highest-valued entries.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix.</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for interface consistency.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType7</span>
+<span class="sd">            Fitted object containing the controlling feature.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -645,8 +984,25 @@
 
 
 <div class="viewcode-block" id="MARType7.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType7.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType7.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Introduce missing values into the rows with the highest values in the selected feature.</span>
+
+<span class="sd">        For each non-controlling column, missingness is applied to a fixed number of rows</span>
+<span class="sd">        corresponding to the top-ranked values in the dependency column.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data to transform.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Array with missing values inserted into top-ranked rows.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 
@@ -715,8 +1071,24 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <div class="viewcode-block" id="MARType8">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType8">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType8">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MARType8</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    MAR Mechanism - Type 8 (Extreme Value Masking Based on Dependency Column)</span>
+
+<span class="sd">    Applies missingness to rows with the most extreme values (both lowest and highest)</span>
+<span class="sd">    in a selected controlling feature (xd), and masks the rest of the columns accordingly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    missing_rate : float, default=0.1</span>
+<span class="sd">        Desired overall proportion of missing values.</span>
+<span class="sd">    seed : int, default=1</span>
+<span class="sd">        Random seed for reproducibility.</span>
+<span class="sd">    depend_on : list[int] or None</span>
+<span class="sd">        Columns to choose from as the dependency column. If None, selects from all features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">depend_on</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
@@ -727,8 +1099,27 @@
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MARType8.fit">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType8.fit">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType8.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select a dependency feature and identify extreme-valued rows.</span>
+
+<span class="sd">        The selected column (xd) is used to rank all rows.</span>
+<span class="sd">        Both low and high extremes will be targeted for masking during transformation.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix (converted to float).</span>
+<span class="sd">        y : Ignored</span>
+<span class="sd">            Included for compatibility.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : MARType8</span>
+<span class="sd">            Fitted object storing the selected dependency column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
@@ -745,8 +1136,25 @@
 
 
 <div class="viewcode-block" id="MARType8.transform">
-<a class="viewcode-back" href="../../../modules/generate/mar_numerical.html#missmecha.generate.mar.MARType8.transform">[docs]</a>
+<a class="viewcode-back" href="../../../modules/generate_fun/mar_numerical.html#missmecha.generate.mar.MARType8.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply missingness to extreme-value rows in the selected column.</span>
+
+<span class="sd">        Both the highest and lowest value rows in the dependency column are</span>
+<span class="sd">        selected, and missing values are introduced into the remaining columns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : np.ndarray</span>
+<span class="sd">            Input data matrix to apply missingness.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        X_missing : np.ndarray</span>
+<span class="sd">            Transformed data with missing entries introduced in extreme rows.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fitted</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Call .fit() before .transform().&quot;</span><span class="p">)</span>
 

@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -35,10 +35,12 @@
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="MCAR Functions" href="generate/mcar.html" />
+    <link rel="next" title="MCAR Functions" href="generate_fun/mcar.html" />
     <link rel="prev" title="Visual Module" href="visual.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
@@ -83,14 +85,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,12 +181,12 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="generate/mcar.html">
+    <a class="reference internal" href="generate_fun/mcar.html">
      MCAR Functions
     </a>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="generate/mar.html">
+    <a class="reference internal" href="generate_fun/mar.html">
      MAR Functions
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -188,21 +196,38 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_numerical.html">
+      <a class="reference internal" href="generate_fun/mar_numerical.html">
        Numerical MAR Types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_categorical.html">
+      <a class="reference internal" href="generate_fun/mar_categorical.html">
        Categorical MAR Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generate/mnar.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="generate_fun/mnar.html">
      MNAR Functions
     </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -241,7 +266,7 @@
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator">
+  <a class="reference internal nav-link" href="#missmechagenerator">
    <code class="docutils literal notranslate">
     <span class="pre">
      MissMechaGenerator
@@ -250,42 +275,58 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.fit">
+    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator">
      <code class="docutils literal notranslate">
       <span class="pre">
-       MissMechaGenerator.fit()
+       MissMechaGenerator
       </span>
      </code>
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_bool_mask">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MissMechaGenerator.get_bool_mask()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_mask">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MissMechaGenerator.get_mask()
-      </span>
-     </code>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.transform">
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       MissMechaGenerator.transform()
-      </span>
-     </code>
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_bool_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_bool_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_mask">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.get_mask()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mechanism-functions">
+   Mechanism Functions
+  </a>
  </li>
 </ul>
 
@@ -308,41 +349,126 @@
                 
   <section id="generate-module">
 <h1>Generate Module<a class="headerlink" href="#generate-module" title="Link to this heading">¶</a></h1>
-<p>This class is the main interface to simulate missingness patterns using various mechanisms.</p>
-<dl class="py class" id="module-missmecha.generator">
+<p>This module defines the interface and mechanism functions for simulating missing values.</p>
+<p>The main class, <code class="docutils literal notranslate"><span class="pre">MissMechaGenerator</span></code>, serves as a flexible controller that supports different missing data mechanisms.
+Each mechanism (MCAR, MAR, MNAR) corresponds to a specific pattern of missingness and can be applied independently or in combination.</p>
+<section id="missmechagenerator">
+<h2><code class="docutils literal notranslate"><span class="pre">MissMechaGenerator</span></code><a class="headerlink" href="#missmechagenerator" title="Link to this heading">¶</a></h2>
+<p>The main interface to generate missingness patterns.</p>
+<dl class="py class">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Flexible simulator for generating missing data under various mechanisms.</p>
+<p>This class serves as the central interface for simulating missing values using various predefined mechanisms.
+It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mechanism</strong> (<em>str</em><em>, </em><em>default=&quot;MCAR&quot;</em>) – The default missingness mechanism to use (if <cite>info</cite> is not specified).</p></li>
+<li><p><strong>mechanism_type</strong> (<em>int</em><em>, </em><em>default=1</em>) – The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).</p></li>
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Proportion of values to mask as missing (only if <cite>info</cite> is not provided).</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed to ensure reproducibility.</p></li>
+<li><p><strong>info</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary defining per-column missingness settings. Each key is a column
+or tuple of columns, and each value is a dict with fields like:
+- ‘mechanism’: str
+- ‘type’: int
+- ‘rate’: float
+- ‘depend_on’: list or str
+- ‘para’: dict of additional parameters</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.generator</span><span class="w"> </span><span class="kn">import</span> <span class="n">MissMechaGenerator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generator</span> <span class="o">=</span> <span class="n">MissMechaGenerator</span><span class="p">(</span><span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;mcar&quot;</span><span class="p">,</span> <span class="n">mechanism_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_missing</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fit the internal generators to the input dataset.</p>
+<p>This step prepares the missingness generators based on either global
+or column-specific configurations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – The complete input dataset.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Label or target data (used for some MNAR or MAR configurations).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Returns the fitted generator instance.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generator.MissMechaGenerator" title="missmecha.generator.MissMechaGenerator">MissMechaGenerator</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.get_bool_mask">
 <span class="sig-name descname"><span class="pre">get_bool_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator.get_bool_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.get_bool_mask" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the latest boolean mask generated by <cite>transform()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>bool_mask</strong> – Boolean array where True = observed, False = missing.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.get_mask">
 <span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator.get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.get_mask" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the latest binary mask generated by <cite>transform()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mask</strong> – Binary array where 1 = observed, 0 = missing.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply the fitted generators to introduce missing values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – The dataset to apply missingness to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_masked</strong> – Dataset with simulated missing values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>same type as X</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
+</section>
+<section id="mechanism-functions">
+<h2>Mechanism Functions<a class="headerlink" href="#mechanism-functions" title="Link to this heading">¶</a></h2>
+<p>This section provides details on each missing data mechanism supported by <code class="docutils literal notranslate"><span class="pre">MissMechaGenerator</span></code>.
+You can explore MCAR, MAR, and MNAR function implementations individually below.</p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Mechanism Functions</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="generate/mcar.html">MCAR Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generate/mar.html">MAR Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="generate/mnar.html">MNAR Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_fun/mcar.html">MCAR Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_fun/mar.html">MAR Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_fun/mnar.html">MNAR Functions</a></li>
 </ul>
 </div>
+</section>
 </section>
 
 
@@ -360,7 +486,7 @@
           <p class="prev-next-title">Visual Module</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="generate/mcar.html" title="next page">
+  <a class='right-next' id="next-link" href="generate_fun/mcar.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
       <p class="prev-next-title">MCAR Functions</p>

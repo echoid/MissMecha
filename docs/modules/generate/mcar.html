@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -38,8 +38,6 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MAR Functions" href="mar.html" />
-    <link rel="prev" title="Generate Module" href="../generate.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -83,18 +81,24 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../modules.html">
   Modules
  </a>
@@ -156,68 +160,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../visual.html">
-   Visual Module
-  </a>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../generate.html">
-   Generate Module
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     MCAR Functions
-    </a>
-   </li>
-   <li class="toctree-l2 has-children">
-    <a class="reference internal" href="mar.html">
-     MAR Functions
-    </a>
-    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul>
-     <li class="toctree-l3">
-      <a class="reference internal" href="mar_numerical.html">
-       Numerical MAR Types
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="mar_categorical.html">
-       Categorical MAR Types
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="mnar.html">
-     MNAR Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../analysis.html">
-   Analysis Module
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../impute.html">
-   Impute Module
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
   </div>
@@ -352,15 +295,41 @@
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mcar.</span></span><span class="sig-name descname"><span class="pre">MCARType1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType1" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MCAR Mechanism - Type 1 (Uniform Independent Masking)</p>
+<p>Randomly masks entries with a uniform probability across the entire dataset.
+This mechanism applies a global missing rate independently at each cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – The proportion of values to randomly set as missing (0 ≤ missing_rate ≤ 1).</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType1.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType1.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType1.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Placeholder fit method for interface compatibility.</p>
+<p>MCARType1 does not require fitting, but this method sets a flag for internal consistency.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType1.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType1.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType1.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply MCARType1 transformation to introduce missingness.</p>
+<p>Each entry in the dataset has an independent probability of being set to NaN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input array to apply missingness (converted to float).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – The same array with missing values inserted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -368,15 +337,42 @@
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType2">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mcar.</span></span><span class="sig-name descname"><span class="pre">MCARType2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType2" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MCAR Mechanism - Type 2 (Random Cell Selection)</p>
+<p>Randomly selects a fixed number of entries based on the overall missing rate,
+and masks exactly that number of cells across the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – The proportion of values to randomly set as missing (0 ≤ missing_rate ≤ 1).</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType2.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType2.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType2.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Placeholder fit method for interface compatibility.</p>
+<p>MCARType2 does not require fitting, but this method sets a flag for internal consistency.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType2.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType2.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType2.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply MCARType2 transformation to introduce missingness.</p>
+<p>Randomly masks a fixed number of values across the entire array,
+based on the global missing rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input array to apply missingness (converted to float).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Array with missing entries randomly inserted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -384,15 +380,41 @@
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType3">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mcar.</span></span><span class="sig-name descname"><span class="pre">MCARType3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType3" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MCAR Mechanism - Type 3 (Column-wise Balanced Missingness)</p>
+<p>Applies missingness to each column independently, with approximately
+equal number of missing entries per column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – The total proportion of missing values in the dataset.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType3.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType3.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType3.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Placeholder fit method for interface compatibility.</p>
+<p>MCARType2 does not require fitting, but this method sets a flag for internal consistency.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mcar.MCARType3.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mcar.html#MCARType3.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mcar.MCARType3.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply MCARType3 transformation to introduce missingness.</p>
+<p>Ensures that missing values are approximately evenly distributed across columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input array to apply missingness (converted to float).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Array with missing values inserted in a column-balanced way.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -406,20 +428,6 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../generate.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
-      <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Generate Module</p>
-      </div>
-  </a>
-  <a class='right-next' id="next-link" href="mar.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">MAR Functions</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
-  </a>
 </div>
               </footer>
               

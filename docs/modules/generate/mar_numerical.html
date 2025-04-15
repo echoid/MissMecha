@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -38,8 +38,6 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Categorical MAR Types" href="mar_categorical.html" />
-    <link rel="prev" title="MAR Functions" href="mar.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -83,18 +81,24 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../modules.html">
   Modules
  </a>
@@ -156,68 +160,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../visual.html">
-   Visual Module
-  </a>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../generate.html">
-   Generate Module
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="mcar.html">
-     MCAR Functions
-    </a>
-   </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="mar.html">
-     MAR Functions
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       Numerical MAR Types
-      </a>
-     </li>
-     <li class="toctree-l3">
-      <a class="reference internal" href="mar_categorical.html">
-       Categorical MAR Types
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="mnar.html">
-     MNAR Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../analysis.html">
-   Analysis Module
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../impute.html">
-   Impute Module
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
   </div>
@@ -497,15 +440,56 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">para</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType1" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 1 (Logistic Missingness Based on Observed Features)</p>
+<p>Introduces missingness based on a logistic model, where the missingness probability
+depends on a subset of observed features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target proportion of missing entries.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>para</strong> (<em>float</em><em>, </em><em>default=0.3</em>) – Proportion of observed features to use when no <cite>depend_on</cite> is specified.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Indices of features to use as observed covariates. If None, sampled randomly.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType1.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType1.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType1.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fit the logistic model to determine missingness probabilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for compatibility.</p></li>
+<li><p><strong>xs</strong> (<em>int</em><em> or </em><em>None</em>) – Index of the feature to mask. If None, all non-observed features will be masked.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with learned parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType1" title="missmecha.generate.mar.MARType1">MARType1</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType1.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType1.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType1.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply the learned MARType1 mechanism to the input data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data to apply missingness to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Array with NaN entries introduced based on the fitted logistic model.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -513,15 +497,54 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType2">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType2" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 2 (Mutual Information-Based Feature Ranking)</p>
+<p>Selects features with high mutual information scores relative to a synthetic label,
+and introduces missingness proportionally across features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Overall proportion of missing entries.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – List of features to compute mutual information against. If None, all features are used.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType2.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType2.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType2.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute mutual information scores from observed features and fit internal parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType2" title="missmecha.generate.mar.MARType2">MARType2</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType2.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType2.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType2.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply missingness proportionally across all features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data to apply missingness to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed array with missing entries.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -529,15 +552,60 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType3">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType3" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 3 (Point-Biserial Correlation with Observed or Synthetic Label)</p>
+<p>Estimates the importance of each feature by computing point-biserial correlation
+between each column and a binary target (real or synthetic). The overall correlation
+score determines the intensity of random missingness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Overall proportion of missing values to introduce.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Columns used to construct synthetic labels if <cite>y</cite> is not provided.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType3.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType3.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType3.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute feature correlations with a binary label and determine average correlation.</p>
+<p>If a label <cite>y</cite> is not provided, a synthetic label is generated by projecting the data
+onto a random direction. Point-biserial correlation is then calculated between each feature
+and the binary label to estimate dependency strength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix (will be converted to float).</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em><em> or </em><em>None</em>) – Optional binary label. If not provided, a synthetic label will be generated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object containing average correlation score.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType3" title="missmecha.generate.mar.MARType3">MARType3</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType3.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType3.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType3.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply uniform missingness with intensity guided by average point-biserial correlation.</p>
+<p>Missing entries are randomly introduced into the data matrix based on the
+fitted correlation score and the desired missing rate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with missing values inserted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -545,15 +613,60 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType4">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType4" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 4 (Correlation-Driven Column Ranking with Pairwise Masking)</p>
+<p>Selects features with weakest correlation to a binary label (real or synthetic),
+then introduces missing values into those features based on their relationship
+with the most correlated partner column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target proportion of missing entries.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Columns to use when generating synthetic label. If None, all columns are used.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType4.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType4.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType4.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Compute feature correlations to a binary label and rank features by relevance.</p>
+<p>A synthetic label is generated from selected columns if <cite>y</cite> is not provided.
+Features with weakest correlation are selected as targets for masking. Their
+most correlated counterpart feature is later used to determine which rows to mask.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix (will be converted to float).</p></li>
+<li><p><strong>y</strong> (<em>np.ndarray</em><em> or </em><em>None</em>) – Optional binary label. If not provided, a synthetic label is generated.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object storing ranked feature indices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType4" title="missmecha.generate.mar.MARType4">MARType4</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType4.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType4.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType4.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply column-wise masking based on correlations with paired columns.</p>
+<p>For each target column, the most correlated other column is identified.
+Rows with the smallest values in the correlated column are masked in the target column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with missing values applied.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -561,15 +674,59 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType5">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType5" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 5 (Rank-Based Missingness from a Dependent Feature)</p>
+<p>Selects a single column as the dependency feature (xd), and generates missingness
+in all other columns based on ranks in xd. Rows with higher values in xd are more
+likely to be selected for missingness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target proportion of missing entries.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Candidate columns to select as the dependency column. If None, all columns are considered.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType5.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType5.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType5.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Select a dependency feature to control missingness.</p>
+<p>A single column is randomly selected from the specified candidates (or all columns if <cite>depend_on</cite> is None)
+and stored as the controlling feature for masking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix (converted to float).</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object storing the selected dependency feature.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType5" title="missmecha.generate.mar.MARType5">MARType5</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType5.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType5.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType5.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Introduce missing values based on rank probabilities from the selected feature.</p>
+<p>The higher the rank (value) of a row in the selected dependency feature,
+the more likely it is to be chosen for masking across other columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with NaNs introduced based on ranked dependency.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -577,15 +734,60 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType6">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType6" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 6 (Skewed Binary Grouping Based on Dependency Column)</p>
+<p>Partitions the dataset into two groups (high vs. low) based on the median of a selected
+dependency column. Then introduces missingness with skewed probabilities between the groups
+(e.g., 90% from the high group, 10% from the low group).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Proportion of total values to mask.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Candidate columns to select the controlling feature (xd). If None, all columns are considered.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType6.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType6.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType6.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Select a dependency feature to define group-based masking.</p>
+<p>Randomly selects one feature (xd) from the candidate list or all columns.
+This feature is later used to partition rows into high/low groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object storing the selected dependency column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType6" title="missmecha.generate.mar.MARType6">MARType6</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType6.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType6.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType6.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply missingness by sampling more frequently from one group.</p>
+<p>The selected feature xd is used to split the rows into two groups
+based on median value. Rows from the higher-value group are sampled
+with greater probability to introduce missing values across other columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed array with missing values introduced.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -593,15 +795,58 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType7">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType7</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType7"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType7" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 7 (Top Value Masking Based on Dependency Column)</p>
+<p>Selects a controlling feature (xd), ranks its values, and applies missingness
+to the top-ranked rows (those with the highest values) across the remaining columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target proportion of values to mask.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed to ensure reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – List of candidate features for controlling missingness. If None, selects from all columns.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType7.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType7.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType7.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Randomly select a column to use for top-value-based masking.</p>
+<p>The selected feature (xd) will determine which rows receive missingness,
+by identifying the highest-valued entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for interface consistency.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object containing the controlling feature.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType7" title="missmecha.generate.mar.MARType7">MARType7</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType7.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType7.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType7.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Introduce missing values into the rows with the highest values in the selected feature.</p>
+<p>For each non-controlling column, missingness is applied to a fixed number of rows
+corresponding to the top-ranked values in the dependency column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Array with missing values inserted into top-ranked rows.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -609,15 +854,58 @@
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType8">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mar.</span></span><span class="sig-name descname"><span class="pre">MARType8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType8"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType8" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Type 8 (Extreme Value Masking Based on Dependency Column)</p>
+<p>Applies missingness to rows with the most extreme values (both lowest and highest)
+in a selected controlling feature (xd), and masks the rest of the columns accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Desired overall proportion of missing values.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>list</em><em>[</em><em>int</em><em>] or </em><em>None</em>) – Columns to choose from as the dependency column. If None, selects from all features.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType8.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType8.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType8.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Select a dependency feature and identify extreme-valued rows.</p>
+<p>The selected column (xd) is used to rank all rows.
+Both low and high extremes will be targeted for masking during transformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix (converted to float).</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object storing the selected dependency column.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_numerical.html#missmecha.generate.mar.MARType8" title="missmecha.generate.mar.MARType8">MARType8</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.mar.MARType8.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mar.html#MARType8.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mar.MARType8.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply missingness to extreme-value rows in the selected column.</p>
+<p>Both the highest and lowest value rows in the dependency column are
+selected, and missing values are introduced into the remaining columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with missing entries introduced in extreme rows.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -631,20 +919,6 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="mar.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
-      <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">MAR Functions</p>
-      </div>
-  </a>
-  <a class='right-next' id="next-link" href="mar_categorical.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Categorical MAR Types</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
-  </a>
 </div>
               </footer>
               

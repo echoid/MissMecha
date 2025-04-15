@@ -4,7 +4,7 @@ import numpy as np
 import numpy as np
 from scipy.special import expit  # sigmoid
 from scipy.optimize import bisect
-def pick_coeffs_numpy(X, idxs_obs=None, idxs_nas=None, self_mask=False):
+def _pick_coeffs_numpy(X, idxs_obs=None, idxs_nas=None, self_mask=False):
     n, d = X.shape
     if self_mask:
         coeffs = np.random.randn(d)
@@ -18,7 +18,7 @@ def pick_coeffs_numpy(X, idxs_obs=None, idxs_nas=None, self_mask=False):
         coeffs /= np.std(Wx, axis=0, keepdims=True)
     return coeffs
 
-def fit_intercepts_numpy(X, coeffs, p, self_mask=False):
+def _fit_intercepts_numpy(X, coeffs, p, self_mask=False):
     if self_mask:
         d = len(coeffs)
         intercepts = np.zeros(d)
@@ -34,6 +34,27 @@ def fit_intercepts_numpy(X, coeffs, p, self_mask=False):
     return intercepts
 
 class MNARType1:
+    """
+    MNAR Mechanism - Type 1 (Quantile-Based Threshold Masking)
+
+    Introduces missingness based on whether values exceed a column-specific threshold,
+    defined by a quantile (e.g., top 20%). This is applied to both the target columns
+    and optionally conditioned on extreme observed values.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Approximate proportion of values to be masked.
+    seed : int, default=1
+        Random seed for reproducibility.
+    up_percentile : float, default=0.5
+        Quantile threshold above which values in the masking column are considered extreme.
+    obs_percentile : float, default=0.5
+        Threshold for additional conditioning on observed values (used when available).
+    depend_on : Ignored
+        Present for API compatibility; not used in this type.
+    """
+
     def __init__(self, missing_rate=0.1, seed=1, up_percentile=0.5, obs_percentile=0.5, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
@@ -44,6 +65,25 @@ class MNARType1:
         print("self.up_percentile",self.up_percentile)
 
     def fit(self, X, y=None):
+        """
+        Precompute masking thresholds for each target column using quantile cutoffs.
+
+        The data is scaled column-wise to [0, 1] before calculating quantiles.
+        One threshold per column is stored for use in the transformation step.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input numerical data.
+        y : Ignored
+            Included for interface compatibility.
+
+        Returns
+        -------
+        self : MNARType1
+            Fitted object with threshold values stored.
+        """
+
         self.fitted = True
 
         rng = np.random.default_rng(self.seed)
@@ -67,6 +107,24 @@ class MNARType1:
         return self
 
     def transform(self, X):
+        """
+        Apply quantile-based missingness to the dataset.
+
+        For each selected column, values greater than the quantile threshold
+        are masked. Optionally, further filtering can be applied based on observed
+        values in the remaining columns.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data to apply missingness.
+
+        Returns
+        -------
+        X_missing : np.ndarray
+            Data with NaNs inserted based on precomputed thresholds.
+        """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
 
@@ -108,6 +166,29 @@ from scipy.special import expit
 from scipy.optimize import bisect
 
 class MNARType2:
+    """
+    MNAR Mechanism - Type 2 (Logistic Missingness Using Observed Features)
+
+    Simulates missingness by fitting a logistic model over a subset of the input features,
+    and then masking values in the remaining columns based on predicted probabilities.
+
+    If `exclude_inputs=True`, input features are excluded from missingness and used only
+    as predictors. Otherwise, all features can be masked.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Target overall proportion of missing values.
+    para : float, default=0.3
+        Proportion of columns used as logistic predictors.
+    exclude_inputs : bool, default=True
+        Whether to exclude input (predictor) features from being masked.
+    seed : int, default=1
+        Random seed for reproducibility.
+    depend_on : Ignored
+        Present for compatibility; not used in this mechanism.
+    """
+
     def __init__(self, missing_rate=0.1, para=0.3, exclude_inputs=True, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.p_params = para
@@ -116,6 +197,26 @@ class MNARType2:
         self.fitted = False
 
     def fit(self, X, y=None):
+        """
+        Fit a logistic model to predict missingness probabilities.
+
+        Randomly selects a subset of columns as predictors (based on `para`) and learns
+        logistic coefficients and intercepts for the remaining columns. These will be
+        used to determine masking during `transform()`.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix.
+        y : Ignored
+            Included for API compatibility.
+
+        Returns
+        -------
+        self : MNARType2
+            Fitted object with learned parameters.
+        """
+
         np.random.seed(self.seed)
         X = X.copy()
         n, d = X.shape
@@ -127,12 +228,30 @@ class MNARType2:
         self.idxs_params = np.random.choice(d, self.d_params, replace=False) if self.exclude_inputs else np.arange(d)
         self.idxs_nas = np.array([i for i in range(d) if i not in self.idxs_params]) if self.exclude_inputs else np.arange(d)
 
-        self.coeffs = pick_coeffs_numpy(X, self.idxs_params, self.idxs_nas)
-        self.intercepts = fit_intercepts_numpy(X[:, self.idxs_params], self.coeffs, self.missing_rate)
+        self.coeffs = _pick_coeffs_numpy(X, self.idxs_params, self.idxs_nas)
+        self.intercepts = _fit_intercepts_numpy(X[:, self.idxs_params], self.coeffs, self.missing_rate)
         self.fitted = True
         return self
 
     def transform(self, X):
+        """
+        Apply logistic missingness using learned probabilities.
+
+        Probabilities are computed using the fitted logistic model, and missingness is
+        introduced accordingly. If `exclude_inputs=True`, masking is restricted to the
+        non-predictor columns.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix.
+
+        Returns
+        -------
+        X_missing : np.ndarray
+            Data matrix with missing values injected.
+        """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
 
@@ -150,18 +269,71 @@ class MNARType2:
         X_missing[mask] = np.nan
         return X_missing
 class MNARType3:
+    """
+    MNAR Mechanism - Type 3 (Self-Masking with Logistic Probabilities)
+
+    A self-masking mechanism where each feature determines its own missingness
+    probability via a feature-wise logistic function. Coefficients and intercepts
+    are learned for each column independently.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Target proportion of missing values.
+    seed : int, default=1
+        Random seed for reproducibility.
+    depend_on : Ignored
+        Present for compatibility; not used in this mechanism.
+    """
+
     def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
         self.fitted = False
 
     def fit(self, X, y=None):
-        self.coeffs = pick_coeffs_numpy(X, self_mask=True)
-        self.intercepts = fit_intercepts_numpy(X, self.coeffs, self.missing_rate, self_mask=True)
+        """
+        Fit a logistic model for each feature using its own values as input.
+
+        For every column, a separate set of logistic coefficients and intercepts
+        are computed to match the specified `missing_rate`.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix.
+        y : Ignored
+            Included for interface compatibility.
+
+        Returns
+        -------
+        self : MNARType3
+            Fitted object with per-feature logistic models.
+        """
+
+        self.coeffs = _pick_coeffs_numpy(X, self_mask=True)
+        self.intercepts = _fit_intercepts_numpy(X, self.coeffs, self.missing_rate, self_mask=True)
         self.fitted = True
         return self
 
     def transform(self, X):
+        """
+        Apply self-masking based on feature-wise logistic models.
+
+        Each column masks its own values independently according to the logistic
+        probability computed from the feature's value and learned intercept.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix.
+
+        Returns
+        -------
+        X_missing : np.ndarray
+            Transformed matrix with missing entries introduced column-wise.
+        """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
         ps = expit(X * self.coeffs + self.intercepts)
@@ -171,6 +343,28 @@ class MNARType3:
         return X_missing
     
 class MNARType4:
+    """
+    MNAR Mechanism - Type 4 (Quantile Cutoff Masking with Optional Upper/Lower/Both)
+
+    Introduces missingness based on whether feature values lie above, below, or at both
+    extremes of a specified quantile cutoff. Offers flexible selection for cutoff direction.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Proportion of values to be masked.
+    q : float, default=0.25
+        Quantile value used to define cutoff thresholds (e.g., q=0.25 for 25% tails).
+    p : float, default=0.5
+        Proportion of columns to be affected.
+    cut : {"upper", "lower", "both"}, default="both"
+        Defines which side(s) of the distribution will be masked.
+    seed : int, default=1
+        Random seed for reproducibility.
+    depend_on : Ignored
+        Present for compatibility; not used in this mechanism.
+    """
+
     def __init__(self, missing_rate=0.1, q=0.25, p=0.5, cut="both", seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.q = q
@@ -180,6 +374,25 @@ class MNARType4:
         self.fitted = False
 
     def fit(self, X, y=None):
+        """
+        Precompute cutoff thresholds for each column.
+
+        Depending on the `cut` parameter, stores upper, lower, or both quantile
+        thresholds for selected columns. Columns are chosen randomly based on `p`.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix.
+        y : Ignored
+            Included for API compatibility.
+
+        Returns
+        -------
+        self : MNARType4
+            Fitted object with quantile thresholds stored.
+        """
+
         np.random.seed(self.seed)
         n, d = X.shape
         #self.X_shape = (n, d)
@@ -199,6 +412,24 @@ class MNARType4:
         return self
 
     def transform(self, X):
+        """
+        Apply missingness to values beyond the selected quantile cutoffs.
+
+        Missing values are introduced into the selected columns where entries fall
+        beyond the precomputed upper, lower, or both quantiles. A Bernoulli sampling
+        is used to approximate the target `missing_rate`.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix to transform.
+
+        Returns
+        -------
+        X_missing : np.ndarray
+            Transformed data with missing entries injected.
+        """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
         
@@ -228,6 +459,25 @@ from scipy.special import expit as sigmoid
 from scipy import optimize
 
 class MNARType5:
+    """
+    MNAR Mechanism - Type 5 (Single-Column Self-Masking with Fitted Intercepts)
+
+    Introduces missingness for each column independently by fitting a logistic function
+    to its own values. A coefficient and intercept are learned per feature.
+
+    This mechanism is suitable for per-column missingness and assumes that the missingness
+    probability depends only on the value of the feature itself.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Desired proportion of missing values per column.
+    seed : int, default=1
+        Random seed for reproducibility.
+    depend_on : Ignored
+        Included for API compatibility.
+    """
+
     def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
@@ -258,6 +508,25 @@ class MNARType5:
         return intercepts
 
     def fit(self, X, y=None):
+        """
+        Fit feature-wise logistic coefficients and intercepts.
+
+        For each column, learns a logistic intercept such that the expected
+        proportion of missing values matches the `missing_rate`.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input numerical data (n_samples, n_features).
+        y : Ignored
+            Present for compatibility.
+
+        Returns
+        -------
+        self : MNARType5
+            Fitted object with per-column logistic parameters.
+        """
+
         X = X.astype(float)
         self.coeffs = self._pick_coeffs(X)
         self.intercepts = self._fit_intercepts(X, self.coeffs)
@@ -265,6 +534,23 @@ class MNARType5:
         return self
 
     def transform(self, X):
+        """
+        Apply self-masking to each column based on learned probabilities.
+
+        For each feature, a logistic model is used to compute the probability
+        of masking, and missing values are introduced accordingly.
+
+        Parameters
+        ----------
+        X : np.ndarray
+            Input data matrix to apply missingness.
+
+        Returns
+        -------
+        X_missing : np.ndarray
+            Transformed data with per-feature missing entries.
+        """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
 
@@ -280,6 +566,23 @@ class MNARType5:
 
 
 class MNARType6:
+    """
+    MNAR Mechanism - Type 6 (Percentile-Based Per-Column Thresholding)
+
+    Introduces missingness separately for each column, based on whether values fall
+    below a specified percentile threshold. This allows for fine-grained, column-wise
+    control of missingness and supports both NumPy arrays and pandas DataFrames.
+
+    Parameters
+    ----------
+    missing_rate : float, default=0.1
+        Threshold percentile for masking (e.g., 0.1 = bottom 10% values become missing).
+    seed : int, default=1
+        Random seed for reproducibility.
+    depend_on : Ignored
+        Present for compatibility.
+    """
+
     def __init__(self, missing_rate=0.1, seed=1, depend_on = None):
         self.missing_rate = missing_rate
         self.seed = seed
@@ -287,8 +590,24 @@ class MNARType6:
 
     def fit(self, X, y=None):
         """
-        Store the threshold (percentile cutoff) for each column based on training data.
+        Compute per-column thresholds based on the given percentile.
+
+        For each feature, a percentile cutoff is calculated and stored. During transform,
+        values below this cutoff will be masked.
+
+        Parameters
+        ----------
+        X : np.ndarray or pd.DataFrame
+            Input data used to calculate percentile thresholds.
+        y : Ignored
+            Present for API compatibility.
+
+        Returns
+        -------
+        self : MNARType6
+            Fitted object with threshold values stored.
         """
+
         self.fitted = True
         rng = np.random.default_rng(self.seed)
 
@@ -305,8 +624,22 @@ class MNARType6:
 
     def transform(self, X):
         """
-        Apply the learned cutoffs to determine missing values per column.
+        Apply per-column masking to values below the learned percentile thresholds.
+
+        Automatically handles both NumPy arrays and pandas DataFrames. If input is a
+        DataFrame, missing values will be inserted by column name.
+
+        Parameters
+        ----------
+        X : np.ndarray or pd.DataFrame
+            Input data matrix to apply missingness.
+
+        Returns
+        -------
+        X_missing : np.ndarray or pd.DataFrame
+            Transformed data with missing entries inserted.
         """
+
         if not self.fitted:
             raise RuntimeError("Call .fit() before .transform().")
 

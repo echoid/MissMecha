@@ -34,8 +34,10 @@ extensions = [
     "sphinx_design",
      'nbsphinx',
     'sphinx.ext.mathjax',
+    'sphinx.ext.autosummary',
 
 ]
+autosummary_generate = True
 
 
 templates_path = ["_templates"]

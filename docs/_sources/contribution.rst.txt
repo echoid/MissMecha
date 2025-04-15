@@ -51,12 +51,12 @@ Pull Request Checklist
 
 We recommend the following best practices for submitting PRs:
 
-- ✅ Follow the `PEP8`_ style guide (max line length can be 100 characters).
-- ✅ Include the issue number in your PR description to link discussions.
-- ✅ Mark your PR as **"Draft"** if it’s still work-in-progress.
-- ✅ Add tests for new functionality or bug fixes.
-- ✅ Update or add documentation when appropriate.
-- ✅ Include a short example if your feature affects user-facing behavior.
+- Follow the `PEP8`_ style guide (max line length can be 100 characters).
+- Include the issue number in your PR description to link discussions.
+- Mark your PR as **"Draft"** if it’s still work-in-progress.
+- Add tests for new functionality or bug fixes.
+- Update or add documentation when appropriate.
+- Include a short example if your feature affects user-facing behavior.
 
 High-coverage tests and clear docs are essential for new features to be accepted.
 

@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -183,15 +189,32 @@
 
 <div class="viewcode-block" id="SimpleSmartImputer">
 <a class="viewcode-back" href="../../modules/impute.html#missmecha.impute.SimpleSmartImputer">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SimpleSmartImputer</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleSmartImputer</span><span class="p">:</span>    
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A simple imputer for both numerical and categorical variables.</span>
+
+<span class="sd">    This class automatically detects or accepts user-specified column types and fills</span>
+<span class="sd">    missing values using mean (for numerical) or mode (for categorical) strategies.</span>
+
+<span class="sd">    The interface supports scikit-learn-style methods: `fit`, `transform`, and `fit_transform`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    categorical_cols : list of str, optional</span>
+<span class="sd">        A list of column names to be treated as categorical. If None, types are inferred automatically.</span>
+<span class="sd">    verbose : bool, default=True</span>
+<span class="sd">        Whether to print out the imputation summary during `fit`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from missmecha.impute import SimpleSmartImputer</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame({&#39;age&#39;: [25, np.nan, 30], &#39;gender&#39;: [&#39;M&#39;, &#39;F&#39;, np.nan]})</span>
+<span class="sd">    &gt;&gt;&gt; imputer = SimpleSmartImputer()</span>
+<span class="sd">    &gt;&gt;&gt; df_imputed = imputer.fit_transform(df)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categorical_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parameters:</span>
-<span class="sd">        - categorical_cols: Optional[List[str]]</span>
-<span class="sd">            Manually specify which columns are categorical.</span>
-<span class="sd">        - verbose: bool</span>
-<span class="sd">            If True, prints out how each column is treated.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">categorical_cols</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_values</span> <span class="o">=</span> <span class="p">{}</span>
@@ -211,6 +234,23 @@
 <div class="viewcode-block" id="SimpleSmartImputer.fit">
 <a class="viewcode-back" href="../../modules/impute.html#missmecha.impute.SimpleSmartImputer.fit">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the imputer on the provided DataFrame.</span>
+
+<span class="sd">        This method determines the fill values for each column based on the strategy:</span>
+<span class="sd">        - Numerical columns: mean</span>
+<span class="sd">        - Categorical columns: mode</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Input data to analyze and compute fill values from.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        self : SimpleSmartImputer</span>
+<span class="sd">            The fitted instance with `fill_values` set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be a pandas DataFrame.&quot;</span><span class="p">)</span>
 
@@ -231,6 +271,19 @@
 <div class="viewcode-block" id="SimpleSmartImputer.transform">
 <a class="viewcode-back" href="../../modules/impute.html#missmecha.impute.SimpleSmartImputer.transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the learned fill values to transform the dataset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Dataset to be imputed using values from `fit()`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            A copy of the input DataFrame with missing values filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be a pandas DataFrame.&quot;</span><span class="p">)</span>
 
@@ -244,6 +297,21 @@
 <div class="viewcode-block" id="SimpleSmartImputer.fit_transform">
 <a class="viewcode-back" href="../../modules/impute.html#missmecha.impute.SimpleSmartImputer.fit_transform">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit the imputer and transform the dataset in one step.</span>
+
+<span class="sd">        Equivalent to calling `fit()` followed by `transform()`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Dataset to be imputed.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            A copy of the input DataFrame with missing values filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span></div>
 </div>
 

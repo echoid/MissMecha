@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -38,8 +38,6 @@
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="MNAR Functions" href="mnar.html" />
-    <link rel="prev" title="Numerical MAR Types" href="mar_numerical.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -83,18 +81,24 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
-<li class="toctree-l1 current active nav-item">
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../modules.html">
   Modules
  </a>
@@ -156,68 +160,7 @@
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
   <div class="bd-toc-item active">
-    <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../visual.html">
-   Visual Module
-  </a>
- </li>
- <li class="toctree-l1 current active has-children">
-  <a class="reference internal" href="../generate.html">
-   Generate Module
-  </a>
-  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
-  <label for="toctree-checkbox-1">
-   <i class="fas fa-chevron-down">
-   </i>
-  </label>
-  <ul class="current">
-   <li class="toctree-l2">
-    <a class="reference internal" href="mcar.html">
-     MCAR Functions
-    </a>
-   </li>
-   <li class="toctree-l2 current active has-children">
-    <a class="reference internal" href="mar.html">
-     MAR Functions
-    </a>
-    <input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
-    <label for="toctree-checkbox-2">
-     <i class="fas fa-chevron-down">
-     </i>
-    </label>
-    <ul class="current">
-     <li class="toctree-l3">
-      <a class="reference internal" href="mar_numerical.html">
-       Numerical MAR Types
-      </a>
-     </li>
-     <li class="toctree-l3 current active">
-      <a class="current reference internal" href="#">
-       Categorical MAR Types
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="mnar.html">
-     MNAR Functions
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../analysis.html">
-   Analysis Module
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../impute.html">
-   Impute Module
-  </a>
- </li>
-</ul>
-
+    
   </div>
 </nav>
   </div>
@@ -294,15 +237,62 @@
 <dt class="sig sig-object py" id="missmecha.generate.marcat.MARCatType1">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.marcat.</span></span><span class="sig-name descname"><span class="pre">MARCatType1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/marcat.html#MARCatType1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.marcat.MARCatType1" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MAR Mechanism - Categorical Type 1 (Category-Conditioned Row-Wise Masking)</p>
+<p>Simulates Missing At Random (MAR) by introducing missingness <strong>across rows</strong>, conditioned
+on the value of a categorical feature. Each category is assigned a random masking
+probability such that the total missingness rate approximately matches <cite>missing_rate</cite>.</p>
+<p>This mechanism is particularly suitable for simulating structured row-wise missingness
+in tabular data with labeled groups or strata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target total missing rate across the dataset.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>cat_column</strong> (<em>str</em><em> or </em><em>None</em>) – Name of the categorical column used to drive missingness. If None, a column
+is randomly selected from the input DataFrame during <cite>fit()</cite>.</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.marcat.MARCatType1.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/marcat.html#MARCatType1.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.marcat.MARCatType1.fit" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Fit the masking distribution conditioned on a categorical column.</p>
+<p>Assigns each category a masking probability proportional to a random draw,
+normalized to ensure that the total missing rate matches <cite>missing_rate</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em>) – Input DataFrame containing the categorical column.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for interface compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with learned class-based probabilities.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="../generate_fun/mar_categorical.html#missmecha.generate.marcat.MARCatType1" title="missmecha.generate.marcat.MARCatType1">MARCatType1</a></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="missmecha.generate.marcat.MARCatType1.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/marcat.html#MARCatType1.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.marcat.MARCatType1.transform" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Apply row-wise missingness based on category-conditioned probabilities.</p>
+<p>For each category in the chosen column, a subset of rows is randomly selected
+and all columns in those rows are masked (i.e., set to NaN).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>pd.DataFrame</em>) – Input DataFrame to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – DataFrame with row-level missing values introduced.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -316,20 +306,6 @@
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="mar_numerical.html" title="previous page">
-      <i class="fas fa-angle-left"></i>
-      <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Numerical MAR Types</p>
-      </div>
-  </a>
-  <a class='right-next' id="next-link" href="mnar.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">MNAR Functions</p>
-  </div>
-  <i class="fas fa-angle-right"></i>
-  </a>
 </div>
               </footer>
               

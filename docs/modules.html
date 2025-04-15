@@ -35,11 +35,13 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Visual Module" href="modules/visual.html" />
-    <link rel="prev" title="Usage" href="usage.html" />
+    <link rel="prev" title="Theory" href="theory.html" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="docsearch:language" content="en">
   </head>
@@ -83,14 +85,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="usage.html">
-  Usage
+ <a class="reference internal nav-link" href="theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,12 +181,12 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="modules/generate/mcar.html">
+    <a class="reference internal" href="modules/generate_fun/mcar.html">
      MCAR Functions
     </a>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="modules/generate/mar.html">
+    <a class="reference internal" href="modules/generate_fun/mar.html">
      MAR Functions
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -188,21 +196,38 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="modules/generate/mar_numerical.html">
+      <a class="reference internal" href="modules/generate_fun/mar_numerical.html">
        Numerical MAR Types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="modules/generate/mar_categorical.html">
+      <a class="reference internal" href="modules/generate_fun/mar_categorical.html">
        Categorical MAR Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="modules/generate/mnar.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="modules/generate_fun/mnar.html">
      MNAR Functions
     </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="modules/generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="modules/generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -339,11 +364,11 @@ Each module is designed for a specific task in handling missing data—whether i
               <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="usage.html" title="previous page">
+  <a class='left-prev' id="prev-link" href="theory.html" title="previous page">
       <i class="fas fa-angle-left"></i>
       <div class="prev-next-info">
           <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Usage</p>
+          <p class="prev-next-title">Theory</p>
       </div>
   </a>
   <a class='right-next' id="next-link" href="modules/visual.html" title="next page">

@@ -3,145 +3,58 @@ import pandas as pd
 from .generate.mcar import MCAR_TYPES
 from .generate.mar import MAR_TYPES
 from .generate.mnar import MNAR_TYPES
+from .generate.marcat import MARCAT_TYPES
+from .generate.mnarcat import MNARCAT_TYPES
 import numpy as np
 import pandas as pd
 from .util import safe_init
-
-def format_output(data_with_nan, original_data):
-    """
-    Format output to ensure mask and DataFrame structure are preserved.
-
-    Parameters
-    ----------
-    data_with_nan : np.ndarray
-        Data with NaNs inserted
-    original_data : np.ndarray or pd.DataFrame
-        Original input data before masking
-
-    Returns
-    -------
-    output : dict
-        {
-            "data": np.ndarray or pd.DataFrame,
-            "mask_bool": np.ndarray or pd.DataFrame,
-            "mask_int": np.ndarray or pd.DataFrame
-        }
-    """
-
-    is_input_df = isinstance(original_data, pd.DataFrame)
-
-    if is_input_df:
-        col_names = original_data.columns
-        index = original_data.index
-    else:
-        col_names = [f"col{i}" for i in range(data_with_nan.shape[1])]
-        index = np.arange(data_with_nan.shape[0])
-
-    mask_bool = ~np.isnan(data_with_nan)
-    mask_int = mask_bool.astype(int)
-
-    if is_input_df:
-        return {
-            "data": pd.DataFrame(data_with_nan, columns=col_names, index=index),
-            "mask_bool": pd.DataFrame(mask_bool, columns=col_names, index=index),
-            "mask_int": pd.DataFrame(mask_int, columns=col_names, index=index)
-        }
-    else:
-        return {
-            "data": data_with_nan,
-            "mask_bool": mask_bool,
-            "mask_int": mask_int
-        }
-
-def generate_missing(data, missing_type="mcar", type=1, missing_rate=0.1, info=None, seed=1):
-    """
-    Generate missing values in a dataset using a specified missing mechanism.
-
-    Parameters
-    ----------
-    data : pd.DataFrame or np.ndarray
-        Input dataset.
-    missing_type : str, optional
-        One of 'mcar', 'mar', 'mnar'. Only used if `info` is None.
-    type : int, optional
-        Mechanism variant ID. Only used if `info` is None.
-    missing_rate : float, optional
-        Overall missing rate. Only used if `info` is None.
-    info : dict, optional
-        Column-wise control dictionary. If provided, will override other mechanism settings.
-    seed : int
-        Random seed for reproducibility.
-
-    Returns
-    -------
-    result : dict
-        {
-            "data": np.ndarray or pd.DataFrame with NaNs,
-            "mask_int": same type as input (0 = missing, 1 = present),
-            "mask_bool": same type as input (False = missing, True = present)
-        }
-    """
-
-    is_input_df = isinstance(data, pd.DataFrame)
-
-    if is_input_df:
-        col_names = data.columns
-        index = data.index
-        data_np = data.to_numpy().astype(float)
-    elif isinstance(data, np.ndarray):
-        data_np = data.astype(float)
-        col_names = [f"col{i}" for i in range(data.shape[1])]
-        index = np.arange(data.shape[0])
-    else:
-        raise TypeError("Input must be a pandas DataFrame or a NumPy array.")
-
-    # --- Unified mechanism mode ---
-    if info is None:
-        assert missing_type in ["mcar", "mar", "mnar"], "Invalid missing_type."
-        if missing_type == "mcar":
-            assert type in MCAR_TYPES, f"MCAR type {type} not registered."
-            generator_fn = MCAR_TYPES[type]
-        elif missing_type == "mar":
-            assert type in MAR_TYPES, f"MAR type {type} not registered."
-            generator_fn = MAR_TYPES[type]
-        elif missing_type == "mnar":
-            assert type in MNAR_TYPES, f"MNAR type {type} not registered."
-            generator_fn = MNAR_TYPES[type]
-
-        data_with_nan = generator_fn(
-            data_np, missing_rate=missing_rate, seed=seed)
-
-    else:
-        raise NotImplementedError("Column-wise missing generation (info-based) not yet implemented.")
-
-    mask_bool = ~np.isnan(data_with_nan)
-    mask_int = mask_bool.astype(int)
-
-    if is_input_df:
-        data_result = pd.DataFrame(data_with_nan, columns=col_names, index=index)
-        mask_int_result = pd.DataFrame(mask_int, columns=col_names, index=index)
-        mask_bool_result = pd.DataFrame(mask_bool, columns=col_names, index=index)
-    else:
-        data_result = data_with_nan
-        mask_int_result = mask_int
-        mask_bool_result = mask_bool
-
-    return {
-        "data": data_result,
-        "mask_int": mask_int_result,
-        "mask_bool": mask_bool_result,
-    }
-
-
-
 import numpy as np
 import pandas as pd
 MECHANISM_LOOKUP = {
     "mcar": MCAR_TYPES,
     "mar": MAR_TYPES,
     "mnar": MNAR_TYPES,
+    "marcat": MARCAT_TYPES,
+    "mnarcat":MNARCAT_TYPES
 }
-class MissMechaGenerator:
+
+
+
+class MissMechaGenerator:    
+    """
+    Flexible simulator for generating missing data under various mechanisms.
+
+    This class serves as the central interface for simulating missing values using various predefined mechanisms.
+    It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.
+
+    Parameters
+    ----------
+    mechanism : str, default="MCAR"
+        The default missingness mechanism to use (if `info` is not specified).
+    mechanism_type : int, default=1
+        The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).
+    missing_rate : float, default=0.2
+        Proportion of values to mask as missing (only if `info` is not provided).
+    seed : int, default=1
+        Random seed to ensure reproducibility.
+    info : dict, optional
+        Dictionary defining per-column missingness settings. Each key is a column
+        or tuple of columns, and each value is a dict with fields like:
+        - 'mechanism': str
+        - 'type': int
+        - 'rate': float
+        - 'depend_on': list or str
+        - 'para': dict of additional parameters
+
+    Examples
+    --------
+    >>> from missmecha.generator import MissMechaGenerator
+    >>> import numpy as np
+    >>> X = np.random.rand(100, 5)
+    >>> generator = MissMechaGenerator(mechanism="mcar", mechanism_type=1, missing_rate=0.2)
+    >>> X_missing = generator.fit_transform(X)
+
+    """
     def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None):
         """
         Multiple-mechanism generator. Uses 'info' dictionary for column-wise specification.
@@ -180,7 +93,21 @@ class MissMechaGenerator:
             self.generator_class = MECHANISM_LOOKUP[self.mechanism][self.mechanism_type]
 
     def _resolve_columns(self, cols):
-        """Resolve column names or indices depending on input type."""
+        """
+        Resolve column names and indices based on input type.
+
+        Parameters
+        ----------
+        cols : list, tuple, or range
+            Column specification in either str or int format.
+
+        Returns
+        -------
+        col_labels : list of str
+            Column names.
+        col_idxs : list of int
+            Corresponding index positions.
+        """
         if self.is_df:
             col_labels = list(cols)
             col_idxs = [self.col_names.index(c) for c in cols]
@@ -196,6 +123,24 @@ class MissMechaGenerator:
         return col_labels, col_idxs
 
     def fit(self, X, y=None):
+        """
+        Fit the internal generators to the input dataset.
+
+        This step prepares the missingness generators based on either global
+        or column-specific configurations.
+
+        Parameters
+        ----------
+        X : pd.DataFrame or np.ndarray
+            The complete input dataset.
+        y : array-like, optional
+            Label or target data (used for some MNAR or MAR configurations).
+
+        Returns
+        -------
+        self : MissMechaGenerator
+            Returns the fitted generator instance.
+        """
         self.label = y
         self.is_df = isinstance(X, pd.DataFrame)
         self.col_names = X.columns.tolist() if self.is_df else [f"col{i}" for i in range(X.shape[1])]
@@ -250,6 +195,19 @@ class MissMechaGenerator:
         return self
 
     def transform(self, X):
+        """
+        Apply the fitted generators to introduce missing values.
+
+        Parameters
+        ----------
+        X : pd.DataFrame or np.ndarray
+            The dataset to apply missingness to.
+
+        Returns
+        -------
+        X_masked : same type as X
+            Dataset with simulated missing values.
+        """
         if not self._fitted:
             raise RuntimeError("Call .fit() before transform().")
 
@@ -289,6 +247,19 @@ class MissMechaGenerator:
             return data if self.is_df else data_array
         
     def _expand_info(self, info):
+        """
+        Expand group-style `info` dict into one-entry-per-column format.
+
+        Parameters
+        ----------
+        info : dict
+            Original `info` mapping, possibly with multiple-column keys.
+
+        Returns
+        -------
+        new_info : dict
+            Expanded column-specific `info` dictionary.
+        """
         new_info = {}
         for key, settings in info.items():
             if isinstance(key, (list, tuple, range)):
@@ -300,91 +271,29 @@ class MissMechaGenerator:
         
 
     def get_mask(self):
+        """
+        Return the latest binary mask generated by `transform()`.
+
+        Returns
+        -------
+        mask : np.ndarray
+            Binary array where 1 = observed, 0 = missing.
+        """
         if self.mask is None:
             raise RuntimeError("Mask not available. Please call `transform()` first.")
         return self.mask
 
     def get_bool_mask(self):
+        """
+        Return the latest boolean mask generated by `transform()`.
+
+        Returns
+        -------
+        bool_mask : np.ndarray
+            Boolean array where True = observed, False = missing.
+        """
         if self.bool_mask is None:
             raise RuntimeError("Boolean mask not available. Please call `transform()` first.")
         return self.bool_mask
 
 
-
-
-# class MissMechaGenerator:
-#     def __init__(self, mechanism="MAR", mechanism_type=1, missing_rate=0.2, seed=1, additional_params=None):
-#         self.mechanism = mechanism.lower()
-#         self.mechanism_type = int(mechanism_type)
-#         self.missing_rate = missing_rate
-#         self.seed = seed
-#         self.additional_params = additional_params or {}
-#         self._fitted = False
-#         self.label = None
-#         self.generator_fn = None
-
-#         # Assign mechanism class/function
-#         if self.mechanism == "mcar":
-#             self.generator_class = MCAR_TYPES[self.mechanism_type]
-#         elif self.mechanism == "mar":
-#             self.generator_class = MAR_TYPES[self.mechanism_type]
-#         elif self.mechanism == "mnar":
-#             self.generator_class = MNAR_TYPES[self.mechanism_type]
-#         else:
-#             raise ValueError("Invalid mechanism type.")
-        
-
-#     def fit(self, X, y=None):
-#         self.label = y
-#         self._fitted = True
-
-#         if self.mechanism == "mcar":
-#             cls = MCAR_TYPES[self.mechanism_type]
-#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-#             self.generator_model.fit(X, y)
-            
-#         elif self.mechanism == "mar":
-#             cls = MAR_TYPES[self.mechanism_type]
-#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-#             self.generator_model.fit(X, y)
-
-#         elif self.mechanism == "mnar":
-#             cls = MNAR_TYPES[self.mechanism_type]
-#             self.generator_model = cls(missing_rate=self.missing_rate, seed=self.seed, **self.additional_params)
-#             self.generator_model.fit(X, y)
-
-#         else:
-#             raise ValueError("Unsupported mechanism type")
-#         return self
-
-
-#     def transform(self, X):
-#         if not self._fitted or self.generator_model is None:
-#             raise RuntimeError("You must call .fit(X, y) before .transform(X)")
-
-#         # 调用机制模型生成缺失数据
-
-#         data_with_nan = self.generator_model.transform(X)
-
-#         # 统一格式化输出
-#         output = format_output(data_with_nan, X)
-
-#         # 存储用于 get_mask()
-#         self.data_with_nan = output["data"]
-#         self.mask_bool = output["mask_bool"]
-#         self.mask_int = output["mask_int"]
-
-#         return output["data"]
-
-#     def get_mask(self, format="bool"):
-#         if format == "bool":
-#             return self.mask_bool
-#         elif format == "int":
-#             return self.mask_int
-#         else:
-#             raise ValueError("format must be 'bool' or 'int'")
-
-
-#     def fit_transform(self, X, y=None):
-#         self.fit(X, y)
-#         return self.transform(X)

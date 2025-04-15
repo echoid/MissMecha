@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Numerical MNAR Types &#8212; MissMecha</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script src="../../_static/documentation_options.js?v=f539c95a"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Categorical MNAR Types" href="mnar_categorical.html" />
+    <link rel="prev" title="MNAR Functions" href="mnar.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">MissMecha</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../../modules.html">
+  Modules
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../about.html">
+  About Us
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../contribution.html">
+  Contribution Guidelines
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/echoid/MissMecha" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/missmecha-py/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../visual.html">
+   Visual Module
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="../generate.html">
+   Generate Module
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="mcar.html">
+     MCAR Functions
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="mar.html">
+     MAR Functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="mar_numerical.html">
+       Numerical MAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="mar_categorical.html">
+       Categorical MAR Types
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="mnar.html">
+     MNAR Functions
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../analysis.html">
+   Analysis Module
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../impute.html">
+   Impute Module
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview-of-mnar-mechanisms">
+   Overview of MNAR Mechanisms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype1">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType1
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType1">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType1
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType1.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType1.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType1.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType1.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype2">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType2
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType2">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType2
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType2.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType2.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType2.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType2.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype3">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType3
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType3">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType3
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType3.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType3.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType3.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType3.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype4">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType4
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType4">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType4
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType4.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType4.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType4.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType4.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype5">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType5
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType5">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType5
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType5.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType5.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType5.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType5.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mnartype6">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     MNARType6
+    </span>
+   </code>
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType6">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       MNARType6
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType6.fit">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType6.fit()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generate.mnar.MNARType6.transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MNARType6.transform()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="numerical-mnar-types">
+<h1>Numerical MNAR Types<a class="headerlink" href="#numerical-mnar-types" title="Link to this heading">¶</a></h1>
+<p>This section introduces a suite of Missing Not At Random (MNAR) mechanisms specifically designed for <strong>numerical</strong> data.</p>
+<p>Unlike MCAR and MAR, MNAR assumes that the probability of missingness depends on the <strong>unobserved</strong> values themselves,
+making it the most complex and realistic class of missingness mechanisms to simulate.</p>
+<p>All mechanisms below support numerical arrays (NumPy or pandas), and many allow column-wise or full-matrix control.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some types (e.g., <code class="docutils literal notranslate"><span class="pre">MNARType5</span></code> and <code class="docutils literal notranslate"><span class="pre">MNARType6</span></code>) are designed to operate <strong>on each column independently</strong> (single-column masking).
+Others (e.g., <code class="docutils literal notranslate"><span class="pre">MNARType1</span></code> to <code class="docutils literal notranslate"><span class="pre">MNARType4</span></code>) apply <strong>global strategies</strong> across multiple columns.</p>
+</div>
+<hr class="docutils" />
+<section id="overview-of-mnar-mechanisms">
+<h2>Overview of MNAR Mechanisms<a class="headerlink" href="#overview-of-mnar-mechanisms" title="Link to this heading">¶</a></h2>
+<table class="table" id="id1">
+<caption><span class="caption-text">Summary of MNAR Types</span><a class="headerlink" href="#id1" title="Link to this table">¶</a></caption>
+<colgroup>
+<col style="width: 15.8%" />
+<col style="width: 21.1%" />
+<col style="width: 63.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Scope</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType1</span></code></p></td>
+<td><p>Global</p></td>
+<td><p>Quantile-based masking using thresholds on both masked and observed columns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType2</span></code></p></td>
+<td><p>Global</p></td>
+<td><p>Logistic missingness using observed features to determine probabilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType3</span></code></p></td>
+<td><p>Global</p></td>
+<td><p>Self-masking with logistic sampling, where each feature masks itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType4</span></code></p></td>
+<td><p>Global</p></td>
+<td><p>Applies missingness above/below specific quantiles, with support for “upper”, “lower”, or “both” cuts.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType5</span></code></p></td>
+<td><p>Single-column</p></td>
+<td><p>Applies self-masking to each feature independently using fitted logistic intercepts.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MNARType6</span></code></p></td>
+<td><p>Single-column</p></td>
+<td><p>Column-wise masking below percentile thresholds; supports both NumPy and pandas formats.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="mnartype1">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType1</span></code><a class="headerlink" href="#mnartype1" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">up_percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType1" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 1 (Quantile-Based Threshold Masking)</p>
+<p>Introduces missingness based on whether values exceed a column-specific threshold,
+defined by a quantile (e.g., top 20%). This is applied to both the target columns
+and optionally conditioned on extreme observed values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Approximate proportion of values to be masked.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>up_percentile</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Quantile threshold above which values in the masking column are considered extreme.</p></li>
+<li><p><strong>obs_percentile</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Threshold for additional conditioning on observed values (used when available).</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Present for API compatibility; not used in this type.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType1.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType1.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType1.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Precompute masking thresholds for each target column using quantile cutoffs.</p>
+<p>The data is scaled column-wise to [0, 1] before calculating quantiles.
+One threshold per column is stored for use in the transformation step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input numerical data.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for interface compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with threshold values stored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType1" title="missmecha.generate.mnar.MNARType1">MNARType1</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType1.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType1.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType1.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply quantile-based missingness to the dataset.</p>
+<p>For each selected column, values greater than the quantile threshold
+are masked. Optionally, further filtering can be applied based on observed
+values in the remaining columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Data with NaNs inserted based on precomputed thresholds.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="mnartype2">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType2</span></code><a class="headerlink" href="#mnartype2" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType2">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">para</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_inputs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType2" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 2 (Logistic Missingness Using Observed Features)</p>
+<p>Simulates missingness by fitting a logistic model over a subset of the input features,
+and then masking values in the remaining columns based on predicted probabilities.</p>
+<p>If <cite>exclude_inputs=True</cite>, input features are excluded from missingness and used only
+as predictors. Otherwise, all features can be masked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target overall proportion of missing values.</p></li>
+<li><p><strong>para</strong> (<em>float</em><em>, </em><em>default=0.3</em>) – Proportion of columns used as logistic predictors.</p></li>
+<li><p><strong>exclude_inputs</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to exclude input (predictor) features from being masked.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Present for compatibility; not used in this mechanism.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType2.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType2.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType2.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit a logistic model to predict missingness probabilities.</p>
+<p>Randomly selects a subset of columns as predictors (based on <cite>para</cite>) and learns
+logistic coefficients and intercepts for the remaining columns. These will be
+used to determine masking during <cite>transform()</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for API compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with learned parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType2" title="missmecha.generate.mnar.MNARType2">MNARType2</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType2.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType2.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType2.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply logistic missingness using learned probabilities.</p>
+<p>Probabilities are computed using the fitted logistic model, and missingness is
+introduced accordingly. If <cite>exclude_inputs=True</cite>, masking is restricted to the
+non-predictor columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Data matrix with missing values injected.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="mnartype3">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType3</span></code><a class="headerlink" href="#mnartype3" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType3">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType3" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 3 (Self-Masking with Logistic Probabilities)</p>
+<p>A self-masking mechanism where each feature determines its own missingness
+probability via a feature-wise logistic function. Coefficients and intercepts
+are learned for each column independently.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Target proportion of missing values.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Present for compatibility; not used in this mechanism.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType3.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType3.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType3.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit a logistic model for each feature using its own values as input.</p>
+<p>For every column, a separate set of logistic coefficients and intercepts
+are computed to match the specified <cite>missing_rate</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for interface compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with per-feature logistic models.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType3" title="missmecha.generate.mnar.MNARType3">MNARType3</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType3.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType3.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType3.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply self-masking based on feature-wise logistic models.</p>
+<p>Each column masks its own values independently according to the logistic
+probability computed from the feature’s value and learned intercept.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed matrix with missing entries introduced column-wise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="mnartype4">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType4</span></code><a class="headerlink" href="#mnartype4" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType4">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType4" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 4 (Quantile Cutoff Masking with Optional Upper/Lower/Both)</p>
+<p>Introduces missingness based on whether feature values lie above, below, or at both
+extremes of a specified quantile cutoff. Offers flexible selection for cutoff direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Proportion of values to be masked.</p></li>
+<li><p><strong>q</strong> (<em>float</em><em>, </em><em>default=0.25</em>) – Quantile value used to define cutoff thresholds (e.g., q=0.25 for 25% tails).</p></li>
+<li><p><strong>p</strong> (<em>float</em><em>, </em><em>default=0.5</em>) – Proportion of columns to be affected.</p></li>
+<li><p><strong>cut</strong> (<em>{&quot;upper&quot;</em><em>, </em><em>&quot;lower&quot;</em><em>, </em><em>&quot;both&quot;}</em><em>, </em><em>default=&quot;both&quot;</em>) – Defines which side(s) of the distribution will be masked.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Present for compatibility; not used in this mechanism.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType4.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType4.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType4.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Precompute cutoff thresholds for each column.</p>
+<p>Depending on the <cite>cut</cite> parameter, stores upper, lower, or both quantile
+thresholds for selected columns. Columns are chosen randomly based on <cite>p</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Included for API compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with quantile thresholds stored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType4" title="missmecha.generate.mnar.MNARType4">MNARType4</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType4.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType4.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType4.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply missingness to values beyond the selected quantile cutoffs.</p>
+<p>Missing values are introduced into the selected columns where entries fall
+beyond the precomputed upper, lower, or both quantiles. A Bernoulli sampling
+is used to approximate the target <cite>missing_rate</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to transform.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with missing entries injected.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="mnartype5">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType5</span></code><a class="headerlink" href="#mnartype5" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType5">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType5</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType5"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType5" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 5 (Single-Column Self-Masking with Fitted Intercepts)</p>
+<p>Introduces missingness for each column independently by fitting a logistic function
+to its own values. A coefficient and intercept are learned per feature.</p>
+<p>This mechanism is suitable for per-column missingness and assumes that the missingness
+probability depends only on the value of the feature itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Desired proportion of missing values per column.</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Included for API compatibility.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType5.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType5.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType5.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Fit feature-wise logistic coefficients and intercepts.</p>
+<p>For each column, learns a logistic intercept such that the expected
+proportion of missing values matches the <cite>missing_rate</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em>) – Input numerical data (n_samples, n_features).</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Present for compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with per-column logistic parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType5" title="missmecha.generate.mnar.MNARType5">MNARType5</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType5.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType5.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType5.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply self-masking to each column based on learned probabilities.</p>
+<p>For each feature, a logistic model is used to compute the probability
+of masking, and missing values are introduced accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with per-feature missing entries.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<hr class="docutils" />
+<section id="mnartype6">
+<h2><code class="docutils literal notranslate"><span class="pre">MNARType6</span></code><a class="headerlink" href="#mnartype6" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType6">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generate.mnar.</span></span><span class="sig-name descname"><span class="pre">MNARType6</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depend_on</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType6"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType6" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>MNAR Mechanism - Type 6 (Percentile-Based Per-Column Thresholding)</p>
+<p>Introduces missingness separately for each column, based on whether values fall
+below a specified percentile threshold. This allows for fine-grained, column-wise
+control of missingness and supports both NumPy arrays and pandas DataFrames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.1</em>) – Threshold percentile for masking (e.g., 0.1 = bottom 10% values become missing).</p></li>
+<li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed for reproducibility.</p></li>
+<li><p><strong>depend_on</strong> (<em>Ignored</em>) – Present for compatibility.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType6.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType6.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType6.fit" title="Link to this definition">¶</a></dt>
+<dd><p>Compute per-column thresholds based on the given percentile.</p>
+<p>For each feature, a percentile cutoff is calculated and stored. During transform,
+values below this cutoff will be masked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>np.ndarray</em><em> or </em><em>pd.DataFrame</em>) – Input data used to calculate percentile thresholds.</p></li>
+<li><p><strong>y</strong> (<em>Ignored</em>) – Present for API compatibility.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>self</strong> – Fitted object with threshold values stored.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#missmecha.generate.mnar.MNARType6" title="missmecha.generate.mnar.MNARType6">MNARType6</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generate.mnar.MNARType6.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/missmecha/generate/mnar.html#MNARType6.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generate.mnar.MNARType6.transform" title="Link to this definition">¶</a></dt>
+<dd><p>Apply per-column masking to values below the learned percentile thresholds.</p>
+<p>Automatically handles both NumPy arrays and pandas DataFrames. If input is a
+DataFrame, missing values will be inserted by column name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>X</strong> (<em>np.ndarray</em><em> or </em><em>pd.DataFrame</em>) – Input data matrix to apply missingness.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_missing</strong> – Transformed data with missing entries inserted.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray or pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="mnar.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">MNAR Functions</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="mnar_categorical.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Categorical MNAR Types</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2025, Youran Zhou.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

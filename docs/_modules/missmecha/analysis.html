@@ -22,9 +22,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -80,14 +80,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../../theory.html">
+  Theory
  </a>
 </li>
 
@@ -183,77 +189,67 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mcolors</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">util</span>
-
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span>
 
 <div class="viewcode-block" id="compute_missing_rate">
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.compute_missing_rate">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_missing_rate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">print_summary</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute and present detailed missingness statistics for each column,</span>
-<span class="sd">    along with overall missing rate. Supports both DataFrame and ndarray.</span>
+<span class="sd">    Compute and summarize missingness statistics for each column.</span>
+
+<span class="sd">    This function calculates the number and percentage of missing values </span>
+<span class="sd">    for each column in a dataset, and optionally provides a summary table and barplot.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data : pd.DataFrame or np.ndarray</span>
-<span class="sd">        Input dataset.</span>
+<span class="sd">    data : pandas.DataFrame or numpy.ndarray</span>
+<span class="sd">        The dataset to analyze for missingness. If ndarray, it will be converted to DataFrame.</span>
 <span class="sd">    print_summary : bool, default=True</span>
-<span class="sd">        Whether to print overall missingness summary.</span>
+<span class="sd">        If True, prints the overall missing rate and top variables by missing rate.</span>
 <span class="sd">    plot : bool, default=False</span>
-<span class="sd">        Whether to show a barplot of missing rate per column.</span>
+<span class="sd">        If True, displays a barplot of missing rates per column.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    result : dict</span>
-<span class="sd">        {</span>
-<span class="sd">            &quot;report&quot;: pd.DataFrame of column-wise missing info,</span>
-<span class="sd">            &quot;overall_missing_rate&quot;: float (total % of missing cells)</span>
-<span class="sd">        }</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        A dictionary with:</span>
+<span class="sd">        - &#39;report&#39; : pandas.DataFrame with per-column missing statistics.</span>
+<span class="sd">        - &#39;overall_missing_rate&#39; : float, overall percentage of missing entries.</span>
 
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from missmecha.analysis import compute_missing_rate</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.read_csv(&quot;data.csv&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; stats = compute_missing_rate(df, print_summary=True, plot=True)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;col</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
 
-    <span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="n">total_cells</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">total_rows</span><span class="p">,</span> <span class="n">total_cells</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">size</span>
     <span class="n">n_missing</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
     <span class="n">missing_rate_pct</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_missing</span> <span class="o">/</span> <span class="n">total_rows</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">total_missing</span> <span class="o">=</span> <span class="n">n_missing</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
     <span class="n">n_unique</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">nunique</span><span class="p">(</span><span class="n">dropna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dtypes</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dtypes</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
     <span class="n">report</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
         <span class="s2">&quot;n_missing&quot;</span><span class="p">:</span> <span class="n">n_missing</span><span class="p">,</span>
         <span class="s2">&quot;missing_rate (%)&quot;</span><span class="p">:</span> <span class="n">missing_rate_pct</span><span class="p">,</span>
         <span class="s2">&quot;n_unique&quot;</span><span class="p">:</span> <span class="n">n_unique</span><span class="p">,</span>
-        <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">dtype</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span>
+        <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="n">dtype</span><span class="p">,</span>
         <span class="s2">&quot;n_total&quot;</span><span class="p">:</span> <span class="n">total_rows</span>
     <span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;missing_rate (%)&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="n">report</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;column&quot;</span>
-    <span class="n">overall_rate</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">total_missing</span> <span class="o">/</span> <span class="n">total_cells</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">overall_rate</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">n_missing</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">total_cells</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">print_summary</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall missing rate: </span><span class="si">{</span><span class="n">overall_rate</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">total_missing</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">total_cells</span><span class="si">}</span><span class="s2"> total values are missing.&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Top variables by missing rate:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n_missing</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="n">total_cells</span><span class="si">}</span><span class="s2"> total values are missing.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top variables by missing rate:&quot;</span><span class="p">)</span>
         <span class="n">display</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
     <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-        <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;missing_rate (%)&quot;</span><span class="p">],</span>
-            <span class="n">y</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
-            <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span>
-        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.3</span><span class="p">)))</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;missing_rate (%)&quot;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">report</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Missing Rate (%)&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Missing Rate by Column&quot;</span><span class="p">)</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -269,48 +265,59 @@
 
 
 
+
 <div class="viewcode-block" id="evaluate_imputation">
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.evaluate_imputation">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_imputation</span><span class="p">(</span>
-    <span class="n">ground_truth</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">filled_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">incomplete_df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
-    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># required</span>
-    <span class="n">status</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># optional</span>
-<span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_imputation</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">filled_df</span><span class="p">,</span> <span class="n">incomplete_df</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Evaluate imputation performance by comparing filled values to ground truth at missing positions.</span>
+<span class="sd">    Evaluate imputation quality by comparing imputed values to ground truth.</span>
+
+<span class="sd">    This function calculates per-column and overall performance scores </span>
+<span class="sd">    by evaluating the imputed values at originally missing positions.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ground_truth : pd.DataFrame</span>
-<span class="sd">        Fully observed reference dataset.</span>
-<span class="sd">    filled_df : pd.DataFrame</span>
-<span class="sd">        The dataset after imputation.</span>
-<span class="sd">    incomplete_df : pd.DataFrame</span>
-<span class="sd">        Dataset with original missing values (to locate evaluation positions).</span>
+<span class="sd">    ground_truth : pandas.DataFrame</span>
+<span class="sd">        Fully observed reference dataset (i.e., the original complete data).</span>
+<span class="sd">    filled_df : pandas.DataFrame</span>
+<span class="sd">        The dataset after imputation has been applied.</span>
+<span class="sd">    incomplete_df : pandas.DataFrame</span>
+<span class="sd">        The incomplete dataset used to identify where values were originally missing.</span>
 <span class="sd">    method : str</span>
-<span class="sd">        &#39;rmse&#39;, &#39;mae&#39;, or &#39;avgerr&#39; — determines how numerical columns are evaluated.</span>
+<span class="sd">        Evaluation method: one of {&#39;rmse&#39;, &#39;mae&#39;, &#39;accuracy&#39;}.</span>
+<span class="sd">        - &#39;rmse&#39;: Root Mean Squared Error for numeric columns.</span>
+<span class="sd">        - &#39;mae&#39;: Mean Absolute Error for numeric columns.</span>
+<span class="sd">        - &#39;accuracy&#39;: Classification accuracy for categorical columns.</span>
 <span class="sd">    status : dict, optional</span>
-<span class="sd">        A dictionary mapping column names to variable types:</span>
-<span class="sd">        &#39;num&#39; for numerical, &#39;cat&#39; or &#39;disc&#39; for categorical.</span>
-<span class="sd">        If not provided, all variables are treated as numerical.</span>
+<span class="sd">        Optional dictionary mapping column names to types:</span>
+<span class="sd">        - &#39;num&#39; for numerical, &#39;cat&#39; or &#39;disc&#39; for categorical.</span>
+<span class="sd">        If not provided, all columns are assumed to be numeric.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    result : dict</span>
 <span class="sd">        {</span>
-<span class="sd">            &quot;column_scores&quot;: {col_name: score, ...},</span>
-<span class="sd">            &quot;overall_score&quot;: average_score</span>
+<span class="sd">            &#39;column_scores&#39; : dict mapping column names to scores,</span>
+<span class="sd">            &#39;overall_score&#39; : float, average of all column scores</span>
 <span class="sd">        }</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If an unknown evaluation method or column type is encountered.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from missmecha.analysis import evaluate_imputation</span>
+<span class="sd">    &gt;&gt;&gt; result = evaluate_imputation(X_true, X_filled, X_miss, method=&quot;rmse&quot;, status={&quot;age&quot;: &quot;num&quot;, &quot;gender&quot;: &quot;cat&quot;})</span>
+<span class="sd">    &gt;&gt;&gt; print(result[&quot;overall_score&quot;])</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">],</span> <span class="s2">&quot;method must be one of: &#39;rmse&#39;, &#39;mae&#39;, &#39;avgerr&#39;&quot;</span>
+    <span class="k">assert</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">},</span> <span class="s2">&quot;method must be &#39;rmse&#39;, &#39;mae&#39;, or &#39;accuracy&#39;&quot;</span>
 
     <span class="n">mask</span> <span class="o">=</span> <span class="n">incomplete_df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
     <span class="n">column_scores</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">incomplete_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">col_type</span> <span class="o">=</span> <span class="n">status</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="k">if</span> <span class="n">status</span> <span class="ow">and</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">status</span> <span class="k">else</span> <span class="s2">&quot;num&quot;</span>
         <span class="n">y_true</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
         <span class="n">y_pred</span> <span class="o">=</span> <span class="n">filled_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
 
@@ -318,22 +325,26 @@
             <span class="n">column_scores</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">continue</span>
 
+        <span class="n">col_type</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="s2">&quot;num&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">status</span> <span class="k">else</span> <span class="s2">&quot;num&quot;</span>
+
         <span class="k">if</span> <span class="n">col_type</span> <span class="o">==</span> <span class="s2">&quot;num&quot;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;rmse&quot;</span><span class="p">:</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;mse&quot;</span><span class="p">:</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;mae&quot;</span><span class="p">:</span>
                 <span class="n">score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-
-        <span class="k">elif</span> <span class="n">col_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;disc&quot;</span><span class="p">]:</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39; not supported for numeric columns.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">col_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;disc&quot;</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Use method=&#39;accuracy&#39; for categorical columns.&quot;</span><span class="p">)</span>
             <span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported variable type: &#39;</span><span class="si">{</span><span class="n">col_type</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported column type: </span><span class="si">{</span><span class="n">col_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="n">column_scores</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
-    <span class="n">valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">column_scores</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
-    <span class="n">overall_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid</span><span class="p">)</span> <span class="k">if</span> <span class="n">valid</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="n">valid_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">column_scores</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
+    <span class="n">overall_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid_scores</span><span class="p">)</span> <span class="k">if</span> <span class="n">valid_scores</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;column_scores&quot;</span><span class="p">:</span> <span class="n">column_scores</span><span class="p">,</span>
@@ -343,114 +354,50 @@
 
 
 
-
-
-
-
-
-<span class="c1"># def heatmap(</span>
-<span class="c1">#     df,</span>
-<span class="c1">#     figsize=(20, 12),</span>
-<span class="c1">#     cmap=&quot;RdBu&quot;,</span>
-<span class="c1">#     color=True,</span>
-<span class="c1">#     fontsize=14,</span>
-<span class="c1">#     label_rotation=45,</span>
-<span class="c1">#     show_colorbar=False,</span>
-<span class="c1">#     show_annotations=True,</span>
-<span class="c1">#     method=&quot;pearson&quot;,</span>
-<span class="c1">#     random_state=42</span>
-<span class="c1"># ):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Visualizes nullity correlation (correlation between missingness) as a full square heatmap.</span>
-
-<span class="c1">#     Parameters</span>
-<span class="c1">#     ----------</span>
-<span class="c1">#     df : pd.DataFrame</span>
-<span class="c1">#         Input DataFrame containing missing values.</span>
-<span class="c1">#     cmap : str</span>
-<span class="c1">#         Colormap for the heatmap.</span>
-<span class="c1">#     color : bool</span>
-<span class="c1">#         Placeholder for API consistency; unused in this function.</span>
-<span class="c1">#     fontsize : int</span>
-<span class="c1">#         Font size for tick labels and annotations.</span>
-<span class="c1">#     label_rotation : int</span>
-<span class="c1">#         Rotation angle for x-axis tick labels.</span>
-<span class="c1">#     show_colorbar : bool</span>
-<span class="c1">#         Whether to display the colorbar.</span>
-<span class="c1">#     show_annotations : bool</span>
-<span class="c1">#         Whether to annotate the heatmap with correlation values.</span>
-<span class="c1">#     method : str</span>
-<span class="c1">#         Correlation method: &#39;pearson&#39;, &#39;kendall&#39;, or &#39;spearman&#39;.</span>
-<span class="c1">#     random_state : int</span>
-<span class="c1">#         Random seed used when sampling.</span>
-
-<span class="c1">#     Returns</span>
-<span class="c1">#     -------</span>
-<span class="c1">#     ax : matplotlib.axes.Axes</span>
-<span class="c1">#         The matplotlib axis object.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-
-
-
-<span class="c1">#     # Step 2: Convert values (but preserve structure)</span>
-<span class="c1">#     converted = util.type_convert(df)</span>
-<span class="c1">#     df_converted = pd.DataFrame(converted, columns=df.columns, index=df.index)</span>
-
-<span class="c1">#     # Step 3: Remove columns without missingness variation</span>
-<span class="c1">#     missing_vars = df_converted.isnull().var() &gt; 0</span>
-<span class="c1">#     df_used = df_converted.loc[:, missing_vars]</span>
-
-<span class="c1">#     if df_used.shape[1] == 0:</span>
-<span class="c1">#         raise ValueError(&quot;No missing values found in the dataset.&quot;)</span>
-
-<span class="c1">#     # Step 4: Compute nullity correlation matrix using specified method</span>
-<span class="c1">#     corr_mat = df_used.isnull().corr(method=method)</span>
-
-
-<span class="c1">#     # Step 6: Plot full heatmap</span>
-<span class="c1">#     fig, ax = plt.subplots(figsize=figsize)</span>
-<span class="c1">#     sns.heatmap(</span>
-<span class="c1">#         corr_mat,</span>
-<span class="c1">#         cmap=cmap,</span>
-<span class="c1">#         vmin=-1,</span>
-<span class="c1">#         vmax=1,</span>
-<span class="c1">#         square=True,</span>
-<span class="c1">#         cbar=show_colorbar,</span>
-<span class="c1">#         annot=show_annotations,</span>
-<span class="c1">#         fmt=&quot;.2f&quot; if show_annotations else &quot;&quot;,</span>
-<span class="c1">#         annot_kws={&quot;size&quot;: fontsize - 2},</span>
-<span class="c1">#         ax=ax</span>
-<span class="c1">#     )</span>
-
-<span class="c1">#     # Format ticks</span>
-<span class="c1">#     ax.set_xticklabels(ax.get_xticklabels(), rotation=label_rotation, ha=&#39;right&#39;, fontsize=fontsize)</span>
-<span class="c1">#     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=fontsize)</span>
-
-<span class="c1">#     plt.tight_layout()</span>
-<span class="c1">#     plt.show()</span>
-
-<span class="c1">#     return ax</span>
-
-<span class="c1"># missmecha/analysis/mcar_test.py</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">ttest_ind</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="nb">pow</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2</span><span class="p">,</span> <span class="n">ttest_ind</span>
 
 <div class="viewcode-block" id="MCARTest">
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.MCARTest">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MCARTest</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to perform MCAR (Missing Completely At Random) tests.</span>
+
+<span class="sd">    Supports Little&#39;s MCAR test (global test for all variables)</span>
+<span class="sd">    and pairwise MCAR t-tests (for individual variables).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;little&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method : {&#39;little&#39;, &#39;ttest&#39;}, default=&#39;little&#39;</span>
+<span class="sd">            The MCAR testing method to use.</span>
+<span class="sd">            - &#39;little&#39;: Use Little&#39;s MCAR test (global p-value).</span>
+<span class="sd">            - &#39;ttest&#39;: Perform pairwise t-tests for each variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;little&quot;</span><span class="p">,</span> <span class="s2">&quot;ttest&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;method must be &#39;little&#39; or &#39;ttest&#39;&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run the selected MCAR test on the input data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data : np.ndarray or pd.DataFrame</span>
+<span class="sd">            Input dataset with missing values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        result : float or pd.DataFrame</span>
+<span class="sd">            - A p-value (float) if method=&#39;little&#39;.</span>
+<span class="sd">            - A p-value matrix (pd.DataFrame) if method=&#39;ttest&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;col</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
         <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
@@ -460,13 +407,24 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">little_mcar_test</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;ttest&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mcar_t_tests</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported method: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MCARTest.little_mcar_test">
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.MCARTest.little_mcar_test">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">little_mcar_test</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform Little&#39;s MCAR test on a DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Input dataset.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pvalue : float</span>
+<span class="sd">            P-value of the test.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dataset</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="nb">vars</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">columns</span>
         <span class="n">n_var</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -474,32 +432,31 @@
         <span class="n">gmean</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="n">gcov</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">cov</span><span class="p">()</span>
 
-        <span class="n">r</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">dataset</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
-        <span class="n">mdp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_var</span><span class="p">))))</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">mdp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="o">**</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_var</span><span class="p">)])</span>
         <span class="n">sorted_mdp</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">mdp</span><span class="p">))</span>
-        <span class="n">n_pat</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_mdp</span><span class="p">)</span>
-        <span class="n">correct_mdp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">sorted_mdp</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">mdp</span><span class="p">))</span>
-        <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;mdp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">correct_mdp</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">mdp_codes</span> <span class="o">=</span> <span class="p">[</span><span class="n">sorted_mdp</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="k">for</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">mdp</span><span class="p">]</span>
+        <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;mdp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mdp_codes</span>
 
         <span class="n">pj</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">d2</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_pat</span><span class="p">):</span>
-            <span class="n">dataset_temp</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;mdp&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="nb">vars</span><span class="p">]</span>
-            <span class="n">select_vars</span> <span class="o">=</span> <span class="o">~</span><span class="n">dataset_temp</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()</span>
-            <span class="n">pj</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">select_vars</span><span class="p">)</span>
-            <span class="n">select_vars</span> <span class="o">=</span> <span class="nb">vars</span><span class="p">[</span><span class="n">select_vars</span><span class="p">]</span>
-            <span class="n">means</span> <span class="o">=</span> <span class="n">dataset_temp</span><span class="p">[</span><span class="n">select_vars</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">gmean</span><span class="p">[</span><span class="n">select_vars</span><span class="p">]</span>
-            <span class="n">select_cov</span> <span class="o">=</span> <span class="n">gcov</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">select_vars</span><span class="p">,</span> <span class="n">select_vars</span><span class="p">]</span>
-            <span class="n">mj</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset_temp</span><span class="p">)</span>
-            <span class="n">parta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
-                <span class="n">means</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">select_cov</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">select_cov</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-            <span class="p">)</span>
-            <span class="n">d2</span> <span class="o">+=</span> <span class="n">mj</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">parta</span><span class="p">,</span> <span class="n">means</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sorted_mdp</span><span class="p">)):</span>
+            <span class="n">subset</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;mdp&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">][</span><span class="nb">vars</span><span class="p">]</span>
+            <span class="n">valid_vars</span> <span class="o">=</span> <span class="n">subset</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="o">~</span><span class="n">subset</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">()]</span>
+            <span class="n">pj</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">valid_vars</span><span class="p">)</span>
+            <span class="n">means</span> <span class="o">=</span> <span class="n">subset</span><span class="p">[</span><span class="n">valid_vars</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">gmean</span><span class="p">[</span><span class="n">valid_vars</span><span class="p">]</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="n">gcov</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">valid_vars</span><span class="p">,</span> <span class="n">valid_vars</span><span class="p">]</span>
+            <span class="n">mj</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">cov</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">parta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">cov</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+            <span class="n">d2</span> <span class="o">+=</span> <span class="n">mj</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">parta</span><span class="p">,</span> <span class="n">means</span><span class="p">)</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">pj</span> <span class="o">-</span> <span class="n">n_var</span>
         <span class="n">pvalue</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">chi2</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">d2</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>
-
-        <span class="n">report_mcar_test</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>
+        <span class="n">MCARTest</span><span class="o">.</span><span class="n">report</span><span class="p">(</span><span class="n">pvalue</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Little&#39;s MCAR Test&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pvalue</span></div>
 
 
@@ -507,55 +464,60 @@
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.MCARTest.mcar_t_tests">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mcar_t_tests</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-        <span class="n">dataset</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="nb">vars</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">columns</span>
-        <span class="n">mcar_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="nb">vars</span><span class="p">))),</span> <span class="n">columns</span><span class="o">=</span><span class="nb">vars</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">vars</span>
-        <span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform pairwise MCAR t-tests between missing and observed groups.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : pd.DataFrame</span>
+<span class="sd">            Input dataset.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_matrix : pd.DataFrame</span>
+<span class="sd">            Matrix of p-values (var vs var).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span>
+        <span class="n">p_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">vars</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="nb">vars</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">tvar</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
-                <span class="n">part_one</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">dataset</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">tvar</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-                <span class="n">part_two</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">dataset</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">tvar</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">part_one</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">part_two</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">mcar_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">var</span><span class="p">,</span> <span class="n">tvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">part_one</span><span class="p">,</span> <span class="n">part_two</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">mcar_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">var</span><span class="p">,</span> <span class="n">tvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                <span class="n">group1</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="n">tvar</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+                <span class="n">group2</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="n">tvar</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
 
-        <span class="k">return</span> <span class="n">mcar_matrix</span></div>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">group1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">p</span> <span class="o">=</span> <span class="n">ttest_ind</span><span class="p">(</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">pvalue</span>
+                    <span class="n">p_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">var</span><span class="p">,</span> <span class="n">tvar</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
+
+        <span class="k">return</span> <span class="n">p_matrix</span></div>
+
+
+<div class="viewcode-block" id="MCARTest.report">
+<a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.MCARTest.report">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">report</span><span class="p">(</span><span class="n">pvalue</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Little&#39;s MCAR Test&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print a summary report of the MCAR test.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pvalue : float</span>
+<span class="sd">            The p-value from the MCAR test.</span>
+<span class="sd">        alpha : float, default=0.05</span>
+<span class="sd">            Significance level.</span>
+<span class="sd">        method : str, default=&quot;Little&#39;s MCAR Test&quot;</span>
+<span class="sd">            Method name shown in report.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Statistic p-value: </span><span class="si">{</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pvalue</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decision: Reject the null hypothesis (α = </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ The data is unlikely to be Missing Completely At Random (MCAR).&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decision: Fail to reject the null hypothesis (α = </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ There is insufficient evidence to reject MCAR.&quot;</span><span class="p">)</span></div>
 </div>
-
-<div class="viewcode-block" id="report_mcar_test">
-<a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.report_mcar_test">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">report_mcar_test</span><span class="p">(</span><span class="n">pvalue</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;Little&#39;s MCAR Test&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate a formal report of the MCAR hypothesis test results.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    pvalue : float</span>
-<span class="sd">        The p-value obtained from the MCAR test.</span>
-
-<span class="sd">    alpha : float, default=0.05</span>
-<span class="sd">        Significance level for hypothesis testing.</span>
-
-<span class="sd">    method : str, default=&quot;Little&#39;s MCAR Test&quot;</span>
-<span class="sd">        The name of the test used to assess MCAR.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method: </span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test Statistic p-value: </span><span class="si">{</span><span class="n">pvalue</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">pvalue</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decision: Reject the null hypothesis at significance level α = </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The data is unlikely to be Missing Completely At Random (MCAR).&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Decision: Fail to reject the null hypothesis at significance level α = </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Interpretation: There is insufficient evidence to suggest the data deviates from MCAR.&quot;</span><span class="p">)</span></div>
-
 
 </pre></div>
 

@@ -5,13 +5,14 @@ This section provides an overview of MissMecha's key modules.
 Each module is designed for a specific task in handling missing data—whether it’s visualising patterns, generating missingness, or evaluating imputation strategies.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
 
    modules/visual
    modules/generate
    modules/analysis
    modules/impute
+   
 
 
 Module Overview

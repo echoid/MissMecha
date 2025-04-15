@@ -23,9 +23,9 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=8beceb6a" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -83,14 +83,20 @@
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
     <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../installation.html">
   Installation
  </a>
 </li>
 
 <li class="toctree-l1 nav-item">
- <a class="reference internal nav-link" href="../usage.html">
-  Usage
+ <a class="reference internal nav-link" href="../theory.html">
+  Theory
  </a>
 </li>
 
@@ -173,12 +179,12 @@
   </label>
   <ul>
    <li class="toctree-l2">
-    <a class="reference internal" href="generate/mcar.html">
+    <a class="reference internal" href="generate_fun/mcar.html">
      MCAR Functions
     </a>
    </li>
    <li class="toctree-l2 has-children">
-    <a class="reference internal" href="generate/mar.html">
+    <a class="reference internal" href="generate_fun/mar.html">
      MAR Functions
     </a>
     <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
@@ -188,21 +194,38 @@
     </label>
     <ul>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_numerical.html">
+      <a class="reference internal" href="generate_fun/mar_numerical.html">
        Numerical MAR Types
       </a>
      </li>
      <li class="toctree-l3">
-      <a class="reference internal" href="generate/mar_categorical.html">
+      <a class="reference internal" href="generate_fun/mar_categorical.html">
        Categorical MAR Types
       </a>
      </li>
     </ul>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="generate/mnar.html">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="generate_fun/mnar.html">
      MNAR Functions
     </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
    </li>
   </ul>
  </li>
@@ -240,23 +263,64 @@
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_heatmap">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     plot_missing_heatmap()
-    </span>
-   </code>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Visual Module
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#function-overview">
+     Function Overview
+    </a>
+   </li>
+  </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_matrix">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     plot_missing_matrix()
-    </span>
-   </code>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#module-reference">
+   Module Reference
   </a>
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-missing-matrix">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       plot_missing_matrix
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_matrix">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         plot_missing_matrix()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#plot-missing-heatmap">
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       plot_missing_heatmap
+      </span>
+     </code>
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.visual.plot_missing_heatmap">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         plot_missing_heatmap()
+        </span>
+       </code>
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -277,63 +341,119 @@
               
               <article class="bd-article" role="main">
                 
-  <section id="module-missmecha.visual">
-<span id="visual-module"></span><h1>Visual Module<a class="headerlink" href="#module-missmecha.visual" title="Link to this heading">¶</a></h1>
+  <section id="visual-module">
+<h1>Visual Module<a class="headerlink" href="#visual-module" title="Link to this heading">¶</a></h1>
+<p>This module provides visualization tools for inspecting missing data patterns.
+It includes matrix-style plots, nullity correlation heatmaps, and column-level summaries.
+These tools are especially helpful during exploratory data analysis (EDA) and when diagnosing the missingness structure.</p>
+<section id="function-overview">
+<h2>Function Overview<a class="headerlink" href="#function-overview" title="Link to this heading">¶</a></h2>
+<table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#missmecha.visual.plot_missing_matrix" title="missmecha.visual.plot_missing_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_missing_matrix</span></code></a></p></td>
+<td><p>Plot a matrix visualization of missing data patterns.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#missmecha.visual.plot_missing_heatmap" title="missmecha.visual.plot_missing_heatmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_missing_heatmap</span></code></a></p></td>
+<td><p>Plot a heatmap of pairwise nullity correlations.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="module-reference">
+<h1>Module Reference<a class="headerlink" href="#module-reference" title="Link to this heading">¶</a></h1>
+<section id="plot-missing-matrix">
+<h2><code class="docutils literal notranslate"><span class="pre">plot_missing_matrix</span></code><a class="headerlink" href="#plot-missing-matrix" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="missmecha.visual.plot_missing_heatmap">
-<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(20,</span> <span class="pre">12)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pearson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/visual.html#plot_missing_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_heatmap" title="Link to this definition">¶</a></dt>
-<dd><p>Visualizes nullity correlation in the DataFrame using a heatmap.</p>
+<dt class="sig sig-object py" id="missmecha.visual.plot_missing_matrix">
+<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/visual.html#plot_missing_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_matrix" title="Link to this definition">¶</a></dt>
+<dd><p>Plot a matrix visualization of missing data patterns.</p>
+<p>This function displays the presence and absence of data in a DataFrame as a matrix-style heatmap.
+It supports either binary missing indicators or color-mapped actual values for observed entries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – Input data to analyze missing patterns.</p></li>
-<li><p><strong>figsize</strong> (<em>tuple</em>) – Figure size.</p></li>
-<li><p><strong>fontsize</strong> (<em>int</em>) – Font size for axis labels and annotations.</p></li>
-<li><p><strong>label_rotation</strong> (<em>int</em>) – Rotation angle for x-axis labels.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em>) – Colormap used for the heatmap.</p></li>
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Input DataFrame whose missingness pattern will be visualized.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Custom figure size. If None, the size is determined automatically based on the data shape.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Colormap to use when <cite>color=True</cite>. Defaults to “RdBu”.</p></li>
+<li><p><strong>color</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to color the present values using a colormap. If False, uses a fixed gray color.</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Font size for column and axis labels. Default is 14.</p></li>
+<li><p><strong>label_rotation</strong> (<em>int</em><em>, </em><em>optional</em>) – Rotation angle for x-axis tick labels (column names and missing rates). Default is 45 degrees.</p></li>
+<li><p><strong>show_colorbar</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show a colorbar for normalized values. Only works when <cite>color=True</cite>.</p></li>
+<li><p><strong>ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, display y-axis using index labels (e.g., for time series data). If False, just label row positions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ax</strong> – The Axes object for the heatmap.</p>
+<dd class="field-even"><p><strong>ax</strong> – The Axes object of the main plot.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>matplotlib.axes.Axes</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>The top axis shows column names; the bottom axis shows missing rates.</p></li>
+<li><p>Fully observed or fully missing columns are retained.</p></li>
+<li><p>If <cite>color=True</cite>, valid (non-missing) values are normalized and mapped using <cite>cmap</cite>.</p></li>
+<li><p>If the dataset is very large, consider pre-sampling before calling this function.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.visual</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_missing_matrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_missing_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
+</section>
+<hr class="docutils" />
+<section id="plot-missing-heatmap">
+<h2><code class="docutils literal notranslate"><span class="pre">plot_missing_heatmap</span></code><a class="headerlink" href="#plot-missing-heatmap" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="missmecha.visual.plot_missing_matrix">
-<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/visual.html#plot_missing_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_matrix" title="Link to this definition">¶</a></dt>
-<dd><p>Visualizes missing data in a DataFrame as a heatmap.</p>
-<section id="parameters">
-<h2>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>df<span class="classifier">pd.DataFrame</span></dt><dd><p>Input DataFrame to visualize.</p>
+<dt class="sig sig-object py" id="missmecha.visual.plot_missing_heatmap">
+<span class="sig-prename descclassname"><span class="pre">missmecha.visual.</span></span><span class="sig-name descname"><span class="pre">plot_missing_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(20,</span> <span class="pre">12)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">45</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pearson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/visual.html#plot_missing_heatmap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.visual.plot_missing_heatmap" title="Link to this definition">¶</a></dt>
+<dd><p>Plot a heatmap of pairwise nullity correlations.</p>
+<p>This function visualizes the pairwise correlation between missing value patterns
+across columns in the input DataFrame. The heatmap helps identify dependencies
+between missingness in different variables and can guide further missing data analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) – Input dataset to visualize. Each column should represent a feature.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em> of </em><em>int</em><em>, </em><em>optional</em>) – Figure size in inches (width, height). Default is (20, 12).</p></li>
+<li><p><strong>fontsize</strong> (<em>int</em><em>, </em><em>optional</em>) – Font size for axis labels and annotations. Default is 14.</p></li>
+<li><p><strong>label_rotation</strong> (<em>int</em><em>, </em><em>optional</em>) – Rotation angle (in degrees) for x-axis tick labels. Default is 45.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) – Colormap for the heatmap (e.g., ‘RdBu’, ‘viridis’). Default is ‘RdBu’.</p></li>
+<li><p><strong>method</strong> (<em>{'pearson'</em><em>, </em><em>'kendall'</em><em>, </em><em>'spearman'}</em><em>, </em><em>optional</em>) – Correlation method to compute pairwise nullity relationships. Default is ‘pearson’.</p></li>
+</ul>
 </dd>
-<dt>figsize<span class="classifier">tuple</span></dt><dd><p>Size of the output figure.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ax</strong> – Axes object containing the plotted heatmap.</p>
 </dd>
-<dt>cmap<span class="classifier">str</span></dt><dd><p>Colormap to use when <cite>color=True</cite>.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes.Axes</p>
 </dd>
-<dt>color<span class="classifier">bool</span></dt><dd><p>Whether to use colormap or a fixed color for present values.</p>
-</dd>
-<dt>fontsize<span class="classifier">int</span></dt><dd><p>Font size for labels.</p>
-</dd>
-<dt>label_rotation<span class="classifier">int</span></dt><dd><p>Rotation angle for x-axis labels.</p>
-</dd>
-<dt>show_colorbar<span class="classifier">bool</span></dt><dd><p>Whether to display a colorbar for colormap mode.</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the input DataFrame does not contain any missing values.</p>
 </dd>
 </dl>
-</section>
-<section id="returns">
-<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
-<dl class="simple">
-<dt>ax<span class="classifier">matplotlib.axes.Axes</span></dt><dd><p>Main plot axis object.</p>
-</dd>
-</dl>
-</section>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Fully observed or fully missing columns are excluded from the plot.</p></li>
+<li><p>If the dataset has more than 1000 rows, a random sample of 1000 rows is used.</p></li>
+<li><p>The heatmap represents correlation between binary indicators of missingness (True/False).</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.visual</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_missing_heatmap</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;my_data.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plot_missing_heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
 </dd></dl>
 
+</section>
 </section>
 
 

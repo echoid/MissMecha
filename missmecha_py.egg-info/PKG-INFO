@@ -1,0 +1,120 @@
+Metadata-Version: 2.4
+Name: missmecha-py
+Version: 0.1.0
+Summary: All about missing data mechanisms: simulation, analysis, and visualization
+Home-page: https://github.com/echoid/MissMecha
+Author: Youran Zhou
+Author-email: youranzhou0724@gmail.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: seaborn
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# 🧩 MissMecha
+
+**MissMecha** is a Python package dedicated to the systematic simulation, visualization, and evaluation of missing data mechanisms. Our goal is to provide a unified interface for generating, inspecting, and analyzing missingness — supporting research, benchmarking, and education.
+
+---
+
+## Highlights
+
+- 🔍 **All About Missing Mechanisms**
+  - Simulate **MCAR**, **MAR**, and **MNAR** in flexible formats
+  - Currently supports:
+    - **3× MCAR** strategies
+    - **8× MAR** strategies
+    - **6× MNAR** strategies
+    - Experimental support for **categorical** and **time series** missingness
+
+- **Missingness Pattern Visualization**
+  - Visual tools to **observe missing patterns**
+  - Helps identify potential mechanism types (MCAR vs MAR vs MNAR)
+
+- **Flexible Generator Interface**
+  - Column-wise or global missingness simulation
+  - Sklearn-style `fit` / `transform` methods
+  - Supports custom rates, dependencies, labels, and logic
+
+- **Evaluation Toolkit**
+  - Quantitative metrics including **MSE**, **MAE**, **RMSE**, and **AvgERR**
+  - Built-in support for **Little’s MCAR test**
+
+- **SimpleSmartImputer**
+  - Lightweight imputer that automatically detects **numerical** and **categorical** columns
+  - Applies **mean** or **mode** imputation with verbose diagnostics
+
+---
+
+## Motivation
+
+Working with missing data often involves disparate implementations and inconsistent assumptions across studies.  
+**MissMecha** brings together widely used missing data mechanisms into a single, structured, and reproducible Python framework.
+
+> Whether you're designing benchmark experiments or exploring real-world data — MissMecha lets you simulate and analyze missingness with clarity and control.
+
+---
+
+## ⚡ Quick Preview
+
+```python
+from missmecha import MissMechaGenerator
+
+generator = MissMechaGenerator(
+    info={
+        0: {"mechanism": "mar", "type": 1, "rate": 0.3}
+    }
+)
+generator.fit(X)
+X_missing = generator.transform(X)
+```
+
+---
+
+## Documentation & Notebooks
+
+- Full documentation: [Link coming soon]
+- Demo notebooks:
+  - `demo_generate.ipynb`
+  - `demo_analysis.ipynb`
+  - `demo_visual.ipynb`
+
+---
+
+## Installation
+
+```bash
+pip install missmecha-py  # Coming soon on PyPI
+```
+
+---
+
+## Author
+
+Developed by **Youran Zhou**, PhD Candidate @ Deakin University  
+With support from the open-source research community ❤️
+
+---
+
+## 📄 License
+
+MIT License
