@@ -4,11 +4,6 @@ Numerical MAR Types
 This section introduces functions for simulating **Missing At Random (MAR)** mechanisms in numerical data.
 
 MAR assumes that the probability of missingness depends only on the **observed** variables.  
-Formally:
-
-.. math::
-
-   P(M \mid X) = P(M \mid X_{\text{obs}})
 
 This allows for more realistic simulation than MCAR, while remaining statistically manageable for imputation or analysis.
 
@@ -22,7 +17,7 @@ All functions below are designed for **continuous** or **ordinal** numerical dat
 ----
 
 Overview of MAR Mechanisms
-----------------------------
+---------------------------------------------
 
 .. list-table:: Summary of MAR Types
    :widths: 15 20 60
@@ -59,7 +54,7 @@ Overview of MAR Mechanisms
 .. currentmodule:: missmecha.generate.mar
 
 ``MARType1``
-------------
+-----------------------------
 
 .. autoclass:: MARType1
    :members:
@@ -69,7 +64,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType2``
-------------
+-----------------------------
 
 .. autoclass:: MARType2
    :members:
@@ -79,7 +74,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType3``
-------------
+-----------------------------
 
 .. autoclass:: MARType3
    :members:
@@ -89,7 +84,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType4``
-------------
+-----------------------------
 
 .. autoclass:: MARType4
    :members:
@@ -99,7 +94,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType5``
-------------
+-----------------------------
 
 .. autoclass:: MARType5
    :members:
@@ -109,7 +104,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType6``
-------------
+-----------------------------
 
 .. autoclass:: MARType6
    :members:
@@ -119,7 +114,7 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType7``
-------------
+-----------------------------
 
 .. autoclass:: MARType7
    :members:
@@ -129,14 +124,14 @@ Overview of MAR Mechanisms
 ----
 
 ``MARType8``
-------------
+-----------------------------
 
 .. autoclass:: MARType8
    :members:
    :undoc-members:
    :show-inheritance:
 
-----
+
 
 
    

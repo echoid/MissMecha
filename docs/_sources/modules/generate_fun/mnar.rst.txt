@@ -1,5 +1,5 @@
 MNAR Functions
-==============
+=======================
 
 Missing Not At Random (MNAR) refers to a missing data mechanism where the probability of missingness depends on the **unobserved** data.
 

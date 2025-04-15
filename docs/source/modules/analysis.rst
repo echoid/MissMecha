@@ -1,11 +1,12 @@
 Analysis Module
-===============
+=======================
 
 This module provides utilities to analyze the structure and quality of missing data and its imputations.
 
 .. currentmodule:: missmecha.analysis
+
 Function Overview
------------------
+----------------------------------
 .. autosummary::
    :nosignatures:
 
@@ -17,13 +18,13 @@ Function Overview
 
 
 Module Reference
-===============
+=======================
 
 .. Missing Rate Summary
 .. --------------------
 
 ``compute_missing_rate``
---------------------
+----------------------------------------
 
 Summarize the extent and structure of missing data in a DataFrame or NumPy array.
 
@@ -32,8 +33,9 @@ Summarize the extent and structure of missing data in a DataFrame or NumPy array
 
 .. Imputation Evaluation
 .. ---------------------
+
 ``evaluate_imputation``
---------------------
+----------------------------------------
 
 Evaluate imputation quality by comparing filled values to the ground truth at missing positions.
 
@@ -42,6 +44,7 @@ Evaluate imputation quality by comparing filled values to the ground truth at mi
 
 .. MCAR Testing
 .. ------------
+
 ``MCARTest``
 --------------------
 

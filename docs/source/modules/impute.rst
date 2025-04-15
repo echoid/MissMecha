@@ -1,5 +1,5 @@
 Impute Module
-=============
+=======================
 
 This module provides baseline imputers to support quick experimentation or evaluation of imputation strategies.  
 The main tool is ``SimpleSmartImputer``, which detects column types and fills missing values accordingly.
@@ -7,14 +7,14 @@ The main tool is ``SimpleSmartImputer``, which detects column types and fills mi
 .. currentmodule:: missmecha.impute
 
 Function Overview
------------------
+----------------------------------
 .. autosummary::
    :nosignatures:
 
    SimpleSmartImputer
 
 Module Reference
-===============
+=======================
 
 ``SimpleSmartImputer``
 ----------------------

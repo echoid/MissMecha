@@ -21,6 +21,7 @@ def compute_missing_rate(data, print_summary=True, plot=False):
     plot : bool, default=False
         If True, displays a barplot of missing rates per column.
 
+        
     Returns
     -------
     result : dict

@@ -35,8 +35,6 @@
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="author" title="About these documents" href="../../about.html" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -612,10 +610,7 @@
   <section id="numerical-mar-types">
 <h1>Numerical MAR Types<a class="headerlink" href="#numerical-mar-types" title="Link to this heading">¶</a></h1>
 <p>This section introduces functions for simulating <strong>Missing At Random (MAR)</strong> mechanisms in numerical data.</p>
-<p>MAR assumes that the probability of missingness depends only on the <strong>observed</strong> variables.
-Formally:</p>
-<div class="math notranslate nohighlight">
-\[P(M \mid X) = P(M \mid X_{\text{obs}})\]</div>
+<p>MAR assumes that the probability of missingness depends only on the <strong>observed</strong> variables.</p>
 <p>This allows for more realistic simulation than MCAR, while remaining statistically manageable for imputation or analysis.</p>
 <p>All functions below are designed for <strong>continuous</strong> or <strong>ordinal</strong> numerical data, and cover a wide range of feature dependencies.</p>
 <div class="admonition note">
@@ -1178,7 +1173,6 @@ selected, and missing values are introduced into the remaining columns.</p>
 
 </dd></dl>
 
-<hr class="docutils" />
 </section>
 </section>
 

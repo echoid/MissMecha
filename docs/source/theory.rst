@@ -3,10 +3,6 @@ Theory
 
 Understanding the mechanism behind missing data is essential for realistic simulation and effective imputation strategies. In statistics, missingness is typically classified into three types: **MCAR**, **MAR**, and **MNAR**.
 
-.. contents::
-   :local:
-   :depth: 2
-   :hidden:
 
 Introduction
 ------------

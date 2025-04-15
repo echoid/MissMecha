@@ -1,11 +1,9 @@
 Welcome to ``MissMecha``’s Documentation
-====================================
+========================================
 
 ``MissMecha`` is a Python package for simulating and evaluating missing data mechanisms.  
 It provides structured tools for generating missingness, visualizing patterns, and evaluating imputation methods.  
 The package is designed for researchers, educators, and developers working with incomplete data.
-
-
 
 .. toctree::
    :maxdepth: 1
@@ -13,8 +11,6 @@ The package is designed for researchers, educators, and developers working with 
 
    usage
    installation
-
-
 
 .. toctree::
    :maxdepth: 1
@@ -26,27 +22,16 @@ The package is designed for researchers, educators, and developers working with 
 
 .. toctree::
    :maxdepth: 1
-   :caption: Theory
-
-   missingness
-
-.. toctree::
-   :maxdepth: 1
    :caption: Project Information
 
    about
    contribution
 
-
-
-
 .. raw:: html
 
    <hr style="border-top: 1px solid #ddd; margin: 2em 0 2em 0;">
 
-
 **Project Resources**
-
 
 .. grid:: 1 2 2 2
    :gutter: 4
@@ -68,7 +53,6 @@ The package is designed for researchers, educators, and developers working with 
       .. button-link:: https://github.com/echoid/MissMecha
          :color: secondary
          :outline:
-         :expand:
 
          Visit GitHub
 
@@ -87,11 +71,7 @@ The package is designed for researchers, educators, and developers working with 
       .. button-link:: https://pypi.org/project/missmecha-py/
          :color: secondary
          :outline:
-         :expand:
 
          Visit PyPI
-
-
-
 
 

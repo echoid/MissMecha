@@ -21,13 +21,6 @@ MissMecha addresses this gap by offering a consistent, extensible API for:
 - Testing imputation under controlled conditions
 - Bridging statistical theory with practical ML workflows
 
-Supported Modules
------------------
-
-- `missmecha.generator` – missingness simulation engine
-- `missmecha.analysis` – MCAR testing, imputation evaluation
-- `missmecha.visual` – visualization tools for missing patterns
-- `missmecha.impute` – simple baselines for imputation
 
 Where to Start
 --------------

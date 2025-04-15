@@ -8,7 +8,7 @@ These tools are especially helpful during exploratory data analysis (EDA) and wh
 .. currentmodule:: missmecha.visual
 
 Function Overview
------------------
+----------------------------------
 
 .. autosummary::
    :nosignatures:
@@ -17,17 +17,17 @@ Function Overview
    plot_missing_heatmap
 
 Module Reference
-===============
+============================
 
 ``plot_missing_matrix``
------------------
+----------------------------------
 
 
 .. autofunction:: plot_missing_matrix
 
 
 ``plot_missing_heatmap``
------------------
+----------------------------------
 
 .. autofunction:: plot_missing_heatmap
 

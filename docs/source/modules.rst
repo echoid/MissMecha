@@ -23,7 +23,6 @@ Module Overview
    :class-container: sd-text-center sd-rounded
 
    .. grid-item-card:: ``Visual Model``
-      :img-top: _static/module_visual.svg
       :class-card: intro-card
       :shadow: md
 
@@ -39,7 +38,6 @@ Module Overview
          View Module
 
    .. grid-item-card:: ``Generate Module``
-      :img-top: _static/module_generate.svg
       :class-card: intro-card
       :shadow: md
 
@@ -55,7 +53,6 @@ Module Overview
          View Module
 
    .. grid-item-card:: ``Analysis Module``
-      :img-top: _static/module_analysis.svg
       :class-card: intro-card
       :shadow: md
 
@@ -70,7 +67,6 @@ Module Overview
          View Module
 
    .. grid-item-card:: ``Impute Module``
-      :img-top: _static/module_impute.svg
       :class-card: intro-card
       :shadow: md
 

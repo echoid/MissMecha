@@ -1,5 +1,5 @@
 Contribution Guidelines
-=======================
+==============================================
 
 We warmly welcome contributions to the ``MissMecha`` project!  
 Whether it's a bug fix, a new feature, improved documentation, or even a thoughtful suggestion — every contribution helps improve the package.
@@ -20,11 +20,10 @@ If you'd like to report a bug or propose an enhancement, please:
 
 .. _GitHub issues: https://github.com/echoid/MissMecha/issues
 
-
 Improving Code or Documentation
 ###############################
 
-All contributions to MissMecha should be linked to a `GitHub issue`_.  
+All contributions to MissMecha should be linked to `GitHub issues`_.  
 If you notice something you'd like to improve but no issue exists yet, feel free to open one. That gives others the opportunity to discuss, offer context, or join forces.
 
 Once your idea is discussed, you can:

@@ -1,5 +1,5 @@
 Examples
-========
+=======================
 
 This section showcases example use cases for MissMecha.
 Each notebook demonstrates a different missingness generation or evaluation scenario.

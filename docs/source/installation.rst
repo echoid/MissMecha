@@ -1,5 +1,5 @@
 Installation
-============
+=======================
 
 MissMecha is available on the Python Package Index (PyPI). You can install it via pip:
 

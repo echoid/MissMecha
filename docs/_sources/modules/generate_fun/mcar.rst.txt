@@ -20,7 +20,7 @@ In MissMecha, we implement several MCAR variants that can be applied to numerica
 
 
 ``MCARType1``
----------
+--------------------------
 
 .. autoclass:: missmecha.generate.mcar.MCARType1
    :members:
@@ -30,7 +30,7 @@ In MissMecha, we implement several MCAR variants that can be applied to numerica
 ----
 
 ``MCARType2``
----------
+--------------------------
 
 .. autoclass:: missmecha.generate.mcar.MCARType2
    :members:
@@ -40,12 +40,12 @@ In MissMecha, we implement several MCAR variants that can be applied to numerica
 ----
 
 ``MCARType3``
----------
+--------------------------
 
 .. autoclass:: missmecha.generate.mcar.MCARType3
    :members:
    :undoc-members:
    :show-inheritance:
 
-----
+
 

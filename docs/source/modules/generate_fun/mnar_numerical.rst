@@ -48,7 +48,7 @@ Overview of MNAR Mechanisms
 .. currentmodule:: missmecha.generate.mnar
 
 ``MNARType1``
-------------
+-----------------------------
 
 .. autoclass:: MNARType1
    :members:
@@ -58,7 +58,7 @@ Overview of MNAR Mechanisms
 ----
 
 ``MNARType2``
-------------
+-----------------------------
 
 .. autoclass:: MNARType2
    :members:
@@ -68,7 +68,7 @@ Overview of MNAR Mechanisms
 ----
 
 ``MNARType3``
-------------
+-----------------------------
 
 .. autoclass:: MNARType3
    :members:
@@ -78,7 +78,7 @@ Overview of MNAR Mechanisms
 ----
 
 ``MNARType4``
-------------
+-----------------------------
 
 .. autoclass:: MNARType4
    :members:
@@ -88,7 +88,7 @@ Overview of MNAR Mechanisms
 ----
 
 ``MNARType5``
-------------
+-----------------------------
 
 .. autoclass:: MNARType5
    :members:
@@ -98,11 +98,11 @@ Overview of MNAR Mechanisms
 ----
 
 ``MNARType6``
-------------
+-----------------------------
 
 .. autoclass:: MNARType6
    :members:
    :undoc-members:
    :show-inheritance:
 
-----
+
