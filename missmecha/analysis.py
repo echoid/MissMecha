@@ -1,9 +1,12 @@
-import pandas as pd 
 import numpy as np
-from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+from sklearn.metrics import mean_squared_error as mse, mean_absolute_error as mae, accuracy_score as acc
+from scipy.stats import chi2, ttest_ind
 from IPython.display import display
+from typing import Union
 
 def compute_missing_rate(data, print_summary=True, plot=False):
     """
@@ -73,11 +76,6 @@ def compute_missing_rate(data, print_summary=True, plot=False):
         "report": report,
         "overall_missing_rate": overall_rate
     }
-
-
-
-
-
 
 def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=None):
     """
@@ -161,13 +159,6 @@ def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=N
         "column_scores": column_scores,
         "overall_score": overall_score
     }
-
-
-
-import numpy as np
-import pandas as pd
-from scipy.stats import chi2, ttest_ind
-from typing import Union
 
 
 class MCARTest:

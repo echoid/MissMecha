@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 from missmecha.analysis import compute_missing_rate, MCARTest
 from missmecha.generator import MissMechaGenerator
@@ -32,11 +33,6 @@ test_cases = [
     # {"name": "MNAR Type 6", "info": {range(10): {"mechanism": "mnar", "type": 6, "rate": 0.2}}},
 
 ]
-
-import numpy as np
-import pandas as pd
-from sklearn.datasets import make_classification
-from missmecha.generator import MissMechaGenerator
 
 # Step 1: Generate synthetic data
 X, y = make_classification(n_samples=1000, n_features=10, n_informative=5, random_state=42)
