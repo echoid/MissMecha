@@ -1,6 +1,7 @@
+import warnings
+
 import pandas as pd
 import numpy as np
-import warnings
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 warnings.filterwarnings("ignore", message="Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.")
