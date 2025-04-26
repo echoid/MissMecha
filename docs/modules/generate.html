@@ -293,6 +293,15 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.fit_transform">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         MissMechaGenerator.fit_transform()
+        </span>
+       </code>
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#missmecha.generator.MissMechaGenerator.get_bool_mask">
        <code class="docutils literal notranslate">
         <span class="pre">
@@ -357,7 +366,7 @@ Each mechanism (MCAR, MAR, MNAR) corresponds to a specific pattern of missingnes
 <p>The main interface to generate missingness patterns.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Flexible simulator for generating missing data under various mechanisms.</p>
 <p>This class serves as the central interface for simulating missing values using various predefined mechanisms.
@@ -376,6 +385,9 @@ or tuple of columns, and each value is a dict with fields like:
 - ‘rate’: float
 - ‘depend_on’: list or str
 - ‘para’: dict of additional parameters</p></li>
+<li><p><strong>cat_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>)</p></li>
+<li><p><strong>variables.</strong> (<em>List</em><em> of </em><em>columns treated as categorical</em>)</p></li>
+<li><p><strong>simulation.</strong> (<em>Internally encoded into integers during missingness</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -405,6 +417,26 @@ or column-specific configurations.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#missmecha.generator.MissMechaGenerator" title="missmecha.generator.MissMechaGenerator">MissMechaGenerator</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator.fit_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator.fit_transform" title="Link to this definition">¶</a></dt>
+<dd><p>Fit the generator and apply the transformation in a single step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X</strong> (<em>pd.DataFrame</em><em> or </em><em>np.ndarray</em>) – The complete input dataset.</p></li>
+<li><p><strong>y</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Label or target data (used for some MNAR or MAR configurations).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>X_masked</strong> – Dataset with simulated missing values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>same type as X</p>
 </dd>
 </dl>
 </dd></dl>

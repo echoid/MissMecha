@@ -225,43 +225,47 @@
 <span class="c1">#def matrix(df, figsize=(20, 12), cmap=&quot;RdBu&quot;, color=True, fontsize=14, label_rotation=45, show_colorbar=False,ts = False):</span>
 <div class="viewcode-block" id="plot_missing_matrix">
 <a class="viewcode-back" href="../../modules/visual.html#missmecha.visual.plot_missing_matrix">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">plot_missing_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">label_rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">show_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_missing_matrix</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">sort_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">label_rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">show_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Plot a matrix visualization of missing data patterns.</span>
+<span class="sd">    Visualize missing data patterns in a matrix-style heatmap.</span>
 
-<span class="sd">    This function displays the presence and absence of data in a DataFrame as a matrix-style heatmap. </span>
-<span class="sd">    It supports either binary missing indicators or color-mapped actual values for observed entries.</span>
+<span class="sd">    This function renders a binary mask of missingness in the input DataFrame as a heatmap.</span>
+<span class="sd">    It optionally colors the observed (non-missing) values using a colormap, and supports both</span>
+<span class="sd">    standard tabular and time series formats.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    df : pandas.DataFrame</span>
-<span class="sd">        Input DataFrame whose missingness pattern will be visualized.</span>
+<span class="sd">        Input DataFrame to visualize. Missing values (NaN) will be shown as empty.</span>
 <span class="sd">    figsize : tuple of int, optional</span>
-<span class="sd">        Custom figure size. If None, the size is determined automatically based on the data shape.</span>
+<span class="sd">        Custom figure size (width, height). Defaults to auto-scaling based on shape.</span>
 <span class="sd">    cmap : str, optional</span>
-<span class="sd">        Colormap to use when `color=True`. Defaults to &quot;RdBu&quot;.</span>
+<span class="sd">        Colormap to apply to observed values when `color=True`. Default is &quot;Blues&quot;.</span>
+<span class="sd">    sort_by : str or None, optional</span>
+<span class="sd">        If set, sorts rows by the specified column before plotting. Useful for detecting missing pattern.</span>
 <span class="sd">    color : bool, optional</span>
-<span class="sd">        Whether to color the present values using a colormap. If False, uses a fixed gray color.</span>
+<span class="sd">        If True, applies a colormap to observed values. If False, uses a binary (gray-scale) mask.</span>
 <span class="sd">    fontsize : int, optional</span>
-<span class="sd">        Font size for column and axis labels. Default is 14.</span>
+<span class="sd">        Font size for column labels and axis ticks. Default is 14.</span>
 <span class="sd">    label_rotation : int, optional</span>
-<span class="sd">        Rotation angle for x-axis tick labels (column names and missing rates). Default is 45 degrees.</span>
+<span class="sd">        Rotation angle for x-axis labels (column names and missing rates). Default is 45°.</span>
 <span class="sd">    show_colorbar : bool, optional</span>
-<span class="sd">        Whether to show a colorbar for normalized values. Only works when `color=True`.</span>
+<span class="sd">        Whether to display the colorbar (only works if `color=True`).</span>
 <span class="sd">    ts : bool, optional</span>
-<span class="sd">        If True, display y-axis using index labels (e.g., for time series data). If False, just label row positions.</span>
+<span class="sd">        If True, displays the y-axis using the actual DataFrame index (e.g., for time series).</span>
+<span class="sd">        If False, uses sequential row numbers.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ax : matplotlib.axes.Axes</span>
-<span class="sd">        The Axes object of the main plot.</span>
+<span class="sd">        Axes object of the generated plot.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    - The top axis shows column names; the bottom axis shows missing rates.</span>
-<span class="sd">    - Fully observed or fully missing columns are retained.</span>
-<span class="sd">    - If `color=True`, valid (non-missing) values are normalized and mapped using `cmap`.</span>
-<span class="sd">    - If the dataset is very large, consider pre-sampling before calling this function.</span>
+<span class="sd">    - Top axis: column names; bottom axis: column-wise missing rates.</span>
+<span class="sd">    - Works with both numerical and categorical columns.</span>
+<span class="sd">    - Fully observed or fully missing columns are retained (not filtered).</span>
+<span class="sd">    - For large datasets, consider subsampling before plotting for performance.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -269,11 +273,10 @@
 <span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
 <span class="sd">    &gt;&gt;&gt; df = pd.read_csv(&quot;data.csv&quot;)</span>
 <span class="sd">    &gt;&gt;&gt; plot_missing_matrix(df, color=False)</span>
-<span class="sd">    </span>
-<span class="sd">    --------</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
+    <span class="k">if</span> <span class="n">sort_by</span><span class="p">:</span> 
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">sort_by</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">missing_rates</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">height</span> <span class="o">*</span> <span class="mi">100</span>

@@ -200,7 +200,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    categorical_cols : list of str, optional</span>
+<span class="sd">    cat_cols : list of str, optional</span>
 <span class="sd">        A list of column names to be treated as categorical. If None, types are inferred automatically.</span>
 <span class="sd">    verbose : bool, default=True</span>
 <span class="sd">        Whether to print out the imputation summary during `fit`.</span>
@@ -213,9 +213,9 @@
 <span class="sd">    &gt;&gt;&gt; df_imputed = imputer.fit_transform(df)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">categorical_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cat_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">categorical_cols</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">categorical_cols</span> <span class="o">=</span> <span class="n">cat_cols</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fill_values</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">col_types</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># &#39;numerical&#39; or &#39;categorical&#39;</span>

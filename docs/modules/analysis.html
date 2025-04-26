@@ -452,46 +452,81 @@ for each column in a dataset, and optionally provides a summary table and barplo
 <p>Evaluate imputation quality by comparing filled values to the ground truth at missing positions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="missmecha.analysis.evaluate_imputation">
-<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">evaluate_imputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ground_truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filled_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incomplete_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#evaluate_imputation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.evaluate_imputation" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">missmecha.analysis.</span></span><span class="sig-name descname"><span class="pre">evaluate_imputation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rmse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/analysis.html#evaluate_imputation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.analysis.evaluate_imputation" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluate imputation quality by comparing imputed values to ground truth.</p>
-<p>This function calculates per-column and overall performance scores
-by evaluating the imputed values at originally missing positions.</p>
+<p>This function computes per-column and overall evaluation scores based on the positions
+that were originally missing. It supports mixed-type data by applying different metrics
+for categorical and numerical columns. Returns both original and scaled (0-1) versions
+of the evaluation metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ground_truth</strong> (<em>pandas.DataFrame</em>) – Fully observed reference dataset (i.e., the original complete data).</p></li>
-<li><p><strong>filled_df</strong> (<em>pandas.DataFrame</em>) – The dataset after imputation has been applied.</p></li>
-<li><p><strong>incomplete_df</strong> (<em>pandas.DataFrame</em>) – The incomplete dataset used to identify where values were originally missing.</p></li>
-<li><p><strong>method</strong> (<em>str</em>) – Evaluation method: one of {‘rmse’, ‘mae’, ‘accuracy’}.
-- ‘rmse’: Root Mean Squared Error for numeric columns.
-- ‘mae’: Mean Absolute Error for numeric columns.
-- ‘accuracy’: Classification accuracy for categorical columns.</p></li>
-<li><p><strong>status</strong> (<em>dict</em><em>, </em><em>optional</em>) – Optional dictionary mapping column names to types:
-- ‘num’ for numerical, ‘cat’ or ‘disc’ for categorical.
-If not provided, all columns are assumed to be numeric.</p></li>
+<li><p><strong>original_df</strong> (<em>pd.DataFrame</em>) – The fully observed reference dataset (i.e., ground truth).</p></li>
+<li><p><strong>imputed_df</strong> (<em>pd.DataFrame</em>) – The dataset after imputation has been applied.</p></li>
+<li><p><strong>mask_array</strong> (<em>np.ndarray</em><em> or </em><em>pd.DataFrame</em><em> of </em><em>bool</em>) – Boolean array where True = originally observed, False = originally missing.
+Usually obtained from MissMechaGenerator.bool_mask.</p></li>
+<li><p><strong>method</strong> (<em>str</em><em>, </em><em>default=&quot;rmse&quot;</em>) – Evaluation method to use for numeric columns.
+One of {‘rmse’, ‘mae’, ‘accuracy’}.</p></li>
+<li><p><strong>cat_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Column names that should be treated as categorical. These will always use accuracy.
+- If not provided, all columns use the method specified by <cite>method</cite>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>result</strong> –</p>
-<dl class="simple">
-<dt>{</dt><dd><p>‘column_scores’ : dict mapping column names to scores,
-‘overall_score’ : float, average of all column scores</p>
+<dd class="field-even"><p><p><strong>result</strong> – Dictionary with two sub-dictionaries:
+- ‘original’: Contains raw evaluation scores</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>’column_scores’: mapping from column name to evaluation score</p></li>
+<li><p>’overall_score’: average of valid column scores (float)</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>’scaled’: Contains normalized scores (0-1 range)</dt><dd><ul>
+<li><p>’column_scores’: mapping from column name to scaled evaluation score</p></li>
+<li><p>’overall_score’: average of valid scaled column scores (float)</p></li>
+</ul>
 </dd>
 </dl>
-<p>}</p>
+</li>
+</ul>
+<p>For categorical columns, the scaled score equals the original accuracy score.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>ValueError</strong> – If an unknown evaluation method or column type is encountered.</p>
+<dd class="field-even"><p><strong>ValueError</strong> – If an unsupported method or column type is used.</p>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If <cite>cat_cols</cite> is None: all columns use the selected <cite>method</cite>.</p></li>
+<li><dl class="simple">
+<dt>If <cite>cat_cols</cite> is provided:</dt><dd><ul>
+<li><p>columns in <cite>cat_cols</cite> use accuracy</p></li>
+<li><p>all other columns use <cite>method</cite>, which must be ‘rmse’ or ‘mae’</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Includes formatted print output.</p></li>
+</ul>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_imputation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span><span class="n">X_true</span><span class="p">,</span> <span class="n">X_filled</span><span class="p">,</span> <span class="n">X_miss</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;num&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;cat&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span><span class="n">X_true</span><span class="p">,</span> <span class="n">X_filled</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">original_df</span><span class="o">=</span><span class="n">X_true</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">imputed_df</span><span class="o">=</span><span class="n">X_filled</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">mask_array</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cat_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;job_type&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;overall_score&quot;</span><span class="p">])</span>
+<span class="go">0.872</span>
 </pre></div>
 </div>
 </dd></dl>

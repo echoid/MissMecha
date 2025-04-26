@@ -266,92 +266,152 @@
 
 
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
 
 <div class="viewcode-block" id="evaluate_imputation">
 <a class="viewcode-back" href="../../modules/analysis.html#missmecha.analysis.evaluate_imputation">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_imputation</span><span class="p">(</span><span class="n">ground_truth</span><span class="p">,</span> <span class="n">filled_df</span><span class="p">,</span> <span class="n">incomplete_df</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evaluate_imputation</span><span class="p">(</span><span class="n">original_df</span><span class="p">,</span> <span class="n">imputed_df</span><span class="p">,</span> <span class="n">mask_array</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="n">cat_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate imputation quality by comparing imputed values to ground truth.</span>
 
-<span class="sd">    This function calculates per-column and overall performance scores </span>
-<span class="sd">    by evaluating the imputed values at originally missing positions.</span>
+<span class="sd">    This function computes per-column and overall evaluation scores based on the positions </span>
+<span class="sd">    that were originally missing. It supports mixed-type data by applying different metrics</span>
+<span class="sd">    for categorical and numerical columns. Returns both original and scaled (0-1) versions</span>
+<span class="sd">    of the evaluation metrics.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ground_truth : pandas.DataFrame</span>
-<span class="sd">        Fully observed reference dataset (i.e., the original complete data).</span>
-<span class="sd">    filled_df : pandas.DataFrame</span>
+<span class="sd">    original_df : pd.DataFrame</span>
+<span class="sd">        The fully observed reference dataset (i.e., ground truth).</span>
+<span class="sd">    imputed_df : pd.DataFrame</span>
 <span class="sd">        The dataset after imputation has been applied.</span>
-<span class="sd">    incomplete_df : pandas.DataFrame</span>
-<span class="sd">        The incomplete dataset used to identify where values were originally missing.</span>
-<span class="sd">    method : str</span>
-<span class="sd">        Evaluation method: one of {&#39;rmse&#39;, &#39;mae&#39;, &#39;accuracy&#39;}.</span>
-<span class="sd">        - &#39;rmse&#39;: Root Mean Squared Error for numeric columns.</span>
-<span class="sd">        - &#39;mae&#39;: Mean Absolute Error for numeric columns.</span>
-<span class="sd">        - &#39;accuracy&#39;: Classification accuracy for categorical columns.</span>
-<span class="sd">    status : dict, optional</span>
-<span class="sd">        Optional dictionary mapping column names to types:</span>
-<span class="sd">        - &#39;num&#39; for numerical, &#39;cat&#39; or &#39;disc&#39; for categorical.</span>
-<span class="sd">        If not provided, all columns are assumed to be numeric.</span>
+<span class="sd">    mask_array : np.ndarray or pd.DataFrame of bool</span>
+<span class="sd">        Boolean array where True = originally observed, False = originally missing.</span>
+<span class="sd">        Usually obtained from MissMechaGenerator.bool_mask.</span>
+<span class="sd">    method : str, default=&quot;rmse&quot;</span>
+<span class="sd">        Evaluation method to use for numeric columns.</span>
+<span class="sd">        One of {&#39;rmse&#39;, &#39;mae&#39;, &#39;accuracy&#39;}.</span>
+<span class="sd">    cat_cols : list of str, optional</span>
+<span class="sd">        Column names that should be treated as categorical. These will always use accuracy.</span>
+<span class="sd">        - If not provided, all columns use the method specified by `method`.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    result : dict</span>
-<span class="sd">        {</span>
-<span class="sd">            &#39;column_scores&#39; : dict mapping column names to scores,</span>
-<span class="sd">            &#39;overall_score&#39; : float, average of all column scores</span>
-<span class="sd">        }</span>
+<span class="sd">        Dictionary with two sub-dictionaries:</span>
+<span class="sd">        - &#39;original&#39;: Contains raw evaluation scores</span>
+<span class="sd">            - &#39;column_scores&#39;: mapping from column name to evaluation score</span>
+<span class="sd">            - &#39;overall_score&#39;: average of valid column scores (float)</span>
+<span class="sd">        - &#39;scaled&#39;: Contains normalized scores (0-1 range)</span>
+<span class="sd">            - &#39;column_scores&#39;: mapping from column name to scaled evaluation score</span>
+<span class="sd">            - &#39;overall_score&#39;: average of valid scaled column scores (float)</span>
+<span class="sd">        For categorical columns, the scaled score equals the original accuracy score.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        If an unknown evaluation method or column type is encountered.</span>
+<span class="sd">        If an unsupported method or column type is used.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - If `cat_cols` is None: all columns use the selected `method`.</span>
+<span class="sd">    - If `cat_cols` is provided:</span>
+<span class="sd">        - columns in `cat_cols` use accuracy</span>
+<span class="sd">        - all other columns use `method`, which must be &#39;rmse&#39; or &#39;mae&#39;</span>
+<span class="sd">    - Includes formatted print output.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; from missmecha.analysis import evaluate_imputation</span>
-<span class="sd">    &gt;&gt;&gt; result = evaluate_imputation(X_true, X_filled, X_miss, method=&quot;rmse&quot;, status={&quot;age&quot;: &quot;num&quot;, &quot;gender&quot;: &quot;cat&quot;})</span>
+<span class="sd">    &gt;&gt;&gt; result = evaluate_imputation(X_true, X_filled, mask, method=&quot;rmse&quot;)</span>
+
+<span class="sd">    &gt;&gt;&gt; result = evaluate_imputation(</span>
+<span class="sd">    ...     original_df=X_true,</span>
+<span class="sd">    ...     imputed_df=X_filled,</span>
+<span class="sd">    ...     mask_array=mask,</span>
+<span class="sd">    ...     method=&quot;mae&quot;,</span>
+<span class="sd">    ...     cat_cols=[&quot;gender&quot;, &quot;job_type&quot;]</span>
+<span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; print(result[&quot;overall_score&quot;])</span>
+<span class="sd">    0.872</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">},</span> <span class="s2">&quot;method must be &#39;rmse&#39;, &#39;mae&#39;, or &#39;accuracy&#39;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">safe_compare</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+        <span class="c1"># 统一转为字符串，但处理数值的字符串形式（如 &quot;5.0&quot; -&gt; &quot;5&quot;）</span>
+        <span class="n">y_true_str</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y_true</span><span class="p">]</span>
+        <span class="n">y_pred_str</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">y_pred</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true_str</span><span class="p">,</span> <span class="n">y_pred_str</span><span class="p">)</span>
 
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">incomplete_df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;rmse&quot;</span><span class="p">,</span> <span class="s2">&quot;mae&quot;</span><span class="p">,</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be one of &#39;rmse&#39;, &#39;mae&#39;, or &#39;accuracy&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mask_array</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">mask_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mask_array</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">original_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">original_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mask_df</span> <span class="o">=</span> <span class="n">mask_array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cat_cols</span> <span class="ow">or</span> <span class="p">[])</span>
     <span class="n">column_scores</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">score_pool</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">incomplete_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">y_true</span> <span class="o">=</span> <span class="n">ground_truth</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">filled_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
+    <span class="c1"># 初始化结果存储</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;original&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;column_scores&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+        <span class="s2">&quot;scaled&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;column_scores&quot;</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+    <span class="p">}</span>
+    
+    <span class="c1"># 计算原始误差</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">original_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">y_true</span> <span class="o">=</span> <span class="n">original_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">mask_df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">imputed_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">mask_df</span><span class="p">[</span><span class="n">col</span><span class="p">],</span> <span class="n">col</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">y_true</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
-            <span class="n">column_scores</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">&quot;scaled&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
             <span class="k">continue</span>
 
-        <span class="n">col_type</span> <span class="o">=</span> <span class="n">status</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="s2">&quot;num&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">status</span> <span class="k">else</span> <span class="s2">&quot;num&quot;</span>
-
-        <span class="k">if</span> <span class="n">col_type</span> <span class="o">==</span> <span class="s2">&quot;num&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">cat_cols</span> <span class="ow">or</span> <span class="p">[]):</span>
+            <span class="c1"># 数值列：计算原始误差</span>
             <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;rmse&quot;</span><span class="p">:</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">raw_score</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">squared</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;mae&quot;</span><span class="p">:</span>
-                <span class="n">score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Method &#39;</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">&#39; not supported for numeric columns.&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">col_type</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;disc&quot;</span><span class="p">}:</span>
-            <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Use method=&#39;accuracy&#39; for categorical columns.&quot;</span><span class="p">)</span>
-            <span class="n">score</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">y_pred</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+                <span class="n">raw_score</span> <span class="o">=</span> <span class="n">mean_absolute_error</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+            
+            <span class="c1"># 缩放误差到 [0,1]（基于列的最大可能误差）</span>
+            <span class="n">col_range</span> <span class="o">=</span> <span class="n">original_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">original_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+            <span class="n">scaled_score</span> <span class="o">=</span> <span class="n">raw_score</span> <span class="o">/</span> <span class="n">col_range</span> <span class="k">if</span> <span class="n">col_range</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported column type: </span><span class="si">{</span><span class="n">col_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1"># 分类列：准确率已经是 [0,1]，无需缩放</span>
+            <span class="n">raw_score</span> <span class="o">=</span> <span class="n">safe_compare</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+            <span class="n">scaled_score</span> <span class="o">=</span> <span class="n">raw_score</span>
 
-        <span class="n">column_scores</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">raw_score</span>
+        <span class="n">results</span><span class="p">[</span><span class="s2">&quot;scaled&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaled_score</span>
 
-    <span class="n">valid_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">column_scores</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">v</span><span class="p">)]</span>
-    <span class="n">overall_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid_scores</span><span class="p">)</span> <span class="k">if</span> <span class="n">valid_scores</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="c1"># 计算原始和缩放的 Overall 分数</span>
+    <span class="n">valid_original_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span>
+    <span class="n">valid_scaled_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">&quot;scaled&quot;</span><span class="p">][</span><span class="s2">&quot;column_scores&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">s</span><span class="p">)]</span>
+    
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;original&quot;</span><span class="p">][</span><span class="s2">&quot;overall_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid_original_scores</span><span class="p">)</span> <span class="k">if</span> <span class="n">valid_original_scores</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">results</span><span class="p">[</span><span class="s2">&quot;scaled&quot;</span><span class="p">][</span><span class="s2">&quot;overall_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">valid_scaled_scores</span><span class="p">)</span> <span class="k">if</span> <span class="n">valid_scaled_scores</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    
+    <span class="k">if</span> <span class="n">cat_cols</span><span class="p">:</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;AvgErr&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;column_scores&quot;</span><span class="p">:</span> <span class="n">column_scores</span><span class="p">,</span>
-        <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span> <span class="n">overall_score</span>
-    <span class="p">}</span></div>
-
+    <span class="c1"># Pretty print</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Column&#39;</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">method</span><span class="si">:</span><span class="s2">&gt;15</span><span class="si">}{</span><span class="s1">&#39;Scaled (0-1)&#39;</span><span class="si">:</span><span class="s2">&gt;15</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">original_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">original_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;original&#39;</span><span class="p">][</span><span class="s1">&#39;column_scores&#39;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;15.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;original&#39;</span><span class="p">][</span><span class="s1">&#39;column_scores&#39;</span><span class="p">][</span><span class="n">col</span><span class="p">])</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;N/A&#39;</span><span class="si">:</span><span class="s2">&gt;15</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">scaled_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="s1">&#39;column_scores&#39;</span><span class="p">][</span><span class="n">col</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;15.3f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="s1">&#39;column_scores&#39;</span><span class="p">][</span><span class="n">col</span><span class="p">])</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;N/A&#39;</span><span class="si">:</span><span class="s2">&gt;15</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">original_str</span><span class="si">}{</span><span class="n">scaled_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Overall&#39;</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;original&#39;</span><span class="p">][</span><span class="s1">&#39;overall_score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;15.3f</span><span class="si">}{</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;scaled&#39;</span><span class="p">][</span><span class="s1">&#39;overall_score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;15.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
 
 

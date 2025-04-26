@@ -375,7 +375,7 @@ The main tool is <code class="docutils literal notranslate"><span class="pre">Si
 <p>It supports optional control over column type detection and verbosity.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="missmecha.impute.SimpleSmartImputer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.impute.</span></span><span class="sig-name descname"><span class="pre">SimpleSmartImputer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">categorical_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.impute.</span></span><span class="sig-name descname"><span class="pre">SimpleSmartImputer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cat_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/impute.html#SimpleSmartImputer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.impute.SimpleSmartImputer" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A simple imputer for both numerical and categorical variables.</p>
 <p>This class automatically detects or accepts user-specified column types and fills
@@ -384,7 +384,7 @@ missing values using mean (for numerical) or mode (for categorical) strategies.<
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>categorical_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – A list of column names to be treated as categorical. If None, types are inferred automatically.</p></li>
+<li><p><strong>cat_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – A list of column names to be treated as categorical. If None, types are inferred automatically.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to print out the imputation summary during <cite>fit</cite>.</p></li>
 </ul>
 </dd>
