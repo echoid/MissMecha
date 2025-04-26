@@ -105,8 +105,6 @@ class MARCatType1:
 
         return X_missing
 
-
-
 MARCAT_TYPES = {
     1: MARCatType1,
     # 2: MARType2,

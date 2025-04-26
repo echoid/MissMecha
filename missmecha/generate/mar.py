@@ -1,11 +1,10 @@
 # Update mar_type1 to return data_with_missing instead of just the mask
 import numpy as np
+
 from scipy.special import expit
 from scipy.optimize import bisect
 from sklearn.feature_selection import mutual_info_classif
 from scipy.stats import pointbiserialr
-
-
 
 class MARType1:    
     """
@@ -120,11 +119,6 @@ class MARType1:
         X_missing[mask] = np.nan
         return X_missing
 
-
-
-from sklearn.feature_selection import mutual_info_classif
-import numpy as np
-
 class MARType2:
     """
     MAR Mechanism - Type 2 (Mutual Information-Based Feature Ranking)
@@ -215,12 +209,6 @@ class MARType2:
             X_missing[rows, j] = np.nan
 
         return X_missing
-
-
-
-
-import numpy as np
-from scipy.stats import pointbiserialr
 
 
 class MARType3:
@@ -326,10 +314,6 @@ class MARType3:
         rows, cols = np.unravel_index(idx, (n, p))
         X_missing[rows, cols] = np.nan
         return X_missing
-
-
-import numpy as np
-from scipy.stats import pointbiserialr
 
 class MARType4:
     """
@@ -457,9 +441,6 @@ class MARType4:
 
         return X_missing
 
-
-import numpy as np
-
 class MARType5:
     """
     MAR Mechanism - Type 5 (Rank-Based Missingness from a Dependent Feature)
@@ -560,10 +541,6 @@ class MARType5:
             X_missing[selected_rows, xs] = np.nan
 
         return X_missing
-
-
-
-import numpy as np
 
 class MARType6:
     """
@@ -675,10 +652,6 @@ class MARType6:
 
         return X_missing
 
-
-
-import numpy as np
-
 class MARType7:
     """
     MAR Mechanism - Type 7 (Top Value Masking Based on Dependency Column)
@@ -777,8 +750,6 @@ class MARType7:
 
         return X_missing
 
-
-
 # class MARType8:
 #     def __init__(self, missing_rate=0.1, seed=1):
 #         self.missing_rate = missing_rate
@@ -820,7 +791,6 @@ class MARType7:
 
 #     def _verbose(self, msg):
 #         print(f"[{self.__class__.__name__}] {msg}")
-import numpy as np
 
 class MARType8:
     """

@@ -1,9 +1,12 @@
-import pandas as pd 
 import numpy as np
-from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+from sklearn.metrics import mean_squared_error as mse, mean_absolute_error as mae, accuracy_score as acc
+from scipy.stats import chi2, ttest_ind
 from IPython.display import display
+from typing import Union
 
 def compute_missing_rate(data, print_summary=True, plot=False):
     """
@@ -74,17 +77,9 @@ def compute_missing_rate(data, print_summary=True, plot=False):
         "overall_missing_rate": overall_rate
     }
 
-
-
-
-
-
-def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=None):
+def evaluate_imputation(ground_truth, filled_df, incomplete_df, status=None):
     """
     Evaluate imputation quality by comparing imputed values to ground truth.
-
-    This function calculates per-column and overall performance scores 
-    by evaluating the imputed values at originally missing positions.
 
     Parameters
     ----------
@@ -94,11 +89,6 @@ def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=N
         The dataset after imputation has been applied.
     incomplete_df : pandas.DataFrame
         The incomplete dataset used to identify where values were originally missing.
-    method : str
-        Evaluation method: one of {'rmse', 'mae', 'accuracy'}.
-        - 'rmse': Root Mean Squared Error for numeric columns.
-        - 'mae': Mean Absolute Error for numeric columns.
-        - 'accuracy': Classification accuracy for categorical columns.
     status : dict, optional
         Optional dictionary mapping column names to types:
         - 'num' for numerical, 'cat' or 'disc' for categorical.
@@ -109,24 +99,18 @@ def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=N
     result : dict
         {
             'column_scores' : dict mapping column names to scores,
-            'overall_score' : float, average of all column scores
+            'overall_numeric_score' : float, average MAE over numeric columns,
+            'overall_categorical_score' : float, average Accuracy over categorical columns
         }
 
-    Raises
-    ------
-    ValueError
-        If an unknown evaluation method or column type is encountered.
-
-    Examples
-    --------
-    >>> from missmecha.analysis import evaluate_imputation
-    >>> result = evaluate_imputation(X_true, X_filled, X_miss, method="rmse", status={"age": "num", "gender": "cat"})
-    >>> print(result["overall_score"])
+    Notes
+    -----
+    Automatically applies MAE for numeric columns and Accuracy for categorical columns.
     """
-    assert method in {"rmse", "mae", "accuracy"}, "method must be 'rmse', 'mae', or 'accuracy'"
-
     mask = incomplete_df.isnull()
     column_scores = {}
+    numeric_scores = []
+    categorical_scores = []
 
     for col in incomplete_df.columns:
         y_true = ground_truth.loc[mask[col], col]
@@ -139,36 +123,26 @@ def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=N
         col_type = status.get(col, "num") if status else "num"
 
         if col_type == "num":
-            if method == "rmse":
-                score = mean_squared_error(y_true, y_pred, squared=False)
-            elif method == "mae":
-                score = mean_absolute_error(y_true, y_pred)
-            else:
-                raise ValueError(f"Method '{method}' not supported for numeric columns.")
+            score = mae(y_true, y_pred)
+            numeric_scores.append(score)
+
         elif col_type in {"cat", "disc"}:
-            if method != "accuracy":
-                raise ValueError(f"Use method='accuracy' for categorical columns.")
-            score = accuracy_score(y_true.astype(str), y_pred.astype(str))
+            score = acc(y_true.astype(str), y_pred.astype(str))
+            categorical_scores.append(score)
+
         else:
             raise ValueError(f"Unsupported column type: {col_type}")
 
         column_scores[col] = score
 
-    valid_scores = [v for v in column_scores.values() if not np.isnan(v)]
-    overall_score = np.mean(valid_scores) if valid_scores else np.nan
+    overall_numeric_score = np.mean(numeric_scores) if numeric_scores else np.nan
+    overall_categorical_score = np.mean(categorical_scores) if categorical_scores else np.nan
 
     return {
         "column_scores": column_scores,
-        "overall_score": overall_score
+        "overall_numeric_score": overall_numeric_score,
+        "overall_categorical_score": overall_categorical_score
     }
-
-
-
-import numpy as np
-import pandas as pd
-from scipy.stats import chi2, ttest_ind
-from typing import Union
-
 
 class MCARTest:
     """

@@ -1,12 +1,7 @@
+import warnings
 
 import pandas as pd
 import numpy as np
-
-import pandas as pd
-import numpy as np
-import warnings
-
-import warnings
 
 warnings.filterwarnings('ignore', category=UserWarning, module='openpyxl')
 warnings.filterwarnings("ignore", message="Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.")
@@ -103,9 +98,6 @@ def type_convert(df):
                 df[col] = df[col].astype("category").cat.codes.replace(-1, np.nan)
     df = df.to_numpy(dtype=float)
     return df
-
-
-import numpy as np
 
 def apply_missing_rate(data, missing_rate):
     # Flatten the data to simplify the process
