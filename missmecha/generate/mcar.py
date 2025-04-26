@@ -1,6 +1,4 @@
 import numpy as np
-
-
 class MCARType1:
     """
     MCAR Mechanism - Type 1 (Uniform Independent Masking)

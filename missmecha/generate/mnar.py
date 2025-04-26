@@ -1,9 +1,11 @@
+import numpy as np
 import pandas as pd
-import numpy as np
-# Rewrite pick_coeffs and fit_intercepts in pure NumPy (no torch)
-import numpy as np
+
 from scipy.special import expit  # sigmoid
+from scipy import optimize
 from scipy.optimize import bisect
+
+# Rewrite pick_coeffs and fit_intercepts in pure NumPy (no torch)
 def _pick_coeffs_numpy(X, idxs_obs=None, idxs_nas=None, self_mask=False):
     n, d = X.shape
     if self_mask:
@@ -161,9 +163,6 @@ class MNARType1:
         data_with_missing = X.copy()
         data_with_missing[~mask] = np.nan
         return data_with_missing
-import numpy as np
-from scipy.special import expit
-from scipy.optimize import bisect
 
 class MNARType2:
     """
@@ -453,10 +452,6 @@ class MNARType4:
 
         X_missing = X.copy()
         X_missing[mask] = np.nan
-        return X_missing
-import numpy as np
-from scipy.special import expit as sigmoid
-from scipy import optimize
 
 class MNARType5:
     """

@@ -1,15 +1,14 @@
 import numpy as np
 import pandas as pd
+
 from .generate.mcar import MCAR_TYPES
 from .generate.mar import MAR_TYPES
 from .generate.mnar import MNAR_TYPES
 from .generate.marcat import MARCAT_TYPES
 from .generate.mnarcat import MNARCAT_TYPES
-import numpy as np
-import pandas as pd
+
 from .util import safe_init
-import numpy as np
-import pandas as pd
+
 MECHANISM_LOOKUP = {
     "mcar": MCAR_TYPES,
     "mar": MAR_TYPES,
@@ -17,8 +16,6 @@ MECHANISM_LOOKUP = {
     "marcat": MARCAT_TYPES,
     "mnarcat":MNARCAT_TYPES
 }
-
-
 
 class MissMechaGenerator:    
     """
