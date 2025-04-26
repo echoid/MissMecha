@@ -38,43 +38,47 @@ def _get_auto_figsize(n_rows, n_cols, base_width=1.2, base_height=0.3, max_size=
 
 
 #def matrix(df, figsize=(20, 12), cmap="RdBu", color=True, fontsize=14, label_rotation=45, show_colorbar=False,ts = False):
-def plot_missing_matrix(df, figsize=None, cmap="RdBu", color=True, fontsize=14, label_rotation=45, show_colorbar=False, ts=False):
+def plot_missing_matrix(df, figsize=None, cmap="Blues", sort_by=None, color=True, fontsize=14, label_rotation=45, show_colorbar=False, ts=False):
     """
-    Plot a matrix visualization of missing data patterns.
+    Visualize missing data patterns in a matrix-style heatmap.
 
-    This function displays the presence and absence of data in a DataFrame as a matrix-style heatmap. 
-    It supports either binary missing indicators or color-mapped actual values for observed entries.
+    This function renders a binary mask of missingness in the input DataFrame as a heatmap.
+    It optionally colors the observed (non-missing) values using a colormap, and supports both
+    standard tabular and time series formats.
 
     Parameters
     ----------
     df : pandas.DataFrame
-        Input DataFrame whose missingness pattern will be visualized.
+        Input DataFrame to visualize. Missing values (NaN) will be shown as empty.
     figsize : tuple of int, optional
-        Custom figure size. If None, the size is determined automatically based on the data shape.
+        Custom figure size (width, height). Defaults to auto-scaling based on shape.
     cmap : str, optional
-        Colormap to use when `color=True`. Defaults to "RdBu".
+        Colormap to apply to observed values when `color=True`. Default is "Blues".
+    sort_by : str or None, optional
+        If set, sorts rows by the specified column before plotting. Useful for detecting missing pattern.
     color : bool, optional
-        Whether to color the present values using a colormap. If False, uses a fixed gray color.
+        If True, applies a colormap to observed values. If False, uses a binary (gray-scale) mask.
     fontsize : int, optional
-        Font size for column and axis labels. Default is 14.
+        Font size for column labels and axis ticks. Default is 14.
     label_rotation : int, optional
-        Rotation angle for x-axis tick labels (column names and missing rates). Default is 45 degrees.
+        Rotation angle for x-axis labels (column names and missing rates). Default is 45°.
     show_colorbar : bool, optional
-        Whether to show a colorbar for normalized values. Only works when `color=True`.
+        Whether to display the colorbar (only works if `color=True`).
     ts : bool, optional
-        If True, display y-axis using index labels (e.g., for time series data). If False, just label row positions.
+        If True, displays the y-axis using the actual DataFrame index (e.g., for time series).
+        If False, uses sequential row numbers.
 
     Returns
     -------
     ax : matplotlib.axes.Axes
-        The Axes object of the main plot.
+        Axes object of the generated plot.
 
     Notes
     -----
-    - The top axis shows column names; the bottom axis shows missing rates.
-    - Fully observed or fully missing columns are retained.
-    - If `color=True`, valid (non-missing) values are normalized and mapped using `cmap`.
-    - If the dataset is very large, consider pre-sampling before calling this function.
+    - Top axis: column names; bottom axis: column-wise missing rates.
+    - Works with both numerical and categorical columns.
+    - Fully observed or fully missing columns are retained (not filtered).
+    - For large datasets, consider subsampling before plotting for performance.
 
     Examples
     --------
@@ -82,11 +86,10 @@ def plot_missing_matrix(df, figsize=None, cmap="RdBu", color=True, fontsize=14, 
     >>> import pandas as pd
     >>> df = pd.read_csv("data.csv")
     >>> plot_missing_matrix(df, color=False)
-    
-    --------
     """
 
-
+    if sort_by: 
+        df = df.sort_values(by=sort_by, ascending=False).reset_index(drop=True)
 
     height, width = df.shape
     missing_rates = df.isnull().sum() / height * 100

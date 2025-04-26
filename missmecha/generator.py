@@ -17,7 +17,8 @@ MECHANISM_LOOKUP = {
     "marcat": MARCAT_TYPES,
     "mnarcat":MNARCAT_TYPES
 }
-
+            
+import warnings
 
 
 class MissMechaGenerator:    
@@ -45,6 +46,10 @@ class MissMechaGenerator:
         - 'rate': float
         - 'depend_on': list or str
         - 'para': dict of additional parameters
+    cat_cols : list of str, optional
+    List of columns treated as categorical variables. 
+    Internally encoded into integers during missingness simulation.
+
 
     Examples
     --------
@@ -55,7 +60,7 @@ class MissMechaGenerator:
     >>> X_missing = generator.fit_transform(X)
 
     """
-    def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None):
+    def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None, cat_cols=None):
         """
         Multiple-mechanism generator. Uses 'info' dictionary for column-wise specification.
 
@@ -81,6 +86,8 @@ class MissMechaGenerator:
         self._fitted = False
         self.label = None
         self.generator_map = {}
+        self.cat_cols = cat_cols  
+        self.cat_maps = {}  
         self.generator_class = None
         self.col_names = None
         self.is_df = None
@@ -91,6 +98,11 @@ class MissMechaGenerator:
         if not info:
             # fallback to default generator for entire dataset
             self.generator_class = MECHANISM_LOOKUP[self.mechanism][self.mechanism_type]
+            
+
+
+        warnings.filterwarnings("ignore")
+
 
     def _resolve_columns(self, cols):
         """
@@ -146,15 +158,30 @@ class MissMechaGenerator:
         self.col_names = X.columns.tolist() if self.is_df else [f"col{i}" for i in range(X.shape[1])]
         self.index = X.index if self.is_df else np.arange(X.shape[0])
         self.generator_map = {}
+        
+        # Handle categorical mapping
+        if self.cat_cols:
+            if not self.is_df:
+                raise ValueError("Categorical handling requires DataFrame input.")
 
+            self.cat_maps = {}  # {col_name: {int: str}}
+            for col in self.cat_cols:
+                unique_values = X[col].dropna().unique()
+                value_to_int = {v: i for i, v in enumerate(sorted(unique_values))}
+                int_to_value = {i: v for v, i in value_to_int.items()}
+                self.cat_maps[col] = int_to_value  # Save inverse mapping
+
+                # Replace original categorical values with numerical codes
+                X[col] = X[col].map(value_to_int).astype(float)
+        # Fallback: global generator
         if self.info is None:
-            print("Global Missing")
             generator = self.generator_class(missing_rate=self.missing_rate, seed=self.seed)
             X_np = X.to_numpy() if self.is_df else X
-            generator.fit(X_np, y = self.label)
+            generator.fit(X_np, y=self.label)
             self.generator_map["global"] = generator
+
+        # Column-wise generator using info
         else:
-            print("Column Missing")
             for key, settings in self.info.items():
                 cols = (key,) if isinstance(key, (str, int)) else key
                 col_labels, col_idxs = self._resolve_columns(cols)
@@ -163,7 +190,6 @@ class MissMechaGenerator:
                 mech_type = settings["type"]
                 rate = settings["rate"]
                 depend_on = settings.get("depend_on", None)
-                #para = settings.get("parameter", None)
                 para = settings.get("para", {})
                 if not isinstance(para, dict):
                     para = {"value": para}
@@ -174,18 +200,12 @@ class MissMechaGenerator:
                     "missing_rate": rate,
                     "seed": col_seed,
                     "depend_on": depend_on,
-                    **para  # ✅ 展开所有机制特定参数
+                    **para
                 }
-
+                init_kwargs = {k: v for k, v in init_kwargs.items() if v is not None}
                 label = settings.get("label", y)
 
-
-                init_kwargs = {k: v for k, v in init_kwargs.items() if v is not None}
-
-
-
                 generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
-                #generator = generator_cls(missing_rate=rate, seed=self.seed, para = para, depend_on = depend_on)
                 generator = safe_init(generator_cls, init_kwargs)
                 sub_X = X[list(col_labels)].to_numpy() if self.is_df else X[:, col_idxs]
                 generator.fit(sub_X, y=label)
@@ -193,6 +213,7 @@ class MissMechaGenerator:
 
         self._fitted = True
         return self
+
 
     def transform(self, X):
         """
@@ -218,33 +239,43 @@ class MissMechaGenerator:
             generator = self.generator_map["global"]
             masked = generator.transform(data_array)
 
-            # 保存 mask（直接从 transformed 的数据中反推）
             mask_array = ~np.isnan(masked)
             self.mask = mask_array.astype(int)
             self.bool_mask = mask_array
+            
+            if self.is_df:
+                data = pd.DataFrame(masked, columns=self.col_names, index=self.index)
+            else:
+                return masked
 
-            return pd.DataFrame(masked, columns=self.col_names, index=self.index) if self.is_df else masked
         else:
             for key, generator in self.generator_map.items():
                 cols = (key,) if isinstance(key, (str, int)) else key
                 col_labels, col_idxs = self._resolve_columns(cols)
-
                 sub_X = data[list(col_labels)].to_numpy() if self.is_df else data_array[:, col_idxs]
                 masked = generator.transform(sub_X)
 
                 if self.is_df:
                     for col in col_labels:
                         data[col] = masked[:, list(col_labels).index(col)].astype(float)
-
                 else:
                     data_array[:, col_idxs] = masked
 
-            mask_array = ~np.isnan(data_array)
-            self.mask = mask_array.astype(int)
-            self.bool_mask = mask_array
 
+        # ✨ Convert categorical variables back to original string labels (if specified)
+        if self.is_df and self.cat_cols:
+            for col in self.cat_cols:
+                if col in data.columns:
+                    inverse_map = self.cat_maps.get(col)
+                    if inverse_map:
+                        data[col] = data[col].map(lambda x: inverse_map.get(int(x)) if pd.notna(x) else np.nan)
 
-            return data if self.is_df else data_array
+        mask_array = ~data.isna().to_numpy()  # ensure result is np.ndarray
+        self.mask = mask_array.astype(int)
+        self.bool_mask = mask_array
+
+        return data if self.is_df else data_array
+
         
     def _expand_info(self, info):
         """
@@ -295,5 +326,23 @@ class MissMechaGenerator:
         if self.bool_mask is None:
             raise RuntimeError("Boolean mask not available. Please call `transform()` first.")
         return self.bool_mask
+    def fit_transform(self, X, y=None):
+        """
+        Fit the generator and apply the transformation in a single step.
+
+        Parameters
+        ----------
+        X : pd.DataFrame or np.ndarray
+            The complete input dataset.
+        y : array-like, optional
+            Label or target data (used for some MNAR or MAR configurations).
+
+        Returns
+        -------
+        X_masked : same type as X
+            Dataset with simulated missing values.
+        """
+        self.fit(X, y)
+        return self.transform(X)
 
 

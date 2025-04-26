@@ -78,90 +78,150 @@ def compute_missing_rate(data, print_summary=True, plot=False):
 
 
 
+from sklearn.metrics import mean_squared_error, mean_absolute_error, accuracy_score
+import numpy as np
 
-def evaluate_imputation(ground_truth, filled_df, incomplete_df, method, status=None):
+
+def evaluate_imputation(original_df, imputed_df, mask_array, method="rmse", cat_cols=None):
     """
     Evaluate imputation quality by comparing imputed values to ground truth.
 
-    This function calculates per-column and overall performance scores 
-    by evaluating the imputed values at originally missing positions.
+    This function computes per-column and overall evaluation scores based on the positions 
+    that were originally missing. It supports mixed-type data by applying different metrics
+    for categorical and numerical columns. Returns both original and scaled (0-1) versions
+    of the evaluation metrics.
 
     Parameters
     ----------
-    ground_truth : pandas.DataFrame
-        Fully observed reference dataset (i.e., the original complete data).
-    filled_df : pandas.DataFrame
+    original_df : pd.DataFrame
+        The fully observed reference dataset (i.e., ground truth).
+    imputed_df : pd.DataFrame
         The dataset after imputation has been applied.
-    incomplete_df : pandas.DataFrame
-        The incomplete dataset used to identify where values were originally missing.
-    method : str
-        Evaluation method: one of {'rmse', 'mae', 'accuracy'}.
-        - 'rmse': Root Mean Squared Error for numeric columns.
-        - 'mae': Mean Absolute Error for numeric columns.
-        - 'accuracy': Classification accuracy for categorical columns.
-    status : dict, optional
-        Optional dictionary mapping column names to types:
-        - 'num' for numerical, 'cat' or 'disc' for categorical.
-        If not provided, all columns are assumed to be numeric.
+    mask_array : np.ndarray or pd.DataFrame of bool
+        Boolean array where True = originally observed, False = originally missing.
+        Usually obtained from MissMechaGenerator.bool_mask.
+    method : str, default="rmse"
+        Evaluation method to use for numeric columns.
+        One of {'rmse', 'mae', 'accuracy'}.
+    cat_cols : list of str, optional
+        Column names that should be treated as categorical. These will always use accuracy.
+        - If not provided, all columns use the method specified by `method`.
 
     Returns
     -------
     result : dict
-        {
-            'column_scores' : dict mapping column names to scores,
-            'overall_score' : float, average of all column scores
-        }
+        Dictionary with two sub-dictionaries:
+        - 'original': Contains raw evaluation scores
+            - 'column_scores': mapping from column name to evaluation score
+            - 'overall_score': average of valid column scores (float)
+        - 'scaled': Contains normalized scores (0-1 range)
+            - 'column_scores': mapping from column name to scaled evaluation score
+            - 'overall_score': average of valid scaled column scores (float)
+        For categorical columns, the scaled score equals the original accuracy score.
 
     Raises
     ------
     ValueError
-        If an unknown evaluation method or column type is encountered.
+        If an unsupported method or column type is used.
+
+    Notes
+    -----
+    - If `cat_cols` is None: all columns use the selected `method`.
+    - If `cat_cols` is provided:
+        - columns in `cat_cols` use accuracy
+        - all other columns use `method`, which must be 'rmse' or 'mae'
+    - Includes formatted print output.
 
     Examples
     --------
     >>> from missmecha.analysis import evaluate_imputation
-    >>> result = evaluate_imputation(X_true, X_filled, X_miss, method="rmse", status={"age": "num", "gender": "cat"})
+    >>> result = evaluate_imputation(X_true, X_filled, mask, method="rmse")
+
+    >>> result = evaluate_imputation(
+    ...     original_df=X_true,
+    ...     imputed_df=X_filled,
+    ...     mask_array=mask,
+    ...     method="mae",
+    ...     cat_cols=["gender", "job_type"]
+    ... )
     >>> print(result["overall_score"])
+    0.872
     """
-    assert method in {"rmse", "mae", "accuracy"}, "method must be 'rmse', 'mae', or 'accuracy'"
+    
+    def safe_compare(y_true, y_pred):
+        # 统一转为字符串，但处理数值的字符串形式（如 "5.0" -> "5"）
+        y_true_str = [str(int(x)) if str(x).replace(".", "").isdigit() else str(x) for x in y_true]
+        y_pred_str = [str(int(x)) if str(x).replace(".", "").isdigit() else str(x) for x in y_pred]
+        return accuracy_score(y_true_str, y_pred_str)
 
-    mask = incomplete_df.isnull()
+    if method not in {"rmse", "mae", "accuracy"}:
+        raise ValueError("Method must be one of 'rmse', 'mae', or 'accuracy'.")
+
+    if isinstance(mask_array, np.ndarray):
+        mask_df = pd.DataFrame(mask_array, columns=original_df.columns, index=original_df.index)
+    else:
+        mask_df = mask_array.copy()
+
+    cat_cols = set(cat_cols or [])
     column_scores = {}
+    score_pool = []
 
-    for col in incomplete_df.columns:
-        y_true = ground_truth.loc[mask[col], col]
-        y_pred = filled_df.loc[mask[col], col]
+    # 初始化结果存储
+    results = {
+        "original": {"column_scores": {}, "overall_score": None},
+        "scaled": {"column_scores": {}, "overall_score": None},
+    }
+    
+    # 计算原始误差
+    for col in original_df.columns:
+        y_true = original_df.loc[~mask_df[col], col]
+        y_pred = imputed_df.loc[~mask_df[col], col]
 
         if y_true.empty:
-            column_scores[col] = np.nan
+            results["original"]["column_scores"][col] = np.nan
+            results["scaled"]["column_scores"][col] = np.nan
             continue
 
-        col_type = status.get(col, "num") if status else "num"
-
-        if col_type == "num":
+        if col not in (cat_cols or []):
+            # 数值列：计算原始误差
             if method == "rmse":
-                score = mean_squared_error(y_true, y_pred, squared=False)
+                raw_score = mean_squared_error(y_true, y_pred, squared=False)
             elif method == "mae":
-                score = mean_absolute_error(y_true, y_pred)
-            else:
-                raise ValueError(f"Method '{method}' not supported for numeric columns.")
-        elif col_type in {"cat", "disc"}:
-            if method != "accuracy":
-                raise ValueError(f"Use method='accuracy' for categorical columns.")
-            score = accuracy_score(y_true.astype(str), y_pred.astype(str))
+                raw_score = mean_absolute_error(y_true, y_pred)
+            
+            # 缩放误差到 [0,1]（基于列的最大可能误差）
+            col_range = original_df[col].max() - original_df[col].min()
+            scaled_score = raw_score / col_range if col_range > 0 else 0.0
         else:
-            raise ValueError(f"Unsupported column type: {col_type}")
+            # 分类列：准确率已经是 [0,1]，无需缩放
+            raw_score = safe_compare(y_true, y_pred)
+            scaled_score = raw_score
 
-        column_scores[col] = score
+        results["original"]["column_scores"][col] = raw_score
+        results["scaled"]["column_scores"][col] = scaled_score
 
-    valid_scores = [v for v in column_scores.values() if not np.isnan(v)]
-    overall_score = np.mean(valid_scores) if valid_scores else np.nan
+    # 计算原始和缩放的 Overall 分数
+    valid_original_scores = [s for s in results["original"]["column_scores"].values() if not np.isnan(s)]
+    valid_scaled_scores = [s for s in results["scaled"]["column_scores"].values() if not np.isnan(s)]
+    
+    results["original"]["overall_score"] = np.mean(valid_original_scores) if valid_original_scores else np.nan
+    results["scaled"]["overall_score"] = np.mean(valid_scaled_scores) if valid_scaled_scores else np.nan
+    
+    if cat_cols:
+        method = "AvgErr"
+    else:
+        method = method.upper()
 
-    return {
-        "column_scores": column_scores,
-        "overall_score": overall_score
-    }
-
+    # Pretty print
+    print("-" * 50)
+    print(f"{'Column':<12}{method:>15}{'Scaled (0-1)':>15}")
+    print("-" * 50)
+    for col in original_df.columns:
+        original_str = f"{results['original']['column_scores'][col]:>15.3f}" if not np.isnan(results['original']['column_scores'][col]) else f"{'N/A':>15}"
+        scaled_str = f"{results['scaled']['column_scores'][col]:>15.3f}" if not np.isnan(results['scaled']['column_scores'][col]) else f"{'N/A':>15}"
+        print(f"{col:<12}{original_str}{scaled_str}")
+    print("-" * 50)
+    print(f"{'Overall':<12}{results['original']['overall_score']:>15.3f}{results['scaled']['overall_score']:>15.3f}")
 
 
 import numpy as np

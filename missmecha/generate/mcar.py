@@ -15,7 +15,7 @@ class MCARType1:
     seed : int, default=1
         Random seed for reproducibility.
     """
-    def __init__(self, missing_rate=0.1, seed=1):
+    def __init__(self, missing_rate=0.1, seed=42):
         self.missing_rate = missing_rate
         self.seed = seed
         self.fitted = False  # 一般MCAR不需要 fit, 但我们保持统一接口

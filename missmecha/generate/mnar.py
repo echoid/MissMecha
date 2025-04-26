@@ -62,8 +62,6 @@ class MNARType1:
         self.obs_percentile = obs_percentile
         self.fitted = False
 
-        print("self.up_percentile",self.up_percentile)
-
     def fit(self, X, y=None):
         """
         Precompute masking thresholds for each target column using quantile cutoffs.

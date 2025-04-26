@@ -353,7 +353,6 @@ class MARType4:
         self.seed = seed
         self.depend_on = depend_on
         self.fitted = False
-        print("My Depend on",self.depend_on)
 
     def _verbose(self, msg):
         print(f"[{self.__class__.__name__}] {msg}")

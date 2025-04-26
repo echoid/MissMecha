@@ -13,7 +13,7 @@ class SimpleSmartImputer:
 
     Parameters
     ----------
-    categorical_cols : list of str, optional
+    cat_cols : list of str, optional
         A list of column names to be treated as categorical. If None, types are inferred automatically.
     verbose : bool, default=True
         Whether to print out the imputation summary during `fit`.
@@ -26,9 +26,9 @@ class SimpleSmartImputer:
     >>> df_imputed = imputer.fit_transform(df)
     """
     
-    def __init__(self, categorical_cols=None, verbose=True):
+    def __init__(self, cat_cols=None, verbose=True):
 
-        self.categorical_cols = categorical_cols
+        self.categorical_cols = cat_cols
         self.verbose = verbose
         self.fill_values = {}
         self.col_types = {}  # 'numerical' or 'categorical'
