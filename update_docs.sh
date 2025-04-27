@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Echo's MissMecha 一键部署文档脚本 ✨
-
 cd docs || exit
 
 echo "🔄 Rebuilding Sphinx HTML..."

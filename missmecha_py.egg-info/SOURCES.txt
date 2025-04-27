@@ -12,6 +12,7 @@ missmecha/generate/mar.py
 missmecha/generate/marcat.py
 missmecha/generate/mcar.py
 missmecha/generate/mnar.py
+missmecha/generate/mnarcat.py
 missmecha_py.egg-info/PKG-INFO
 missmecha_py.egg-info/SOURCES.txt
 missmecha_py.egg-info/dependency_links.txt
