@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Analysis Demo &#8212; MissMecha</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
+
+    <script src="../_static/documentation_options.js?v=f539c95a"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About Us" href="../about.html" />
+    <link rel="prev" title="Impute Demo" href="MissMecha-Demo-Impute.html" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
+
+    
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
+
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">MissMecha</p>
+  
+</a>
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="fas fa-bars"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class=" collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../usage.html">
+  Project Overview
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../installation.html">
+  Installation
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../theory.html">
+  Theory
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../modules.html">
+  Modules
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../examples.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../about.html">
+  About Us
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../contribution.html">
+  Contribution Guidelines
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/echoid/MissMecha" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://pypi.org/project/missmecha-py/" rel="noopener" target="_blank" title="PyPI"><span><i class="fas fa-box"></i></span>
+            <label class="sr-only">PyPI</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
+          
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="MissMecha-Demo-Generator.html">
+   Generator Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="MissMecha-Demo-Visual.html">
+   Visual Demo
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="MissMecha-Demo-Impute.html">
+   Impute Demo
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Analysis Demo
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
+
+          
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Import-Required-Libraries">
+   Import Required Libraries
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Create-a-Synthetic-Dataset">
+   Create a Synthetic Dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Generate-Missingness-(MCAR)">
+   Generate Missingness (MCAR)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Compute-Missing-Rate">
+   Compute Missing Rate
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Impute-Missing-Values">
+   Impute Missing Values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Evaluate-Imputation-Quality">
+   Evaluate Imputation Quality
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Using-RMSE-for-Numerical-Features">
+     Using RMSE for Numerical Features
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Using-AvgErr-for-Mixed-Types">
+     Using AvgErr for Mixed Types
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#A-Note-on-AvgERR">
+     A Note on AvgERR
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Statistical-Test:-Little's-MCAR-Test">
+   Statistical Test: Little’s MCAR Test
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Test-for-MCAR">
+     Test for MCAR
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#Test-for-Non-MCAR-(MAR-Example)">
+     Test for Non-MCAR (MAR Example)
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Key-Takeaways">
+   Key Takeaways
+  </a>
+ </li>
+</ul>
+
+</nav>
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
+
+          
+          
+          <div class="bd-content col-12 col-md-9 col-xl-7">
+              
+              <article class="bd-article" role="main">
+                
+  <section id="Analysis-Demo">
+<h1>Analysis Demo<a class="headerlink" href="#Analysis-Demo" title="Link to this heading">¶</a></h1>
+<p>This notebook demonstrates how to use MissMecha’s analysis module to:</p>
+<ul class="simple">
+<li><p>Summarize missingness</p></li>
+<li><p>Perform baseline imputation</p></li>
+<li><p>Evaluate imputation quality</p></li>
+<li><p>Test missingness mechanism (MCAR vs non-MCAR)</p></li>
+</ul>
+<hr class="docutils" />
+<section id="Import-Required-Libraries">
+<h2>Import Required Libraries<a class="headerlink" href="#Import-Required-Libraries" title="Link to this heading">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.generator</span><span class="w"> </span><span class="kn">import</span> <span class="n">MissMechaGenerator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.impute</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleSmartImputer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_missing_rate</span><span class="p">,</span> <span class="n">evaluate_imputation</span><span class="p">,</span> <span class="n">MCARTest</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Create-a-Synthetic-Dataset">
+<h2>Create a Synthetic Dataset<a class="headerlink" href="#Create-a-Synthetic-Dataset" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+    <span class="s2">&quot;income&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">60000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">),</span>
+    <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="p">})</span>
+
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>income</th>
+      <th>gender</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>58</td>
+      <td>69305.844008</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48</td>
+      <td>66777.674097</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>34</td>
+      <td>66984.402592</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>62</td>
+      <td>61736.020637</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>27</td>
+      <td>66622.845136</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>We simulate a mixed-type dataset including both numerical and categorical variables.</p>
+</section>
+<hr class="docutils" />
+<section id="Generate-Missingness-(MCAR)">
+<h2>Generate Missingness (MCAR)<a class="headerlink" href="#Generate-Missingness-(MCAR)" title="Link to this heading">¶</a></h2>
+<p>Apply Missing Completely At Random (MCAR) pattern.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mecha</span> <span class="o">=</span> <span class="n">MissMechaGenerator</span><span class="p">(</span><span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;mcar&quot;</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">mcar_missing</span> <span class="o">=</span> <span class="n">mecha</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">mcar_missing</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>income</th>
+      <th>gender</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>58.0</td>
+      <td>69305.844008</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>34.0</td>
+      <td>NaN</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>61736.020637</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>NaN</td>
+      <td>66622.845136</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="Compute-Missing-Rate">
+<h2>Compute Missing Rate<a class="headerlink" href="#Compute-Missing-Rate" title="Link to this heading">¶</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">compute_missing_rate</span><span class="p">(</span><span class="n">mcar_missing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overall missing rate: 51.00%
+153 / 300 total values are missing.
+
+Top variables by missing rate:
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>n_missing</th>
+      <th>missing_rate (%)</th>
+      <th>n_unique</th>
+      <th>dtype</th>
+      <th>n_total</th>
+    </tr>
+    <tr>
+      <th>column</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>gender</th>
+      <td>55</td>
+      <td>55.0</td>
+      <td>2</td>
+      <td>float64</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>income</th>
+      <td>51</td>
+      <td>51.0</td>
+      <td>49</td>
+      <td>float64</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>age</th>
+      <td>47</td>
+      <td>47.0</td>
+      <td>32</td>
+      <td>float64</td>
+      <td>100</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>This summarizes:</p>
+<ul class="simple">
+<li><p>Overall missing rate</p></li>
+<li><p>Per-column missing rates</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="Impute-Missing-Values">
+<h2>Impute Missing Values<a class="headerlink" href="#Impute-Missing-Values" title="Link to this heading">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code> to fill missing values.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imp</span> <span class="o">=</span> <span class="n">SimpleSmartImputer</span><span class="p">(</span><span class="n">cat_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">])</span>
+<span class="n">data_imputed</span> <span class="o">=</span> <span class="n">imp</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">mcar_missing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[SimpleSmartImputer] Column &#39;age&#39; treated as numerical. Fill value = 41.45283018867924
+[SimpleSmartImputer] Column &#39;income&#39; treated as numerical. Fill value = 60593.13322338924
+[SimpleSmartImputer] Column &#39;gender&#39; treated as categorical. Fill value = 1.0
+</pre></div></div>
+</div>
+<p>By specifying <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code>, the imputer knows to treat <code class="docutils literal notranslate"><span class="pre">gender</span></code> as categorical (mode imputation).</p>
+</section>
+<hr class="docutils" />
+<section id="Evaluate-Imputation-Quality">
+<h2>Evaluate Imputation Quality<a class="headerlink" href="#Evaluate-Imputation-Quality" title="Link to this heading">¶</a></h2>
+<section id="Using-RMSE-for-Numerical-Features">
+<h3>Using RMSE for Numerical Features<a class="headerlink" href="#Using-RMSE-for-Numerical-Features" title="Link to this heading">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_results</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">data_imputed</span><span class="p">,</span>
+    <span class="n">mecha</span><span class="o">.</span><span class="n">bool_mask</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span>
+<span class="p">)</span>
+
+<span class="n">eval_results</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--------------------------------------------------
+Column                 RMSE   Scaled (0-1)
+--------------------------------------------------
+age                  13.060          0.297
+income             9781.570          0.210
+gender                0.661          0.661
+--------------------------------------------------
+Overall            3265.097          0.389
+</pre></div></div>
+</div>
+<p>This uses Root Mean Squared Error (RMSE) to measure reconstruction quality.</p>
+</section>
+<section id="Using-AvgErr-for-Mixed-Types">
+<h3>Using AvgErr for Mixed Types<a class="headerlink" href="#Using-AvgErr-for-Mixed-Types" title="Link to this heading">¶</a></h3>
+<p>If <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code> are specified, <code class="docutils literal notranslate"><span class="pre">evaluate_imputation()</span></code> automatically applies:</p>
+<ul class="simple">
+<li><p>RMSE/MAE for numerical columns</p></li>
+<li><p>Accuracy for categorical columns</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eval_results</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span>
+    <span class="n">data_imputed</span><span class="p">,</span>
+    <span class="n">mecha</span><span class="o">.</span><span class="n">bool_mask</span><span class="p">,</span>
+    <span class="n">cat_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">eval_results</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--------------------------------------------------
+Column               AvgErr   Scaled (0-1)
+--------------------------------------------------
+age                  13.060          0.297
+income             9781.570          0.210
+gender                0.564          0.564
+--------------------------------------------------
+Overall            3265.065          0.357
+</pre></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="A-Note-on-AvgERR">
+<h3>A Note on AvgERR<a class="headerlink" href="#A-Note-on-AvgERR" title="Link to this heading">¶</a></h3>
+<p>The <strong>AvgERR</strong> metric combines numerical and categorical evaluations seamlessly:</p>
+<p>[ :nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>text{AvgErr}`(v_j) =</p>
+<p>]</p>
+<p>✨ It adapts metric choice based on each column’s type.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="Statistical-Test:-Little's-MCAR-Test">
+<h2>Statistical Test: Little’s MCAR Test<a class="headerlink" href="#Statistical-Test:-Little's-MCAR-Test" title="Link to this heading">¶</a></h2>
+<section id="Test-for-MCAR">
+<h3>Test for MCAR<a class="headerlink" href="#Test-for-MCAR" title="Link to this heading">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pval_mcar</span> <span class="o">=</span> <span class="n">MCARTest</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;little&quot;</span><span class="p">)(</span><span class="n">mcar_missing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Little&#39;s MCAR test p-value (MCAR case): </span><span class="si">{</span><span class="n">pval_mcar</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Method: Little&#39;s MCAR Test
+Test Statistic p-value: 0.251537
+Decision: Fail to reject the null hypothesis (α = 0.05)
+→ There is insufficient evidence to reject MCAR.
+Little&#39;s MCAR test p-value (MCAR case): 0.2515
+</pre></div></div>
+</div>
+<p>A high p-value (&gt;0.05) suggests MCAR cannot be rejected.</p>
+</section>
+<section id="Test-for-Non-MCAR-(MAR-Example)">
+<h3>Test for Non-MCAR (MAR Example)<a class="headerlink" href="#Test-for-Non-MCAR-(MAR-Example)" title="Link to this heading">¶</a></h3>
+<p>Now simulate MAR and test again.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mecha_mar</span> <span class="o">=</span> <span class="n">MissMechaGenerator</span><span class="p">(</span><span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;mar&quot;</span><span class="p">,</span> <span class="n">mechanism_type</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">mar_missing</span> <span class="o">=</span> <span class="n">mecha_mar</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">pval_mar</span> <span class="o">=</span> <span class="n">MCARTest</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;little&quot;</span><span class="p">)(</span><span class="n">mar_missing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Little&#39;s MCAR test p-value (MAR case): </span><span class="si">{</span><span class="n">pval_mar</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[MARType5] Selected column 1 as dependency (xd).
+Method: Little&#39;s MCAR Test
+Test Statistic p-value: 0.017166
+Decision: Reject the null hypothesis (α = 0.05)
+→ The data is unlikely to be Missing Completely At Random (MCAR).
+Little&#39;s MCAR test p-value (MAR case): 0.0172
+</pre></div></div>
+</div>
+<p>A low p-value (&lt;0.05) suggests the data is <strong>not MCAR</strong>.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="Key-Takeaways">
+<h2>Key Takeaways<a class="headerlink" href="#Key-Takeaways" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">compute_missing_rate()</span></code> summarizes missingness patterns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code> offers quick baseline imputation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evaluate_imputation()</span></code> adapts metric choice based on variable types.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MCARTest</span></code> provides statistical evidence whether missingness is random.</p></li>
+<li><p>MissMecha Analysis module makes missingness study practical and systematic.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+
+
+              </article>
+              
+
+              
+              <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="MissMecha-Demo-Impute.html" title="previous page">
+      <i class="fas fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Impute Demo</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../about.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">About Us</p>
+  </div>
+  <i class="fas fa-angle-right"></i>
+  </a>
+</div>
+              </footer>
+              
+          </div>
+          
+      </div>
+    </div>
+
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2025, Youran Zhou.<br>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
+</p>
+  </div>
+  
+</div>
+</footer>
+  </body>
+</html>

@@ -216,27 +216,32 @@
                 
   <section id="project-overview">
 <h1>Project Overview<a class="headerlink" href="#project-overview" title="Link to this heading">¶</a></h1>
-<p>MissMecha is a Python package for simulating missing data mechanisms in a principled, unified, and reproducible way.</p>
-<p>Born out of frustration with the fragmented landscape of missing data simulation tools, MissMecha is the first Python package to systematically support structured missingness across <strong>numerical</strong>, <strong>categorical</strong>, and <strong>time series</strong> data types.</p>
-<p>It offers:
-- Support for <strong>MCAR</strong>, <strong>MAR</strong>, and <strong>MNAR</strong> mechanisms
-- A rich set of <strong>subtypes</strong> per mechanism, with interpretable logic
-- <strong>Column-wise</strong> and <strong>global</strong> missingness simulation
-- <strong>Evaluation modules</strong> to benchmark imputation methods</p>
+<p>MissMecha is a Python toolkit for simulating missing data mechanisms in a principled, unified, and reproducible way.</p>
+<p>Frustrated by the fragmented landscape of missing data tools, we built MissMecha as the first Python library to systematically support structured missingness across <strong>numerical</strong>, <strong>categorical</strong>, and <strong>time series</strong> data.</p>
+<p>MissMecha offers:</p>
+<ul class="simple">
+<li><p>Support for <strong>MCAR</strong>, <strong>MAR</strong>, and <strong>MNAR</strong> mechanisms</p></li>
+<li><p>A wide range of <strong>subtypes</strong> per mechanism, each with interpretable logic</p></li>
+<li><p>Flexible <strong>global</strong> and <strong>column-wise</strong> missingness simulation</p></li>
+<li><p>Built-in <strong>analysis modules</strong> for evaluating and benchmarking imputation methods</p></li>
+</ul>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Link to this heading">¶</a></h2>
-<p>In real-world data science tasks, missingness is rarely random or uniform. However, most existing libraries simulate only idealized patterns—if at all—often limited to numerical data.</p>
-<p>MissMecha addresses this gap by offering a consistent, extensible API for:
-- Designing realistic missing data scenarios
-- Testing imputation under controlled conditions
-- Bridging statistical theory with practical ML workflows</p>
+<p>In real-world machine learning and data science tasks, missingness is rarely random or uniform.
+Yet most existing tools either oversimplify missing patterns or focus narrowly on numerical features.</p>
+<p><strong>MissMecha</strong> closes this gap by providing a <strong>consistent, extensible</strong> framework for:</p>
+<ul class="simple">
+<li><p>Designing realistic and customizable missing data scenarios</p></li>
+<li><p>Evaluating imputation strategies under controlled conditions</p></li>
+<li><p>Bridging statistical theory with practical machine learning workflows</p></li>
+</ul>
 </section>
 <section id="where-to-start">
 <h2>Where to Start<a class="headerlink" href="#where-to-start" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>New to missing data? Learn the basics in <a class="reference internal" href="theory.html"><span class="doc">Theory</span></a></p></li>
-<li><p>Want to simulate? Start with <a class="reference internal" href="modules/generate.html"><span class="doc">Generate Module</span></a></p></li>
-<li><p>Explore the rest of the API in <a class="reference internal" href="modules.html"><span class="doc">Modules</span></a></p></li>
+<li><p>Ready to simulate? Start with <a class="reference internal" href="modules/generate.html"><span class="doc">Generate Module</span></a></p></li>
+<li><p>Explore the full API in <a class="reference internal" href="modules.html"><span class="doc">Modules</span></a></p></li>
 </ul>
 </section>
 </section>
