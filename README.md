@@ -4,7 +4,6 @@
 It provides a **unified, principled interface** to generate, inspect, and analyze missingness — supporting research, benchmarking, and education.
 
  **Documentation:** [https://echoid.github.io/MissMecha/](https://echoid.github.io/MissMecha/)  
- **Demo Video:** [MissMecha: Flexible Missing Data Simulation (5-min Demo)](https://vimeo.com/1079046393)
 
 ---
 
