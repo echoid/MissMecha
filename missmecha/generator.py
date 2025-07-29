@@ -25,30 +25,45 @@ class MissMechaGenerator:
     """
     Flexible simulator for generating missing data under various mechanisms.
 
-    This class serves as the central interface for simulating missing values using various predefined mechanisms.
-    It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.
+    This class serves as the central interface for simulating missing values using various predefined mechanisms
+    (e.g., MCAR, MAR, MNAR), or user-defined custom mechanisms. It supports both global and column-wise
+    missingness simulation, enabling fine-grained control over which features to mask and how.
 
     Parameters
     ----------
     mechanism : str, default="MCAR"
-        The default missingness mechanism to use (if `info` is not specified).
+        The default missingness mechanism to use if `info` is not specified.
+        Can be one of {"mcar", "mar", "mnar", "custom"}.
     mechanism_type : int, default=1
         The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).
+        Ignored if `mechanism="custom"`.
     missing_rate : float, default=0.2
-        Proportion of values to mask as missing (only if `info` is not provided).
+        Proportion of values to mask as missing (only used in global simulation or
+        if column-level info does not override).
     seed : int, default=1
         Random seed to ensure reproducibility.
     info : dict, optional
         Dictionary defining per-column missingness settings. Each key is a column
-        or tuple of columns, and each value is a dict with fields like:
-        - 'mechanism': str
-        - 'type': int
-        - 'rate': float
-        - 'depend_on': list or str
-        - 'para': dict of additional parameters
+        or tuple of columns, and each value is a dict with the following fields:
+            - 'mechanism' : str or type
+                One of {"mcar", "mar", "mnar", "custom"} or directly a class.
+            - 'type' : int (optional)
+                Subtype index for predefined mechanisms.
+            - 'custom_class' : class (optional)
+                A user-defined class implementing `.fit(X)` and `.transform(X)`.
+                Required if 'mechanism' is "custom".
+            - 'rate' : float
+                Proportion of values to mask in the column(s).
+            - 'depend_on' : str or list (optional)
+                Dependency columns for MAR or MNAR patterns.
+            - 'para' : dict (optional)
+                Additional keyword arguments passed to the mechanism constructor.
     cat_cols : list of str, optional
-    List of columns treated as categorical variables. 
-    Internally encoded into integers during missingness simulation.
+        Columns treated as categorical variables. Values will be internally encoded
+        into integers during simulation, then mapped back to original values.
+    custom_class : class, optional
+        A user-defined mechanism class to use in global simulation when `mechanism="custom"`.
+        Must implement `fit(X)` and `transform(X)` methods.
 
 
     Examples
@@ -60,7 +75,7 @@ class MissMechaGenerator:
     >>> X_missing = generator.fit_transform(X)
 
     """
-    def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None, cat_cols=None):
+    def __init__(self, mechanism="MCAR", mechanism_type=1, missing_rate=0.2, seed=1, info=None, cat_cols=None, custom_class=None):
         """
         Multiple-mechanism generator. Uses 'info' dictionary for column-wise specification.
 
@@ -76,10 +91,39 @@ class MissMechaGenerator:
             Random seed.
         info : dict
             Column-specific missingness configuration.
+        custom_class : class
+            Allow user to custom mechanism class.
         """
-        self.mechanism = mechanism.lower()
-        self.mechanism_type = int(mechanism_type)
+        VALID_MECHANISMS = {"mcar", "mar", "mnar", "custom"}
+        if not isinstance(mechanism, str):
+            raise TypeError(f"`mechanism` should be a string, got {type(mechanism)}.")
+        
+        mechanism_lower = mechanism.lower()
+        if mechanism_lower not in VALID_MECHANISMS:
+            raise ValueError(f"`mechanism` should be one of {VALID_MECHANISMS}, got '{mechanism}'.")
+
+        self.mechanism = mechanism_lower
+
+        # --- mechanism_type ---
+        if self.mechanism != "custom":
+            if not isinstance(mechanism_type, int) or mechanism_type < 0:
+                raise ValueError(f"`mechanism_type` must be a non-negative integer for mechanism='{self.mechanism}'. Got: {mechanism_type}")
+            self.mechanism_type = mechanism_type
+        else:
+            self.mechanism_type = None  # Not used
+
+        # --- missing_rate ---
+        if not isinstance(missing_rate, (int, float)) or not (0.0 <= missing_rate <= 1.0):
+            raise ValueError(f"`missing_rate` must be a float in [0, 1]. Got: {missing_rate}")
         self.missing_rate = missing_rate
+
+        # --- custom_class ---
+        if self.mechanism == "custom":
+            if custom_class is None:
+                raise ValueError("When `mechanism='custom'`, you must provide `custom_class`.")
+            if not callable(custom_class):
+                raise TypeError(f"`custom_class` must be a class or callable. Got {type(custom_class)}.")
+        self.custom_class = custom_class
         self.seed = seed
         self.info = info
         #self.info = self._expand_info(info) if info is not None else None
@@ -97,9 +141,10 @@ class MissMechaGenerator:
 
         if not info:
             # fallback to default generator for entire dataset
-            self.generator_class = MECHANISM_LOOKUP[self.mechanism][self.mechanism_type]
-            
-
+            if self.mechanism != "custom":
+                self.generator_class = MECHANISM_LOOKUP[self.mechanism][self.mechanism_type]
+            else:
+                self.generator_class = self.custom_class
 
         warnings.filterwarnings("ignore")
 
@@ -175,6 +220,10 @@ class MissMechaGenerator:
                 X[col] = X[col].map(value_to_int).astype(float)
         # Fallback: global generator
         if self.info is None:
+            if self.mechanism == "custom":
+                if self.custom_class is None:
+                    raise ValueError("When mechanism='custom', you must provide `custom_class`.")
+                self.generator_class = self.custom_class
             generator = self.generator_class(missing_rate=self.missing_rate, seed=self.seed)
             X_np = X.to_numpy() if self.is_df else X
             generator.fit(X_np, y=self.label)
@@ -187,7 +236,7 @@ class MissMechaGenerator:
                 col_labels, col_idxs = self._resolve_columns(cols)
 
                 mechanism = settings["mechanism"].lower()
-                mech_type = settings["type"]
+                custom_cls = settings.get("custom_class", None)
                 rate = settings["rate"]
                 depend_on = settings.get("depend_on", None)
                 para = settings.get("para", {})
@@ -205,7 +254,13 @@ class MissMechaGenerator:
                 init_kwargs = {k: v for k, v in init_kwargs.items() if v is not None}
                 label = settings.get("label", y)
 
-                generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
+                if isinstance(mechanism, str) and mechanism.lower() == "custom":
+                    if custom_cls is None:
+                        raise ValueError(f"Column {key} specified custom mechanism but no `custom_class` provided.")
+                    generator_cls = custom_cls
+                else:
+                    mech_type = settings["type"]
+                    generator_cls = MECHANISM_LOOKUP[mechanism][mech_type]
                 generator = safe_init(generator_cls, init_kwargs)
                 sub_X = X[list(col_labels)].to_numpy() if self.is_df else X[:, col_idxs]
                 generator.fit(sub_X, y=label)

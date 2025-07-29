@@ -35,6 +35,20 @@ It provides a **unified, principled interface** to generate, inspect, and analyz
 
 ---
 
+- **Custom Mechanism Support** *(New in v0.1.2)*
+  - Now supports **user-defined missing mechanisms** via `custom_class`
+  - Easily plug in your own masker with `fit` + `transform` interface
+  - See [Custom Mechanism Demo](https://echoid.github.io/MissMecha/notebooks/MissMecha-Demo-custom_mechanism.html)
+
+- **Improved MNAR Type 1** *(New in v0.1.2)*
+  - Supports **missing_rate**-based quantile masking for fine control
+  - E.g. mask top 30% values in continuous columns via `missing_rate=0.3`
+  - Fixes limitations when types vary across columns
+  - Thanks [@mahshidkhatiri](https://github.com/mahshidkhatiri) for raising the issue
+
+
+---
+
 ## Motivation
 
 Working with missing data often means dealing with **fragmented, inconsistent tools**.
@@ -92,7 +106,7 @@ Available on [PyPI](https://pypi.org/project/missmecha-py/) under the package na
 
 ---
 
-## ✍️ Author
+## Author
 
 Developed by **Youran Zhou**, PhD Candidate @ Deakin University  
 

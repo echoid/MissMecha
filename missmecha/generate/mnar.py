@@ -55,10 +55,10 @@ class MNARType1:
         Present for API compatibility; not used in this type.
     """
 
-    def __init__(self, missing_rate=0.1, seed=1, up_percentile=0.5, obs_percentile=0.5, depend_on = None):
+    def __init__(self, missing_rate=0.1, seed=1, up_percentile=None, obs_percentile=0.5, depend_on=None):
         self.missing_rate = missing_rate
         self.seed = seed
-        self.up_percentile = up_percentile
+        self.up_percentile = 1 - missing_rate if up_percentile is None else up_percentile
         self.obs_percentile = obs_percentile
         self.fitted = False
 
@@ -159,9 +159,7 @@ class MNARType1:
         data_with_missing = X.copy()
         data_with_missing[~mask] = np.nan
         return data_with_missing
-import numpy as np
-from scipy.special import expit
-from scipy.optimize import bisect
+
 
 class MNARType2:
     """

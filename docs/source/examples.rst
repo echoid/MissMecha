@@ -31,3 +31,4 @@ Notebooks
    notebooks/MissMecha-Demo-Visual
    notebooks/MissMecha-Demo-Impute
    notebooks/MissMecha-Demo-Analysis
+   notebooks/MissMecha-Demo-custom_mechanism
