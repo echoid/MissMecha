@@ -229,6 +229,33 @@
      </li>
     </ul>
    </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="generate_fun/mnar.html">
+     MNAR Functions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_numerical.html">
+       Numerical MNAR Types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="generate_fun/mnar_categorical.html">
+       Categorical MNAR Types
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="generate_fun/custom_mechanisms.html">
+     Custom Missing Mechanisms
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toctree-l1">
@@ -337,6 +364,18 @@
    Mechanism Functions
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#custom-mechanisms">
+   Custom Mechanisms
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#usage-options">
+     Usage Options
+    </a>
+   </li>
+  </ul>
+ </li>
 </ul>
 
 </nav>
@@ -366,28 +405,64 @@ Each mechanism (MCAR, MAR, MNAR) corresponds to a specific pattern of missingnes
 <p>The main interface to generate missingness patterns.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="missmecha.generator.MissMechaGenerator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">missmecha.generator.</span></span><span class="sig-name descname"><span class="pre">MissMechaGenerator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanism</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MCAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mechanism_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">missing_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cat_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/missmecha/generator.html#MissMechaGenerator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#missmecha.generator.MissMechaGenerator" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Flexible simulator for generating missing data under various mechanisms.</p>
-<p>This class serves as the central interface for simulating missing values using various predefined mechanisms.
-It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.</p>
+<p>This class serves as the central interface for simulating missing values using various predefined mechanisms
+(e.g., MCAR, MAR, MNAR), or user-defined custom mechanisms. It supports both global and column-wise
+missingness simulation, enabling fine-grained control over which features to mask and how.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mechanism</strong> (<em>str</em><em>, </em><em>default=&quot;MCAR&quot;</em>) – The default missingness mechanism to use (if <cite>info</cite> is not specified).</p></li>
-<li><p><strong>mechanism_type</strong> (<em>int</em><em>, </em><em>default=1</em>) – The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).</p></li>
-<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Proportion of values to mask as missing (only if <cite>info</cite> is not provided).</p></li>
+<li><p><strong>mechanism</strong> (<em>str</em><em>, </em><em>default=&quot;MCAR&quot;</em>) – The default missingness mechanism to use if <cite>info</cite> is not specified.
+Can be one of {“mcar”, “mar”, “mnar”, “custom”}.</p></li>
+<li><p><strong>mechanism_type</strong> (<em>int</em><em>, </em><em>default=1</em>) – The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).
+Ignored if <cite>mechanism=”custom”</cite>.</p></li>
+<li><p><strong>missing_rate</strong> (<em>float</em><em>, </em><em>default=0.2</em>) – Proportion of values to mask as missing (only used in global simulation or
+if column-level info does not override).</p></li>
 <li><p><strong>seed</strong> (<em>int</em><em>, </em><em>default=1</em>) – Random seed to ensure reproducibility.</p></li>
-<li><p><strong>info</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary defining per-column missingness settings. Each key is a column
-or tuple of columns, and each value is a dict with fields like:
-- ‘mechanism’: str
-- ‘type’: int
-- ‘rate’: float
-- ‘depend_on’: list or str
-- ‘para’: dict of additional parameters</p></li>
-<li><p><strong>cat_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>)</p></li>
-<li><p><strong>variables.</strong> (<em>List</em><em> of </em><em>columns treated as categorical</em>)</p></li>
-<li><p><strong>simulation.</strong> (<em>Internally encoded into integers during missingness</em>)</p></li>
+<li><p><strong>info</strong> (<em>dict</em><em>, </em><em>optional</em>) – <p>Dictionary defining per-column missingness settings. Each key is a column
+or tuple of columns, and each value is a dict with the following fields:</p>
+<blockquote>
+<div><ul>
+<li><dl class="simple">
+<dt>’mechanism’<span class="classifier">str or type</span></dt><dd><p>One of {“mcar”, “mar”, “mnar”, “custom”} or directly a class.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’type’<span class="classifier">int (optional)</span></dt><dd><p>Subtype index for predefined mechanisms.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’custom_class’<span class="classifier">class (optional)</span></dt><dd><p>A user-defined class implementing <cite>.fit(X)</cite> and <cite>.transform(X)</cite>.
+Required if ‘mechanism’ is “custom”.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’rate’<span class="classifier">float</span></dt><dd><p>Proportion of values to mask in the column(s).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’depend_on’<span class="classifier">str or list (optional)</span></dt><dd><p>Dependency columns for MAR or MNAR patterns.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>’para’<span class="classifier">dict (optional)</span></dt><dd><p>Additional keyword arguments passed to the mechanism constructor.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>cat_cols</strong> (<em>list</em><em> of </em><em>str</em><em>, </em><em>optional</em>) – Columns treated as categorical variables. Values will be internally encoded
+into integers during simulation, then mapped back to original values.</p></li>
+<li><p><strong>custom_class</strong> (<em>class</em><em>, </em><em>optional</em>) – A user-defined mechanism class to use in global simulation when <cite>mechanism=”custom”</cite>.
+Must implement <cite>fit(X)</cite> and <cite>transform(X)</cite> methods.</p></li>
 </ul>
 </dd>
 </dl>
@@ -498,8 +573,61 @@ You can explore MCAR, MAR, and MNAR function implementations individually below.
 <li class="toctree-l1"><a class="reference internal" href="generate_fun/mcar.html">MCAR Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_fun/mar.html">MAR Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="generate_fun/mnar.html">MNAR Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="generate_fun/mnar.html">MNAR Functions</a></li>
 </ul>
 </div>
+</section>
+<section id="custom-mechanisms">
+<h2>Custom Mechanisms<a class="headerlink" href="#custom-mechanisms" title="Link to this heading">¶</a></h2>
+<p>In addition to the predefined mechanisms (MCAR, MAR, MNAR),
+<code class="docutils literal notranslate"><span class="pre">MissMechaGenerator</span></code> also supports <strong>custom missingness mechanisms</strong>
+defined entirely by the user.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="generate_fun/custom_mechanisms.html">Custom Missing Mechanisms</a></li>
+</ul>
+</div>
+<p>This is useful when you want to simulate structured patterns
+(e.g., top-k thresholds, model-based missingness, domain-specific logic).</p>
+<section id="usage-options">
+<h3>Usage Options<a class="headerlink" href="#usage-options" title="Link to this heading">¶</a></h3>
+<p>You can inject a custom mechanism in two ways:</p>
+<ul class="simple">
+<li><p><strong>Global mode</strong>: using <code class="docutils literal notranslate"><span class="pre">mechanism=&quot;custom&quot;</span></code> and passing your class via <code class="docutils literal notranslate"><span class="pre">custom_class=...</span></code>.</p></li>
+<li><p><strong>Column-wise mode</strong>: via the <code class="docutils literal notranslate"><span class="pre">info</span></code> dictionary, per-column control is supported.</p></li>
+</ul>
+<p>Your custom class must implement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyMasker</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p><strong>Global example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gen</span> <span class="o">=</span> <span class="n">MissMechaGenerator</span><span class="p">(</span>
+    <span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+    <span class="n">custom_class</span><span class="o">=</span><span class="n">MyMasker</span><span class="p">,</span>
+    <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Column-wise example:</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">info</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;col1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;mechanism&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;custom_class&quot;</span><span class="p">:</span> <span class="n">MyMasker</span><span class="p">,</span>
+        <span class="s2">&quot;rate&quot;</span><span class="p">:</span> <span class="mf">0.2</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">MissMechaGenerator</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Your custom mechanism must implement both <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y=None)</span></code> and <code class="docutils literal notranslate"><span class="pre">transform(X)</span></code>.
+You can also pass additional parameters through <code class="docutils literal notranslate"><span class="pre">para</span></code> if needed.</p>
+</div>
+<p>See also: <a class="reference internal" href="generate_fun/custom_mechanisms.html"><span class="doc">Custom Missing Mechanisms</span></a></p>
+</section>
 </section>
 </section>
 
@@ -548,7 +676,7 @@ You can explore MCAR, MAR, and MNAR function implementations individually below.
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
   </div>
   

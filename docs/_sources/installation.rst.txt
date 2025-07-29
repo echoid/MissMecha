@@ -45,18 +45,19 @@ You can install all dependencies at once using:
 Citation
 --------
 
-If you use MissMecha in your work, please consider citing:
+If you use MissMecha in your research, teaching, or projects, please consider citing:
 
-Zhou, Y. (2025). *MissMecha: A flexible Python package for missing data mechanism simulation and evaluation*. Demo paper. [Conference TBD].
+Zhou, Y. (2025). *MissMecha: An All-in-One Python Package for Studying Missing Data Mechanisms*. Demo paper. [Conference TBD].
 
 BibTeX:
 
 .. code-block:: bibtex
 
    @misc{zhou2025missmecha,
-     author       = {Zhou, Youran},
-     title        = {MissMecha: A flexible Python package for missing data mechanism simulation and evaluation},
+     author       = {Youran Zhou},
+     title        = {MissMecha: An All-in-One Python Package for Studying Missing Data Mechanisms},
      year         = {2025},
      howpublished = {\url{https://pypi.org/project/missmecha-py}},
      note         = {Demo track submission}
    }
+

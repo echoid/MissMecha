@@ -212,30 +212,45 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Flexible simulator for generating missing data under various mechanisms.</span>
 
-<span class="sd">    This class serves as the central interface for simulating missing values using various predefined mechanisms.</span>
-<span class="sd">    It supports both global and column-wise simulation, enabling fine-grained control over different missingness patterns, including MCAR, MAR, and MNAR.</span>
+<span class="sd">    This class serves as the central interface for simulating missing values using various predefined mechanisms</span>
+<span class="sd">    (e.g., MCAR, MAR, MNAR), or user-defined custom mechanisms. It supports both global and column-wise</span>
+<span class="sd">    missingness simulation, enabling fine-grained control over which features to mask and how.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    mechanism : str, default=&quot;MCAR&quot;</span>
-<span class="sd">        The default missingness mechanism to use (if `info` is not specified).</span>
+<span class="sd">        The default missingness mechanism to use if `info` is not specified.</span>
+<span class="sd">        Can be one of {&quot;mcar&quot;, &quot;mar&quot;, &quot;mnar&quot;, &quot;custom&quot;}.</span>
 <span class="sd">    mechanism_type : int, default=1</span>
 <span class="sd">        The subtype of the mechanism (e.g., MAR type 1, MNAR type 4).</span>
+<span class="sd">        Ignored if `mechanism=&quot;custom&quot;`.</span>
 <span class="sd">    missing_rate : float, default=0.2</span>
-<span class="sd">        Proportion of values to mask as missing (only if `info` is not provided).</span>
+<span class="sd">        Proportion of values to mask as missing (only used in global simulation or</span>
+<span class="sd">        if column-level info does not override).</span>
 <span class="sd">    seed : int, default=1</span>
 <span class="sd">        Random seed to ensure reproducibility.</span>
 <span class="sd">    info : dict, optional</span>
 <span class="sd">        Dictionary defining per-column missingness settings. Each key is a column</span>
-<span class="sd">        or tuple of columns, and each value is a dict with fields like:</span>
-<span class="sd">        - &#39;mechanism&#39;: str</span>
-<span class="sd">        - &#39;type&#39;: int</span>
-<span class="sd">        - &#39;rate&#39;: float</span>
-<span class="sd">        - &#39;depend_on&#39;: list or str</span>
-<span class="sd">        - &#39;para&#39;: dict of additional parameters</span>
+<span class="sd">        or tuple of columns, and each value is a dict with the following fields:</span>
+<span class="sd">            - &#39;mechanism&#39; : str or type</span>
+<span class="sd">                One of {&quot;mcar&quot;, &quot;mar&quot;, &quot;mnar&quot;, &quot;custom&quot;} or directly a class.</span>
+<span class="sd">            - &#39;type&#39; : int (optional)</span>
+<span class="sd">                Subtype index for predefined mechanisms.</span>
+<span class="sd">            - &#39;custom_class&#39; : class (optional)</span>
+<span class="sd">                A user-defined class implementing `.fit(X)` and `.transform(X)`.</span>
+<span class="sd">                Required if &#39;mechanism&#39; is &quot;custom&quot;.</span>
+<span class="sd">            - &#39;rate&#39; : float</span>
+<span class="sd">                Proportion of values to mask in the column(s).</span>
+<span class="sd">            - &#39;depend_on&#39; : str or list (optional)</span>
+<span class="sd">                Dependency columns for MAR or MNAR patterns.</span>
+<span class="sd">            - &#39;para&#39; : dict (optional)</span>
+<span class="sd">                Additional keyword arguments passed to the mechanism constructor.</span>
 <span class="sd">    cat_cols : list of str, optional</span>
-<span class="sd">    List of columns treated as categorical variables. </span>
-<span class="sd">    Internally encoded into integers during missingness simulation.</span>
+<span class="sd">        Columns treated as categorical variables. Values will be internally encoded</span>
+<span class="sd">        into integers during simulation, then mapped back to original values.</span>
+<span class="sd">    custom_class : class, optional</span>
+<span class="sd">        A user-defined mechanism class to use in global simulation when `mechanism=&quot;custom&quot;`.</span>
+<span class="sd">        Must implement `fit(X)` and `transform(X)` methods.</span>
 
 
 <span class="sd">    Examples</span>
@@ -247,7 +262,7 @@
 <span class="sd">    &gt;&gt;&gt; X_missing = generator.fit_transform(X)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;MCAR&quot;</span><span class="p">,</span> <span class="n">mechanism_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mechanism</span><span class="o">=</span><span class="s2">&quot;MCAR&quot;</span><span class="p">,</span> <span class="n">mechanism_type</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">missing_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cat_cols</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom_class</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Multiple-mechanism generator. Uses &#39;info&#39; dictionary for column-wise specification.</span>
 
@@ -263,10 +278,39 @@
 <span class="sd">            Random seed.</span>
 <span class="sd">        info : dict</span>
 <span class="sd">            Column-specific missingness configuration.</span>
+<span class="sd">        custom_class : class</span>
+<span class="sd">            Allow user to custom mechanism class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">=</span> <span class="n">mechanism</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mechanism_type</span><span class="p">)</span>
+        <span class="n">VALID_MECHANISMS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;mcar&quot;</span><span class="p">,</span> <span class="s2">&quot;mar&quot;</span><span class="p">,</span> <span class="s2">&quot;mnar&quot;</span><span class="p">,</span> <span class="s2">&quot;custom&quot;</span><span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mechanism</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`mechanism` should be a string, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mechanism</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        
+        <span class="n">mechanism_lower</span> <span class="o">=</span> <span class="n">mechanism</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mechanism_lower</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_MECHANISMS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`mechanism` should be one of </span><span class="si">{</span><span class="n">VALID_MECHANISMS</span><span class="si">}</span><span class="s2">, got &#39;</span><span class="si">{</span><span class="n">mechanism</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">=</span> <span class="n">mechanism_lower</span>
+
+        <span class="c1"># --- mechanism_type ---</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">!=</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mechanism_type</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">mechanism_type</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`mechanism_type` must be a non-negative integer for mechanism=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span><span class="si">}</span><span class="s2">&#39;. Got: </span><span class="si">{</span><span class="n">mechanism_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span> <span class="o">=</span> <span class="n">mechanism_type</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Not used</span>
+
+        <span class="c1"># --- missing_rate ---</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">missing_rate</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">missing_rate</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`missing_rate` must be a float in [0, 1]. Got: </span><span class="si">{</span><span class="n">missing_rate</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span> <span class="o">=</span> <span class="n">missing_rate</span>
+
+        <span class="c1"># --- custom_class ---</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">custom_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;When `mechanism=&#39;custom&#39;`, you must provide `custom_class`.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">custom_class</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`custom_class` must be a class or callable. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">custom_class</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_class</span> <span class="o">=</span> <span class="n">custom_class</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span>
         <span class="c1">#self.info = self._expand_info(info) if info is not None else None</span>
@@ -284,9 +328,10 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">info</span><span class="p">:</span>
             <span class="c1"># fallback to default generator for entire dataset</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span> <span class="o">=</span> <span class="n">MECHANISM_LOOKUP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span><span class="p">]</span>
-            
-
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">!=</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span> <span class="o">=</span> <span class="n">MECHANISM_LOOKUP</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">mechanism_type</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_class</span>
 
         <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
@@ -364,6 +409,10 @@
                 <span class="n">X</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">value_to_int</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
         <span class="c1"># Fallback: global generator</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mechanism</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;When mechanism=&#39;custom&#39;, you must provide `custom_class`.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_class</span>
             <span class="n">generator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generator_class</span><span class="p">(</span><span class="n">missing_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">missing_rate</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
             <span class="n">X_np</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_df</span> <span class="k">else</span> <span class="n">X</span>
             <span class="n">generator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_np</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
@@ -376,7 +425,7 @@
                 <span class="n">col_labels</span><span class="p">,</span> <span class="n">col_idxs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_columns</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
 
                 <span class="n">mechanism</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;mechanism&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                <span class="n">mech_type</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+                <span class="n">custom_cls</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;custom_class&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="n">rate</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;rate&quot;</span><span class="p">]</span>
                 <span class="n">depend_on</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;depend_on&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
                 <span class="n">para</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;para&quot;</span><span class="p">,</span> <span class="p">{})</span>
@@ -394,7 +443,13 @@
                 <span class="n">init_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">init_kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
                 <span class="n">label</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-                <span class="n">generator_cls</span> <span class="o">=</span> <span class="n">MECHANISM_LOOKUP</span><span class="p">[</span><span class="n">mechanism</span><span class="p">][</span><span class="n">mech_type</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mechanism</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mechanism</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;custom&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">custom_cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Column </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> specified custom mechanism but no `custom_class` provided.&quot;</span><span class="p">)</span>
+                    <span class="n">generator_cls</span> <span class="o">=</span> <span class="n">custom_cls</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">mech_type</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+                    <span class="n">generator_cls</span> <span class="o">=</span> <span class="n">MECHANISM_LOOKUP</span><span class="p">[</span><span class="n">mechanism</span><span class="p">][</span><span class="n">mech_type</span><span class="p">]</span>
                 <span class="n">generator</span> <span class="o">=</span> <span class="n">safe_init</span><span class="p">(</span><span class="n">generator_cls</span><span class="p">,</span> <span class="n">init_kwargs</span><span class="p">)</span>
                 <span class="n">sub_X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">col_labels</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_df</span> <span class="k">else</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">col_idxs</span><span class="p">]</span>
                 <span class="n">generator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sub_X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
@@ -581,7 +636,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
 </p>
   </div>
   

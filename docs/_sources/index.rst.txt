@@ -27,6 +27,13 @@ The package is designed for researchers, educators, and developers working with 
    about
    contribution
 
+
+Project News
+------------
+
+Check out the :doc:`What's New <news>` page to see recent updates!
+
+
 .. raw:: html
 
    <hr style="border-top: 1px solid #ddd; margin: 2em 0 2em 0;">
