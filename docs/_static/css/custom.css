@@ -1,3 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
+:root {
+  --mm-font-body: 'Source Sans Pro', system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mm-font-heading: var(--mm-font-body);
+  --mm-color-heading: #130754;
+  --mm-color-text: #5b5b5b;
+  --mm-color-link: #005b81;
+  --mm-color-link-soft: #2d7191;
+  --mm-color-link-hover: #e32d01;
+  --mm-color-code: #e83f8b;
+}
+
+html[data-theme="light"],
+html[data-theme="dark"] {
+  --pst-font-family-base: var(--mm-font-body);
+  --pst-font-family-heading: var(--mm-font-heading);
+  --pst-color-primary: var(--mm-color-heading);
+  --pst-color-secondary: var(--mm-color-link-hover);
+  --pst-color-text-base: var(--mm-color-text);
+  --pst-color-text-muted: var(--mm-color-link-soft);
+  --pst-color-link: var(--mm-color-link);
+  --pst-color-link-hover: var(--mm-color-link-hover);
+  --pst-color-inline-code: var(--mm-color-code);
+}
+
+body {
+  font-family: var(--pst-font-family-base);
+  font-size: 16px;
+  color: var(--pst-color-text-base);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+.bd-content h1,
+.bd-content h2,
+.bd-content h3,
+.bd-content h4,
+.bd-content h5,
+.bd-content h6 {
+  color: var(--mm-color-heading) !important;
+}
+
+h1 {
+  font-weight: 375 !important;
+}
+
+h2, h3, h4, h5, h6 {
+  font-weight: 325 !important;
+  color: var(--mm-color-heading) !important;
+}
+
+code,
+code.docutils.literal,
+code.literal,
+.sig-name,
+.highlight pre,
+.literal,
+.literal-block,
+.bd-content code,
+.bd-content code span.pre {
+  font-weight: normal !important;
+  color: var(--pst-color-inline-code) !important;
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 90%;
+}
+
+a,
+.bd-content a,
+.bd-article-container a,
+.prev-next-area a p.prev-next-title,
+.editthispage a {
+  color: var(--pst-color-link);
+  text-decoration: none;
+}
+
+a:hover,
+.bd-content a:hover,
+.bd-article-container a:hover,
+.prev-next-area a:hover p.prev-next-title,
+.editthispage a:hover {
+  color: var(--pst-color-link-hover);
+  text-decoration: underline;
+}
+
 article a:visited {
   color: var(--pst-color-link);
+}
+
+.navbar-brand .title,
+.navbar-brand .logo__title,
+.bd-header.navbar-light#navbar-main .navbar-nav li a.nav-link,
+.bd-header.navbar-light#navbar-main .navbar-nav > .active > .nav-link,
+nav.bd-links li > a,
+.toc-entry a,
+.bd-toc .onthispage,
+.prev-next-area a,
+#theme-switch a,
+#version_switcher_button {
+  color: var(--mm-color-link) !important;
+}
+
+.bd-header.navbar-light#navbar-main .navbar-nav li a.nav-link:hover,
+.bd-header.navbar-light#navbar-main .navbar-nav li a.nav-link:focus,
+nav.bd-links li > a:hover,
+.toc-entry a:hover,
+.prev-next-area a:hover,
+#theme-switch:hover a {
+  color: var(--mm-color-link-hover) !important;
+}
+
+.sd-card .sd-card-text a,
+.sd-card .sd-stretched-link,
+.sd-card-title,
+.sd-card-header {
+  color: var(--mm-color-link) !important;
+}
+
+.sd-card i.fab,
+.sd-card i.fas,
+.sd-card i.fa,
+.sd-card i.far {
+  color: var(--mm-color-link) !important;
 }

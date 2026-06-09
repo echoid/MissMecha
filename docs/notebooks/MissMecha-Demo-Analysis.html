@@ -26,7 +26,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=97bee563" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -124,6 +124,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../contribution.html">
   Contribution Guidelines
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../news.html">
+  What’s New
  </a>
 </li>
 
@@ -587,7 +593,7 @@ Top variables by missing rate:
 <hr class="docutils" />
 <section id="Impute-Missing-Values">
 <h2>Impute Missing Values<a class="headerlink" href="#Impute-Missing-Values" title="Link to this heading">¶</a></h2>
-<p>Use <code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code> to fill missing values.</p>
+<p>Use SimpleSmartImputer to fill missing values.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -607,7 +613,7 @@ Top variables by missing rate:
 [SimpleSmartImputer] Column &#39;gender&#39; treated as categorical. Fill value = 1.0
 </pre></div></div>
 </div>
-<p>By specifying <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code>, the imputer knows to treat <code class="docutils literal notranslate"><span class="pre">gender</span></code> as categorical (mode imputation).</p>
+<p>By specifying cat_cols, the imputer knows to treat gender as categorical (mode imputation).</p>
 </section>
 <hr class="docutils" />
 <section id="Evaluate-Imputation-Quality">
@@ -648,7 +654,7 @@ Overall            3265.097          0.389
 </section>
 <section id="Using-AvgErr-for-Mixed-Types">
 <h3>Using AvgErr for Mixed Types<a class="headerlink" href="#Using-AvgErr-for-Mixed-Types" title="Link to this heading">¶</a></h3>
-<p>If <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code> are specified, <code class="docutils literal notranslate"><span class="pre">evaluate_imputation()</span></code> automatically applies:</p>
+<p>If cat_cols are specified, evaluate_imputation() automatically applies:</p>
 <ul class="simple">
 <li><p>RMSE/MAE for numerical columns</p></li>
 <li><p>Accuracy for categorical columns</p></li>
@@ -684,13 +690,15 @@ Overall            3265.065          0.357
 </pre></div></div>
 </div>
 </section>
-<hr class="docutils" />
 <section id="A-Note-on-AvgERR">
 <h3>A Note on AvgERR<a class="headerlink" href="#A-Note-on-AvgERR" title="Link to this heading">¶</a></h3>
 <p>The <strong>AvgERR</strong> metric combines numerical and categorical evaluations seamlessly:</p>
-<p>[ :nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>text{AvgErr}`(v_j) =</p>
-<p>]</p>
-<p>✨ It adapts metric choice based on each column’s type.</p>
+<ul class="simple">
+<li><p>numerical columns use RMSE or MAE, depending on the selected method;</p></li>
+<li><p>categorical columns use accuracy;</p></li>
+<li><p>the reported overall score averages those column-level results.</p></li>
+</ul>
+<p>This keeps the metric aligned with each column’s data type.</p>
 </section>
 </section>
 <hr class="docutils" />
@@ -719,7 +727,7 @@ Decision: Fail to reject the null hypothesis (α = 0.05)
 Little&#39;s MCAR test p-value (MCAR case): 0.2515
 </pre></div></div>
 </div>
-<p>A high p-value (&gt;0.05) suggests MCAR cannot be rejected.</p>
+<p>A high p-value (&gt; 0.05) suggests MCAR cannot be rejected.</p>
 </section>
 <section id="Test-for-Non-MCAR-(MAR-Example)">
 <h3>Test for Non-MCAR (MAR Example)<a class="headerlink" href="#Test-for-Non-MCAR-(MAR-Example)" title="Link to this heading">¶</a></h3>
@@ -749,17 +757,17 @@ Decision: Reject the null hypothesis (α = 0.05)
 Little&#39;s MCAR test p-value (MAR case): 0.0172
 </pre></div></div>
 </div>
-<p>A low p-value (&lt;0.05) suggests the data is <strong>not MCAR</strong>.</p>
+<p>A low p-value (&lt; 0.05) suggests the data is not MCAR.</p>
 </section>
 </section>
 <hr class="docutils" />
 <section id="Key-Takeaways">
 <h2>Key Takeaways<a class="headerlink" href="#Key-Takeaways" title="Link to this heading">¶</a></h2>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">compute_missing_rate()</span></code> summarizes missingness patterns.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SimpleSmartImputer</span></code> offers quick baseline imputation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">evaluate_imputation()</span></code> adapts metric choice based on variable types.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MCARTest</span></code> provides statistical evidence whether missingness is random.</p></li>
+<li><p>compute_missing_rate() summarizes missingness patterns.</p></li>
+<li><p>SimpleSmartImputer offers quick baseline imputation.</p></li>
+<li><p>evaluate_imputation() adapts metric choice based on variable types.</p></li>
+<li><p>MCARTest provides statistical evidence whether missingness is random.</p></li>
 <li><p>MissMecha Analysis module makes missingness study practical and systematic.</p></li>
 </ul>
 <hr class="docutils" />
@@ -811,7 +819,7 @@ Little&#39;s MCAR test p-value (MAR case): 0.0172
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
 </p>
   </div>
   

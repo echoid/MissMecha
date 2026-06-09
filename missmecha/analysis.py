@@ -110,14 +110,11 @@ def evaluate_imputation(original_df, imputed_df, mask_array, method="rmse", cat_
     Returns
     -------
     result : dict
-        Dictionary with two sub-dictionaries:
-        - 'original': Contains raw evaluation scores
-            - 'column_scores': mapping from column name to evaluation score
-            - 'overall_score': average of valid column scores (float)
-        - 'scaled': Contains normalized scores (0-1 range)
-            - 'column_scores': mapping from column name to scaled evaluation score
-            - 'overall_score': average of valid scaled column scores (float)
-        For categorical columns, the scaled score equals the original accuracy score.
+        Dictionary with two sub-dictionaries, ``original`` and ``scaled``.
+        Each sub-dictionary contains ``column_scores`` for each column and an
+        ``overall_score`` computed from the valid column-level scores.
+        For categorical columns, the scaled score is the same as the raw
+        accuracy score.
 
     Raises
     ------
@@ -126,11 +123,10 @@ def evaluate_imputation(original_df, imputed_df, mask_array, method="rmse", cat_
 
     Notes
     -----
-    - If `cat_cols` is None: all columns use the selected `method`.
-    - If `cat_cols` is provided:
-        - columns in `cat_cols` use accuracy
-        - all other columns use `method`, which must be 'rmse' or 'mae'
-    - Includes formatted print output.
+    If ``cat_cols`` is ``None``, all columns use the selected ``method``.
+    If ``cat_cols`` is provided, columns in ``cat_cols`` use accuracy and all
+    other columns use ``method``, which must be ``rmse`` or ``mae``.
+    The function also prints a formatted summary table.
 
     Examples
     --------
@@ -144,7 +140,7 @@ def evaluate_imputation(original_df, imputed_df, mask_array, method="rmse", cat_
     ...     method="mae",
     ...     cat_cols=["gender", "job_type"]
     ... )
-    >>> print(result["overall_score"])
+    >>> print(result["scaled"]["overall_score"])
     0.872
     """
     

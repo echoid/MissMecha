@@ -24,7 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=4f46311c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=97bee563" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -118,6 +118,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../../contribution.html">
   Contribution Guidelines
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../news.html">
+  What’s New
  </a>
 </li>
 
@@ -300,14 +306,11 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    result : dict</span>
-<span class="sd">        Dictionary with two sub-dictionaries:</span>
-<span class="sd">        - &#39;original&#39;: Contains raw evaluation scores</span>
-<span class="sd">            - &#39;column_scores&#39;: mapping from column name to evaluation score</span>
-<span class="sd">            - &#39;overall_score&#39;: average of valid column scores (float)</span>
-<span class="sd">        - &#39;scaled&#39;: Contains normalized scores (0-1 range)</span>
-<span class="sd">            - &#39;column_scores&#39;: mapping from column name to scaled evaluation score</span>
-<span class="sd">            - &#39;overall_score&#39;: average of valid scaled column scores (float)</span>
-<span class="sd">        For categorical columns, the scaled score equals the original accuracy score.</span>
+<span class="sd">        Dictionary with two sub-dictionaries, ``original`` and ``scaled``.</span>
+<span class="sd">        Each sub-dictionary contains ``column_scores`` for each column and an</span>
+<span class="sd">        ``overall_score`` computed from the valid column-level scores.</span>
+<span class="sd">        For categorical columns, the scaled score is the same as the raw</span>
+<span class="sd">        accuracy score.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -316,11 +319,10 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    - If `cat_cols` is None: all columns use the selected `method`.</span>
-<span class="sd">    - If `cat_cols` is provided:</span>
-<span class="sd">        - columns in `cat_cols` use accuracy</span>
-<span class="sd">        - all other columns use `method`, which must be &#39;rmse&#39; or &#39;mae&#39;</span>
-<span class="sd">    - Includes formatted print output.</span>
+<span class="sd">    If ``cat_cols`` is ``None``, all columns use the selected ``method``.</span>
+<span class="sd">    If ``cat_cols`` is provided, columns in ``cat_cols`` use accuracy and all</span>
+<span class="sd">    other columns use ``method``, which must be ``rmse`` or ``mae``.</span>
+<span class="sd">    The function also prints a formatted summary table.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -334,7 +336,7 @@
 <span class="sd">    ...     method=&quot;mae&quot;,</span>
 <span class="sd">    ...     cat_cols=[&quot;gender&quot;, &quot;job_type&quot;]</span>
 <span class="sd">    ... )</span>
-<span class="sd">    &gt;&gt;&gt; print(result[&quot;overall_score&quot;])</span>
+<span class="sd">    &gt;&gt;&gt; print(result[&quot;scaled&quot;][&quot;overall_score&quot;])</span>
 <span class="sd">    0.872</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
@@ -612,7 +614,7 @@
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
 </p>
   </div>
   

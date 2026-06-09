@@ -351,7 +351,7 @@
     "\n",
     "## Impute Missing Values\n",
     "\n",
-    "Use `SimpleSmartImputer` to fill missing values."
+    "Use SimpleSmartImputer to fill missing values."
    ]
   },
   {
@@ -380,7 +380,7 @@
    "metadata": {},
    "source": [
     "\n",
-    "By specifying `cat_cols`, the imputer knows to treat `gender` as categorical (mode imputation).\n",
+    "By specifying cat_cols, the imputer knows to treat gender as categorical (mode imputation).\n",
     "\n",
     "---\n",
     "\n",
@@ -429,7 +429,7 @@
     "\n",
     "### Using AvgErr for Mixed Types\n",
     "\n",
-    "If `cat_cols` are specified, `evaluate_imputation()` automatically applies:\n",
+    "If cat_cols are specified, evaluate_imputation() automatically applies:\n",
     "- RMSE/MAE for numerical columns\n",
     "- Accuracy for categorical columns"
    ]
@@ -470,19 +470,15 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "---\n",
-    "\n",
     "### A Note on AvgERR\n",
     "\n",
     "The **AvgERR** metric combines numerical and categorical evaluations seamlessly:\n",
     "\n",
-    "\\[ \\text{AvgErr}(v_j) = \\begin{cases}\n",
-    "|X_{ij} - \\hat{X}_{ij}|, & \\text{MAE for numerical features} \\\\\n",
-    "\\sqrt{(X_{ij} - \\hat{X}_{ij})^2}, & \\text{RMSE for numerical features} \\\\\n",
-    "\\text{Accuracy}(X_{ij}, \\hat{X}_{ij}), & \\text{Accuracy for categorical features}\n",
-    "\\end{cases} \\]\n",
+    "- numerical columns use RMSE or MAE, depending on the selected method;\n",
+    "- categorical columns use accuracy;\n",
+    "- the reported overall score averages those column-level results.\n",
     "\n",
-    "✨ It adapts metric choice based on each column's type.\n",
+    "This keeps the metric aligned with each column's data type.\n",
     "\n",
     "---\n",
     "\n",
@@ -518,7 +514,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "A high p-value (>0.05) suggests MCAR cannot be rejected.\n",
+    "A high p-value (> 0.05) suggests MCAR cannot be rejected.\n",
     "\n",
     "### Test for Non-MCAR (MAR Example)\n",
     "\n",
@@ -556,16 +552,16 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "A low p-value (<0.05) suggests the data is **not MCAR**.\n",
+    "A low p-value (< 0.05) suggests the data is not MCAR.\n",
     "\n",
     "---\n",
     "\n",
     "## Key Takeaways\n",
     "\n",
-    "- `compute_missing_rate()` summarizes missingness patterns.\n",
-    "- `SimpleSmartImputer` offers quick baseline imputation.\n",
-    "- `evaluate_imputation()` adapts metric choice based on variable types.\n",
-    "- `MCARTest` provides statistical evidence whether missingness is random.\n",
+    "- compute_missing_rate() summarizes missingness patterns.\n",
+    "- SimpleSmartImputer offers quick baseline imputation.\n",
+    "- evaluate_imputation() adapts metric choice based on variable types.\n",
+    "- MCARTest provides statistical evidence whether missingness is random.\n",
     "- MissMecha Analysis module makes missingness study practical and systematic.\n",
     "\n",
     "---"

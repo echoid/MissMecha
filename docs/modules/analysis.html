@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=f79d278b" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=4f46311c" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=97bee563" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
@@ -121,6 +121,12 @@
 <li class="toctree-l1 nav-item">
  <a class="reference internal nav-link" href="../contribution.html">
   Contribution Guidelines
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../news.html">
+  What’s New
  </a>
 </li>
 
@@ -499,26 +505,11 @@ One of {‘rmse’, ‘mae’, ‘accuracy’}.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>result</strong> – Dictionary with two sub-dictionaries:
-- ‘original’: Contains raw evaluation scores</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>’column_scores’: mapping from column name to evaluation score</p></li>
-<li><p>’overall_score’: average of valid column scores (float)</p></li>
-</ul>
-</div></blockquote>
-<ul class="simple">
-<li><dl class="simple">
-<dt>’scaled’: Contains normalized scores (0-1 range)</dt><dd><ul>
-<li><p>’column_scores’: mapping from column name to scaled evaluation score</p></li>
-<li><p>’overall_score’: average of valid scaled column scores (float)</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-</ul>
-<p>For categorical columns, the scaled score equals the original accuracy score.</p>
-</p>
+<dd class="field-even"><p><strong>result</strong> – Dictionary with two sub-dictionaries, <code class="docutils literal notranslate"><span class="pre">original</span></code> and <code class="docutils literal notranslate"><span class="pre">scaled</span></code>.
+Each sub-dictionary contains <code class="docutils literal notranslate"><span class="pre">column_scores</span></code> for each column and an
+<code class="docutils literal notranslate"><span class="pre">overall_score</span></code> computed from the valid column-level scores.
+For categorical columns, the scaled score is the same as the raw
+accuracy score.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -528,18 +519,10 @@ One of {‘rmse’, ‘mae’, ‘accuracy’}.</p></li>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>If <cite>cat_cols</cite> is None: all columns use the selected <cite>method</cite>.</p></li>
-<li><dl class="simple">
-<dt>If <cite>cat_cols</cite> is provided:</dt><dd><ul>
-<li><p>columns in <cite>cat_cols</cite> use accuracy</p></li>
-<li><p>all other columns use <cite>method</cite>, which must be ‘rmse’ or ‘mae’</p></li>
-</ul>
-</dd>
-</dl>
-</li>
-<li><p>Includes formatted print output.</p></li>
-</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, all columns use the selected <code class="docutils literal notranslate"><span class="pre">method</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code> is provided, columns in <code class="docutils literal notranslate"><span class="pre">cat_cols</span></code> use accuracy and all
+other columns use <code class="docutils literal notranslate"><span class="pre">method</span></code>, which must be <code class="docutils literal notranslate"><span class="pre">rmse</span></code> or <code class="docutils literal notranslate"><span class="pre">mae</span></code>.
+The function also prints a formatted summary table.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">missmecha.analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">evaluate_imputation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">evaluate_imputation</span><span class="p">(</span><span class="n">X_true</span><span class="p">,</span> <span class="n">X_filled</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;rmse&quot;</span><span class="p">)</span>
@@ -552,7 +535,7 @@ One of {‘rmse’, ‘mae’, ‘accuracy’}.</p></li>
 <span class="gp">... </span>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;mae&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">cat_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span> <span class="s2">&quot;job_type&quot;</span><span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;overall_score&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;scaled&quot;</span><span class="p">][</span><span class="s2">&quot;overall_score&quot;</span><span class="p">])</span>
 <span class="go">0.872</span>
 </pre></div>
 </div>
@@ -672,7 +655,7 @@ and pairwise MCAR t-tests (for individual variables).</p>
   
   <div class="footer-item">
     <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.1.3.<br>
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.4.7.<br>
 </p>
   </div>
   

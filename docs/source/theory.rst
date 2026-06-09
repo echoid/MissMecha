@@ -61,7 +61,7 @@ This makes modeling and imputation more difficult, as missing values carry infor
 Illustrative Table
 ------------------
 
-The table below (from ~\cite{Missing_Mechanisms}) illustrates how different mechanisms affect a toy dataset:
+The table below illustrates how different mechanisms affect a toy dataset:
 
 .. list-table:: Missing Mechanism Comparison (Job Ratings by IQ)
    :header-rows: 1
@@ -105,4 +105,4 @@ References
 
 - Enders, C. K. (2010). *Applied Missing Data Analysis.* The Guilford Press.
 
-- Gomer, B., & Yuan, K. H. (2021). Subtypes of the Missing Not At Random Missing Data Mechanism. *Psychological Methods, 26*(5), 559–598. https://doi.org/10.1037/met0000377
+- Gomer, B., & Yuan, K. H. (2021). Subtypes of the Missing Not At Random Missing Data Mechanism. *Psychological Methods*, 26(5), 559–598. https://doi.org/10.1037/met0000377
